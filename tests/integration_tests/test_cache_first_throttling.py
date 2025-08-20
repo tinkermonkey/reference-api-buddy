@@ -25,7 +25,9 @@ class TestCacheFirstThrottling:
     def test_cache_hits_bypass_throttling_integration(self):
         """Test that cache hits bypass throttling in a real proxy scenario."""
         with tempfile.TemporaryDirectory() as temp_dir:
-            cache_db_path = os.path.join(temp_dir, "test_cache.db")
+            # Use pathlib for better Windows compatibility
+            from pathlib import Path
+            cache_db_path = str(Path(temp_dir) / "test_cache.db")
 
             # Very aggressive throttling config (1 request per hour)
             config = {
@@ -139,7 +141,9 @@ class TestCacheFirstThrottling:
     def test_throttling_metrics_include_cache_miss_flag(self):
         """Test that throttling metrics include cache_miss flag for debugging."""
         with tempfile.TemporaryDirectory() as temp_dir:
-            cache_db_path = os.path.join(temp_dir, "test_cache.db")
+            # Use pathlib for better Windows compatibility
+            from pathlib import Path
+            cache_db_path = str(Path(temp_dir) / "test_cache.db")
 
             config = {
                 "domain_mappings": {"httpbin": {"upstream": "https://httpbin.org"}},

@@ -204,6 +204,14 @@ class CachingProxy:
         if self.server:
             self.server.stop()
         self.running = False
+        
+        # Close database connections to release file locks (important for Windows)
+        if hasattr(self, 'db_manager') and self.db_manager:
+            try:
+                self.db_manager.close()
+            except Exception as e:
+                self.logger.error(f"Error closing database manager: {e}")
+        
         self.logger.info("Proxy server stopped.")
         # Graceful shutdown: flush metrics, call shutdown callbacks
         if "on_shutdown" in self.callbacks:

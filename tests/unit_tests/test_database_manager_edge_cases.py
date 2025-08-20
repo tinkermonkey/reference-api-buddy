@@ -64,8 +64,17 @@ class TestDatabaseInitializationFailures:
                 assert db._use_uri is True
                 assert db.database_path == uri_path
                 db.close()
+                # Give Windows time to release file locks
+                import platform
+                import time
+                if platform.system() == 'Windows':
+                    time.sleep(0.1)
             finally:
-                os.unlink(tmp.name)
+                try:
+                    os.unlink(tmp.name)
+                except (PermissionError, OSError):
+                    # On Windows, file might still be locked - ignore
+                    pass
 
     def test_database_initialization_with_regular_path(self):
         """Test database initialization with regular file path."""
@@ -75,8 +84,17 @@ class TestDatabaseInitializationFailures:
                 assert db._use_uri is False
                 assert db.database_path == tmp.name
                 db.close()
+                # Give Windows time to release file locks
+                import platform
+                import time
+                if platform.system() == 'Windows':
+                    time.sleep(0.1)
             finally:
-                os.unlink(tmp.name)
+                try:
+                    os.unlink(tmp.name)
+                except (PermissionError, OSError):
+                    # On Windows, file might still be locked - ignore
+                    pass
 
 
 class TestConnectionErrorHandling:
@@ -350,8 +368,17 @@ class TestDataMigrationEdgeCases:
                 assert rows[0][0] == "test"
 
                 db2.close()
+                # Give Windows time to release file locks
+                import platform
+                import time
+                if platform.system() == 'Windows':
+                    time.sleep(0.1)
             finally:
-                os.unlink(tmp.name)
+                try:
+                    os.unlink(tmp.name)
+                except (PermissionError, OSError):
+                    # On Windows, file might still be locked - ignore
+                    pass
 
     def test_concurrent_schema_initialization(self):
         """Test concurrent schema initialization doesn't cause conflicts."""

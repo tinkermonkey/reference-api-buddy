@@ -172,6 +172,9 @@ class TestLoggerFileOutput(unittest.TestCase):
             # Force flush by removing handlers
             for handler in logger.parent.handlers:
                 handler.flush()
+                # Close file handlers to release locks on Windows
+                if hasattr(handler, 'close'):
+                    handler.close()
 
             # Read the file and check content
             with open(temp_path, "r") as f:
@@ -180,9 +183,17 @@ class TestLoggerFileOutput(unittest.TestCase):
                 self.assertIn("INFO:", content)
 
         finally:
-            # Clean up
-            if os.path.exists(temp_path):
-                os.unlink(temp_path)
+            # Clean up - with Windows file lock handling
+            import platform
+            import time
+            if platform.system() == 'Windows':
+                time.sleep(0.1)
+            try:
+                if os.path.exists(temp_path):
+                    os.unlink(temp_path)
+            except (PermissionError, OSError):
+                # On Windows, file might still be locked - ignore
+                pass
 
 
 if __name__ == "__main__":
