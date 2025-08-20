@@ -26,11 +26,11 @@ def load_config(config_path: Path) -> Dict[str, Any]:
 def create_default_config() -> Dict[str, Any]:
     """Create a default configuration."""
     import os
-    
+
     # Use environment variable for database path if set (for CI)
     db_path = os.environ.get("API_BUDDY_DB_PATH", "api_buddy_cache.db")
     log_level = os.environ.get("API_BUDDY_LOG_LEVEL", "INFO")
-    
+
     return {
         "server": {"host": "127.0.0.1", "port": 8080},
         "security": {"require_secure_key": True},
@@ -151,6 +151,7 @@ Examples:
     except Exception as e:
         print(f"Error starting proxy: {e}")
         import traceback
+
         print(f"Traceback: {traceback.format_exc()}")
         sys.exit(1)
 
