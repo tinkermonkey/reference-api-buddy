@@ -11,8 +11,8 @@ import time
 import urllib.error
 import urllib.request
 from http.client import HTTPConnection
-from http.server import HTTPServer, BaseHTTPRequestHandler
-from unittest.mock import Mock, patch, MagicMock
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from unittest.mock import MagicMock, Mock, patch
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -33,12 +33,16 @@ class MockProxy:
         class MockLogger:
             def debug(self, msg):
                 pass
+
             def info(self, msg):
                 pass
+
             def warning(self, msg):
                 pass
+
             def error(self, msg):
                 pass
+
             def critical(self, msg):
                 pass
 
@@ -71,7 +75,7 @@ class MockHandler(RequestProcessingMixin):
 
     def end_headers(self):
         self._response_written = True
-        
+
     def _handle_request_safe(self, method):
         """Wrapper around _handle_request that catches exceptions."""
         try:
@@ -134,7 +138,7 @@ class TestHandlerEdgeCases:
 
         original_data = b"Hello, World!"
         gzipped_data = gzip.compress(original_data)
-        
+
         mock_response = Mock()
         mock_response.read.return_value = gzipped_data
         mock_response.getcode.return_value = 200
@@ -143,7 +147,7 @@ class TestHandlerEdgeCases:
         with patch("urllib.request.urlopen") as mock_urlopen:
             mock_urlopen.return_value.__enter__.return_value = mock_response
             response_data, status, headers = handler._forward_request("GET", "/testdomain/test")
-            
+
             assert status == 200
             assert response_data == original_data
             assert "Content-Encoding" not in headers
@@ -162,7 +166,7 @@ class TestHandlerEdgeCases:
         with patch("urllib.request.urlopen") as mock_urlopen:
             mock_urlopen.return_value.__enter__.return_value = mock_response
             response_data, status, headers = handler._forward_request("GET", "/testdomain/test")
-            
+
             assert status == 200
             # Should return original data even if decompression fails
             assert response_data == b"\x1f\x8b\x08\x00invalid_gzip_data"
@@ -170,14 +174,14 @@ class TestHandlerEdgeCases:
     def test_deflate_decompression_success(self):
         """Test successful deflate decompression."""
         import zlib
-        
+
         config = {"domain_mappings": {"testdomain": {"upstream": "http://example.com"}}}
         proxy = MockProxy(config=config)
         handler = MockHandler(proxy=proxy)
 
         original_data = b"Hello, deflate!"
         deflated_data = zlib.compress(original_data)
-        
+
         mock_response = Mock()
         mock_response.read.return_value = deflated_data
         mock_response.getcode.return_value = 200
@@ -186,7 +190,7 @@ class TestHandlerEdgeCases:
         with patch("urllib.request.urlopen") as mock_urlopen:
             mock_urlopen.return_value.__enter__.return_value = mock_response
             response_data, status, headers = handler._forward_request("GET", "/testdomain/test")
-            
+
             assert status == 200
             assert response_data == original_data
             assert "Content-Encoding" not in headers
@@ -205,7 +209,7 @@ class TestHandlerEdgeCases:
         with patch("urllib.request.urlopen") as mock_urlopen:
             mock_urlopen.return_value.__enter__.return_value = mock_response
             response_data, status, headers = handler._forward_request("GET", "/testdomain/test")
-            
+
             assert status == 200
             assert response_data == b"invalid_deflate_data"
 
@@ -217,7 +221,7 @@ class TestHandlerEdgeCases:
 
         original_data = b"Hello, magic gzip!"
         gzipped_data = gzip.compress(original_data)
-        
+
         mock_response = Mock()
         mock_response.read.return_value = gzipped_data
         mock_response.getcode.return_value = 200
@@ -226,7 +230,7 @@ class TestHandlerEdgeCases:
         with patch("urllib.request.urlopen") as mock_urlopen:
             mock_urlopen.return_value.__enter__.return_value = mock_response
             response_data, status, headers = handler._forward_request("GET", "/testdomain/test")
-            
+
             assert status == 200
             assert response_data == original_data
 
@@ -234,7 +238,7 @@ class TestHandlerEdgeCases:
         """Test admin health endpoint handling."""
         proxy = MockProxy()
         handler = MockHandler(proxy=proxy, path="/admin/health")
-        
+
         handler._handle_request("GET")
         assert handler._response_status == 200
 
@@ -246,13 +250,13 @@ class TestHandlerEdgeCases:
 
         config = {
             "security": {"require_secure_key": True},
-            "domain_mappings": {"testdomain": {"upstream": "http://example.com"}}
+            "domain_mappings": {"testdomain": {"upstream": "http://example.com"}},
         }
         proxy = MockProxy(config=config, security_manager=security_manager)
-        
+
         handler = MockHandler(proxy=proxy, path="/testdomain/test")
         handler._handle_request("GET")
-        
+
         assert handler._response_status == 401
 
     def test_security_manager_authorized(self):
@@ -263,16 +267,16 @@ class TestHandlerEdgeCases:
 
         config = {
             "security": {"require_secure_key": True},
-            "domain_mappings": {"testdomain": {"upstream": "http://example.com"}}
+            "domain_mappings": {"testdomain": {"upstream": "http://example.com"}},
         }
         proxy = MockProxy(config=config, security_manager=security_manager)
-        
+
         handler = MockHandler(proxy=proxy, path="/testdomain/test")
-        
-        with patch.object(handler, '_forward_request') as mock_forward:
+
+        with patch.object(handler, "_forward_request") as mock_forward:
             mock_forward.return_value = (b"Success", 200, {})
             handler._handle_request("GET")
-            
+
             # Should proceed past security check
             assert handler._response_status != 401
 
@@ -329,7 +333,7 @@ class TestHandlerEdgeCases:
 
         handler = MockHandler(proxy=proxy, path="/testdomain/test")
 
-        with patch.object(handler, '_forward_request') as mock_forward:
+        with patch.object(handler, "_forward_request") as mock_forward:
             mock_forward.return_value = (b'{"response": true}', 200, {"Content-Type": "application/json"})
             handler._handle_request("GET")
 
@@ -342,13 +346,10 @@ class TestHandlerEdgeCases:
 
         request_body = b'{"data": "test"}'
         handler = MockHandler(
-            proxy=proxy, 
-            path="/testdomain/test", 
-            headers={"Content-Length": str(len(request_body))},
-            body=request_body
+            proxy=proxy, path="/testdomain/test", headers={"Content-Length": str(len(request_body))}, body=request_body
         )
 
-        with patch.object(handler, '_forward_request') as mock_forward:
+        with patch.object(handler, "_forward_request") as mock_forward:
             mock_forward.return_value = (b'{"success": true}', 200, {})
             handler._handle_request("POST")
 
@@ -360,24 +361,24 @@ class TestHandlerEdgeCases:
         """Test exception handling in _handle_request."""
         proxy = MockProxy()
         handler = MockHandler(proxy=proxy, path="/testdomain/test")
-        
-        with patch.object(handler, '_forward_request') as mock_forward:
+
+        with patch.object(handler, "_forward_request") as mock_forward:
             mock_forward.side_effect = Exception("Test exception")
             handler._handle_request("GET")
-            
+
             assert handler._response_status == 500
 
     def test_transparent_proxy_for_unmatched_domain(self):
         """Test transparent proxying for domains not in mapping."""
         config = {"domain_mappings": {"knowndomain": {"upstream": "http://example.com"}}}
         proxy = MockProxy(config=config)
-        
+
         handler = MockHandler(proxy=proxy, path="/unknowndomain/test")
-        
-        with patch.object(handler, '_forward_request') as mock_forward:
+
+        with patch.object(handler, "_forward_request") as mock_forward:
             mock_forward.return_value = (b"Transparent proxy response", 200, {})
             handler._handle_request("GET")
-            
+
             mock_forward.assert_called_once()
 
     def test_query_parameters_handling(self):
@@ -392,7 +393,7 @@ class TestHandlerEdgeCases:
             mock_response.getcode.return_value = 200
             mock_response.headers = {}
             mock_urlopen.return_value.__enter__.return_value = mock_response
-            
+
             response_data, status, headers = handler._forward_request("GET", "/testdomain/test?param=value")
             assert status == 200
 
@@ -408,7 +409,7 @@ class TestHandlerEdgeCases:
             mock_response.getcode.return_value = 200
             mock_response.headers = {}
             mock_urlopen.return_value.__enter__.return_value = mock_response
-            
+
             response_data, status, headers = handler._forward_request("GET", "/testdomain/")
             assert status == 200
 
@@ -416,7 +417,7 @@ class TestHandlerEdgeCases:
         """Test handler logger fallback when no proxy logger available."""
         handler = MockHandler()
         handler.proxy = None
-        
+
         # Should not raise exception when accessing logger
         logger = handler.logger
         assert logger is not None
@@ -439,10 +440,10 @@ class TestHandlerEdgeCases:
         config = {"domain_mappings": {"testdomain": {"upstream": "http://example.com"}}}
         proxy = MockProxy(config=config, throttle_manager=throttle_manager)
         proxy.metrics_collector = metrics_collector
-        
+
         handler = MockHandler(proxy=proxy, path="/testdomain/test")
         handler._handle_request("GET")
-        
+
         metrics_collector.record_event.assert_called_once()
         call_args = metrics_collector.record_event.call_args
         assert call_args[0][0] == "throttle"
@@ -450,29 +451,29 @@ class TestHandlerEdgeCases:
     def test_handler_initialization(self):
         """Test ProxyHTTPRequestHandler initialization."""
         proxy = MockProxy()
-        
-        with patch('reference_api_buddy.core.handler.BaseHTTPRequestHandler.__init__'):
+
+        with patch("reference_api_buddy.core.handler.BaseHTTPRequestHandler.__init__"):
             handler = ProxyHTTPRequestHandler(None, None, None, proxy_instance=proxy)
-            
+
             assert handler.proxy == proxy
             assert handler.metrics_collector == proxy.metrics_collector
 
     def test_handler_without_proxy_instance(self):
         """Test handler initialization without proxy instance."""
-        with patch('reference_api_buddy.core.handler.BaseHTTPRequestHandler.__init__'):
+        with patch("reference_api_buddy.core.handler.BaseHTTPRequestHandler.__init__"):
             handler = ProxyHTTPRequestHandler(None, None, None)
-            
+
             assert handler.proxy is None
             assert handler.metrics_collector is None
 
     def test_http_method_handlers_exist(self):
         """Test that all HTTP method handlers exist."""
         handler_class = ProxyHTTPRequestHandler
-        
-        assert hasattr(handler_class, 'do_GET')
-        assert hasattr(handler_class, 'do_POST')
-        assert hasattr(handler_class, 'do_PUT')
-        assert hasattr(handler_class, 'do_DELETE')
+
+        assert hasattr(handler_class, "do_GET")
+        assert hasattr(handler_class, "do_POST")
+        assert hasattr(handler_class, "do_PUT")
+        assert hasattr(handler_class, "do_DELETE")
 
     def test_header_filtering(self):
         """Test that problematic headers are filtered."""
@@ -494,8 +495,10 @@ class TestHandlerEdgeCases:
             mock_response.getcode.return_value = 200
             mock_response.headers = {}
             mock_urlopen.return_value.__enter__.return_value = mock_response
-            
-            response_data, status, response_headers = handler._forward_request("GET", "/testdomain/test", headers=headers)
+
+            response_data, status, response_headers = handler._forward_request(
+                "GET", "/testdomain/test", headers=headers
+            )
             assert status == 200
 
 
@@ -608,14 +611,14 @@ class TestHandlerEdgeCases:
     def test_malformed_request_handling(self):
         """Test handling of malformed requests."""
         proxy = MockProxy()
-        
+
         # Test empty path - this should go to transparent proxy and fail
         handler = MockHandler(proxy=proxy, path="", headers={})
         handler._handle_request_safe("GET")
         # Empty path goes to transparent proxy which will return 404 for unmapped domain
         assert handler._response_status in [404, 500, 502]
 
-        # Test root path only 
+        # Test root path only
         handler = MockHandler(proxy=proxy, path="/", headers={})
         handler._handle_request_safe("GET")
         # Root path should result in error
@@ -624,9 +627,7 @@ class TestHandlerEdgeCases:
     def test_domain_mapping_edge_cases(self, proxy_with_domain_mapping, mock_upstream_server):
         """Test domain mapping error scenarios."""
         # Test domain with no upstream configured
-        handler = MockHandler(
-            proxy=proxy_with_domain_mapping, path="/emptydomain/test", headers={}
-        )
+        handler = MockHandler(proxy=proxy_with_domain_mapping, path="/emptydomain/test", headers={})
 
         response_data, status, headers = handler._forward_request("GET", "/emptydomain/test")
         assert status == 502
@@ -700,7 +701,7 @@ class TestHandlerEdgeCases:
         with patch("urllib.request.urlopen") as mock_urlopen:
             mock_urlopen.return_value.__enter__.return_value = mock_response
             response_data, status, headers = handler._forward_request("GET", "/testdomain/test")
-            
+
             # Should still return response even if decompression fails
             assert status == 200
             assert response_data == b"\x1f\x8b\x08\x00invalid_gzip_data"
@@ -708,13 +709,13 @@ class TestHandlerEdgeCases:
     def test_deflate_compression_handling(self, proxy_with_domain_mapping):
         """Test deflate compression handling."""
         import zlib
-        
+
         handler = MockHandler(proxy=proxy_with_domain_mapping, path="/testdomain/test", headers={})
 
         # Mock response with deflate data
         original_data = b"Hello, deflate world!"
         deflate_data = zlib.compress(original_data)
-        
+
         mock_response = Mock()
         mock_response.read.return_value = deflate_data
         mock_response.getcode.return_value = 200
@@ -723,7 +724,7 @@ class TestHandlerEdgeCases:
         with patch("urllib.request.urlopen") as mock_urlopen:
             mock_urlopen.return_value.__enter__.return_value = mock_response
             response_data, status, headers = handler._forward_request("GET", "/testdomain/test")
-            
+
             assert status == 200
             assert response_data == original_data
             assert "Content-Encoding" not in headers
@@ -741,7 +742,7 @@ class TestHandlerEdgeCases:
         with patch("urllib.request.urlopen") as mock_urlopen:
             mock_urlopen.return_value.__enter__.return_value = mock_response
             response_data, status, headers = handler._forward_request("GET", "/testdomain/test")
-            
+
             # Should still return response even if decompression fails
             assert status == 200
             assert response_data == b"invalid_deflate_data"
@@ -749,14 +750,15 @@ class TestHandlerEdgeCases:
     def test_large_request_body_handling(self, proxy_with_domain_mapping, mock_upstream_server):
         """Test handling of large request bodies."""
         # Use mocking instead of the real server for large body test
-        handler = MockHandler(proxy=proxy_with_domain_mapping, path="/testdomain/test", headers={
-            "Content-Type": "application/json",
-            "Content-Length": "1000000"
-        })
+        handler = MockHandler(
+            proxy=proxy_with_domain_mapping,
+            path="/testdomain/test",
+            headers={"Content-Type": "application/json", "Content-Length": "1000000"},
+        )
 
         # Create large body
         large_body = b"x" * 1000000
-        
+
         # Mock the urllib.request.urlopen to avoid connection issues
         with patch("urllib.request.urlopen") as mock_urlopen:
             mock_response = Mock()
@@ -764,9 +766,11 @@ class TestHandlerEdgeCases:
             mock_response.getcode.return_value = 200
             mock_response.headers = {}
             mock_urlopen.return_value.__enter__.return_value = mock_response
-            
-            response_data, status, headers = handler._forward_request("POST", "/testdomain/test", large_body, handler.headers)
-            
+
+            response_data, status, headers = handler._forward_request(
+                "POST", "/testdomain/test", large_body, handler.headers
+            )
+
             assert status == 200
             assert response_data == b"Response to large request"
 
@@ -777,7 +781,7 @@ class TestHandlerEdgeCases:
         # Headers that should be filtered out
         invalid_headers = {
             "Host": "old-host.com",
-            "Connection": "keep-alive", 
+            "Connection": "keep-alive",
             "Content-Length": "100",
             "Accept": "application/json",  # This should be kept
             "Authorization": "Bearer token",  # This should be kept
@@ -785,7 +789,7 @@ class TestHandlerEdgeCases:
 
         handler = MockHandler(proxy=proxy_with_domain_mapping, path="/testdomain/test", headers=invalid_headers)
         response_data, status, headers = handler._forward_request("GET", "/testdomain/test", headers=invalid_headers)
-        
+
         assert status == 200
 
     def test_security_manager_integration(self):
@@ -796,13 +800,13 @@ class TestHandlerEdgeCases:
 
         config = {
             "security": {"require_secure_key": True},
-            "domain_mappings": {"testdomain": {"upstream": "http://example.com"}}
+            "domain_mappings": {"testdomain": {"upstream": "http://example.com"}},
         }
         proxy = MockProxy(config=config, security_manager=security_manager)
-        
+
         handler = MockHandler(proxy=proxy, path="/testdomain/test", headers={})
         handler._handle_request("GET")
-        
+
         assert handler._response_status == 401
 
     def test_security_manager_valid_key(self):
@@ -813,17 +817,17 @@ class TestHandlerEdgeCases:
 
         config = {
             "security": {"require_secure_key": True},
-            "domain_mappings": {"testdomain": {"upstream": "http://example.com"}}
+            "domain_mappings": {"testdomain": {"upstream": "http://example.com"}},
         }
         proxy = MockProxy(config=config, security_manager=security_manager)
-        
+
         handler = MockHandler(proxy=proxy, path="/testdomain/test", headers={})
-        
+
         # Mock _forward_request to avoid actual network call
-        with patch.object(handler, '_forward_request') as mock_forward:
+        with patch.object(handler, "_forward_request") as mock_forward:
             mock_forward.return_value = (b"Success", 200, {})
             handler._handle_request("GET")
-            
+
             # Should not return 401 since key is valid
             assert handler._response_status != 401
 
@@ -831,7 +835,7 @@ class TestHandlerEdgeCases:
         """Test admin health endpoint."""
         proxy = MockProxy()
         handler = MockHandler(proxy=proxy, path="/admin/health", headers={})
-        
+
         handler._handle_request("GET")
         assert handler._response_status == 200
 
@@ -891,7 +895,7 @@ class TestHandlerEdgeCases:
         handler = MockHandler(proxy=proxy, path="/testdomain/test", headers={})
 
         # Mock _forward_request to avoid actual network call
-        with patch.object(handler, '_forward_request') as mock_forward:
+        with patch.object(handler, "_forward_request") as mock_forward:
             mock_forward.return_value = (b'{"response": true}', 200, {"Content-Type": "application/json"})
             handler._handle_request_safe("GET")
 
@@ -909,10 +913,11 @@ class TestHandlerEdgeCases:
 
         # Mock rfile with request body
         request_body = b'{"data": "test"}'
-        handler = MockHandler(proxy=proxy, path="/testdomain/test", 
-                            headers={"Content-Length": str(len(request_body))}, body=request_body)
+        handler = MockHandler(
+            proxy=proxy, path="/testdomain/test", headers={"Content-Length": str(len(request_body))}, body=request_body
+        )
 
-        with patch.object(handler, '_forward_request') as mock_forward:
+        with patch.object(handler, "_forward_request") as mock_forward:
             mock_forward.return_value = (b'{"success": true}', 200, {})
             handler._handle_request_safe("POST")
 
@@ -923,19 +928,19 @@ class TestHandlerEdgeCases:
         """Test exception handling in _handle_request."""
         proxy = MockProxy()
         handler = MockHandler(proxy=proxy, path="/testdomain/test", headers={})
-        
+
         # Mock _forward_request to raise an exception
-        with patch.object(handler, '_forward_request') as mock_forward:
+        with patch.object(handler, "_forward_request") as mock_forward:
             mock_forward.side_effect = Exception("Test exception")
             handler._handle_request("GET")
-            
+
             assert handler._response_status == 500
 
     def test_no_proxy_attribute_logger(self):
         """Test handler without proxy attribute uses default logger."""
         handler = MockHandler()
         handler.proxy = None
-        
+
         # Should not raise exception when accessing logger
         logger = handler.logger
         assert logger is not None
@@ -944,13 +949,13 @@ class TestHandlerEdgeCases:
         """Test transparent proxying for unmatched domains."""
         config = {"domain_mappings": {"knowndomain": {"upstream": "http://example.com"}}}
         proxy = MockProxy(config=config)
-        
+
         handler = MockHandler(proxy=proxy, path="/unknowndomain/test", headers={})
-        
-        with patch.object(handler, '_forward_request') as mock_forward:
+
+        with patch.object(handler, "_forward_request") as mock_forward:
             mock_forward.return_value = (b"Transparent proxy response", 200, {})
             handler._handle_request("GET")
-            
+
             # Should still call _forward_request for transparent proxying
             mock_forward.assert_called_once()
 
@@ -960,21 +965,21 @@ class TestHandlerEdgeCases:
 
         handler = MockHandler(proxy=proxy_with_domain_mapping, path="/testdomain/test?param=value", headers={})
         response_data, status, headers = handler._forward_request("GET", "/testdomain/test?param=value")
-        
+
         assert status == 200
 
     def test_empty_request_body_post(self):
         """Test POST request with empty body."""
         config = {"domain_mappings": {"testdomain": {"upstream": "http://example.com"}}}
         proxy = MockProxy(config=config)
-        
+
         handler = MockHandler(proxy=proxy, path="/testdomain/test", headers={"Content-Length": "0"})
         handler.rfile = io.BytesIO(b"")
-        
-        with patch.object(handler, '_forward_request') as mock_forward:
+
+        with patch.object(handler, "_forward_request") as mock_forward:
             mock_forward.return_value = (b"Success", 200, {})
             handler._handle_request("POST")
-            
+
             # Should handle empty body gracefully
             mock_forward.assert_called_once()
             args = mock_forward.call_args[0]
@@ -983,32 +988,32 @@ class TestHandlerEdgeCases:
     def test_http_methods_coverage(self):
         """Test all HTTP methods are handled."""
         proxy = MockProxy()
-        
+
         # Test that ProxyHTTPRequestHandler has all the method handlers
         handler_class = ProxyHTTPRequestHandler
-        
+
         # Verify all HTTP methods are implemented
-        assert hasattr(handler_class, 'do_GET')
-        assert hasattr(handler_class, 'do_POST')
-        assert hasattr(handler_class, 'do_PUT')
-        assert hasattr(handler_class, 'do_DELETE')
+        assert hasattr(handler_class, "do_GET")
+        assert hasattr(handler_class, "do_POST")
+        assert hasattr(handler_class, "do_PUT")
+        assert hasattr(handler_class, "do_DELETE")
 
     def test_handler_initialization(self):
         """Test ProxyHTTPRequestHandler initialization."""
         proxy = MockProxy()
-        
+
         # Mock the BaseHTTPRequestHandler.__init__ to avoid actual server setup
-        with patch('reference_api_buddy.core.handler.BaseHTTPRequestHandler.__init__'):
+        with patch("reference_api_buddy.core.handler.BaseHTTPRequestHandler.__init__"):
             handler = ProxyHTTPRequestHandler(None, None, None, proxy_instance=proxy)
-            
+
             assert handler.proxy == proxy
             assert handler.metrics_collector == proxy.metrics_collector
 
     def test_handler_without_proxy_instance(self):
         """Test handler initialization without proxy instance."""
-        with patch('reference_api_buddy.core.handler.BaseHTTPRequestHandler.__init__'):
+        with patch("reference_api_buddy.core.handler.BaseHTTPRequestHandler.__init__"):
             handler = ProxyHTTPRequestHandler(None, None, None)
-            
+
             assert handler.proxy is None
             assert handler.metrics_collector is None
 
@@ -1030,10 +1035,10 @@ class TestHandlerEdgeCases:
         config = {"domain_mappings": {"testdomain": {"upstream": "http://example.com"}}}
         proxy = MockProxy(config=config, throttle_manager=throttle_manager)
         proxy.metrics_collector = metrics_collector
-        
+
         handler = MockHandler(proxy=proxy, path="/testdomain/test", headers={})
         handler._handle_request("GET")
-        
+
         # Verify metrics were recorded
         metrics_collector.record_event.assert_called_once()
         call_args = metrics_collector.record_event.call_args
@@ -1046,7 +1051,7 @@ class TestHandlerEdgeCases:
         # Create gzipped data without Content-Encoding header
         original_data = b"Hello, gzip magic!"
         gzipped_data = gzip.compress(original_data)
-        
+
         mock_response = Mock()
         mock_response.read.return_value = gzipped_data
         mock_response.getcode.return_value = 200
@@ -1055,7 +1060,7 @@ class TestHandlerEdgeCases:
         with patch("urllib.request.urlopen") as mock_urlopen:
             mock_urlopen.return_value.__enter__.return_value = mock_response
             response_data, status, headers = handler._forward_request("GET", "/testdomain/test")
-            
+
             assert status == 200
             assert response_data == original_data
 
@@ -1065,7 +1070,7 @@ class TestHandlerEdgeCases:
 
         handler = MockHandler(proxy=proxy_with_domain_mapping, path="/testdomain/", headers={})
         response_data, status, headers = handler._forward_request("GET", "/testdomain/")
-        
+
         assert status == 200
 
     def test_root_path_with_query(self, proxy_with_domain_mapping, mock_upstream_server):
@@ -1074,5 +1079,5 @@ class TestHandlerEdgeCases:
 
         handler = MockHandler(proxy=proxy_with_domain_mapping, path="/testdomain/?param=value", headers={})
         response_data, status, headers = handler._forward_request("GET", "/testdomain/?param=value")
-        
+
         assert status == 200

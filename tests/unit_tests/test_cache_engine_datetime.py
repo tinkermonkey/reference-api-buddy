@@ -55,24 +55,26 @@ class TestDatetimeHandling:
         """Test datetime fallback handling in get method using fromisoformat."""
         key = cache_engine.generate_cache_key("GET", "http://example.com/api")
         cache_engine.set(key, sample_response)
-        
+
         # First verify we can get the entry normally
         cached = cache_engine.get(key)
         assert cached is not None
-        
+
         # Mock database to return ISO format datetime string
-        with patch.object(cache_engine.db_manager, 'execute_query') as mock_query:
+        with patch.object(cache_engine.db_manager, "execute_query") as mock_query:
             # Return data that would use fromisoformat fallback
-            mock_query.return_value = [(
-                b"test-data",
-                '{"Content-Type": "application/json"}',
-                200,
-                "2025-08-15T12:00:00",  # ISO format that requires fromisoformat
-                3600,
-                1,
-                "2025-08-15 12:00:00"
-            )]
-            
+            mock_query.return_value = [
+                (
+                    b"test-data",
+                    '{"Content-Type": "application/json"}',
+                    200,
+                    "2025-08-15T12:00:00",  # ISO format that requires fromisoformat
+                    3600,
+                    1,
+                    "2025-08-15 12:00:00",
+                )
+            ]
+
             # This should trigger the fromisoformat path
             # We're mainly testing that the code path executes without error
             try:
@@ -85,20 +87,22 @@ class TestDatetimeHandling:
         """Test handling of integer timestamp values."""
         key = cache_engine.generate_cache_key("GET", "http://example.com/api")
         cache_engine.set(key, sample_response)
-        
+
         # Mock database to return integer timestamp
         current_time = int(time.time())
-        with patch.object(cache_engine.db_manager, 'execute_query') as mock_query:
-            mock_query.return_value = [(
-                b"test-data",
-                '{"Content-Type": "application/json"}',
-                200,
-                current_time,  # Integer timestamp
-                3600,
-                1,
-                "2025-08-15 12:00:00"
-            )]
-            
+        with patch.object(cache_engine.db_manager, "execute_query") as mock_query:
+            mock_query.return_value = [
+                (
+                    b"test-data",
+                    '{"Content-Type": "application/json"}',
+                    200,
+                    current_time,  # Integer timestamp
+                    3600,
+                    1,
+                    "2025-08-15 12:00:00",
+                )
+            ]
+
             # Should handle integer timestamp successfully
             cached = cache_engine.get(key)
             assert cached is not None
@@ -107,20 +111,22 @@ class TestDatetimeHandling:
         """Test handling of datetime objects in cache operations."""
         key = cache_engine.generate_cache_key("GET", "http://example.com/api")
         cache_engine.set(key, sample_response)
-        
+
         # Mock database to return datetime object
         dt_obj = datetime.now()
-        with patch.object(cache_engine.db_manager, 'execute_query') as mock_query:
-            mock_query.return_value = [(
-                b"test-data",
-                '{"Content-Type": "application/json"}',
-                200,
-                dt_obj,  # datetime object
-                3600,
-                1,
-                "2025-08-15 12:00:00"
-            )]
-            
+        with patch.object(cache_engine.db_manager, "execute_query") as mock_query:
+            mock_query.return_value = [
+                (
+                    b"test-data",
+                    '{"Content-Type": "application/json"}',
+                    200,
+                    dt_obj,  # datetime object
+                    3600,
+                    1,
+                    "2025-08-15 12:00:00",
+                )
+            ]
+
             # Should handle datetime object successfully
             cached = cache_engine.get(key)
             assert cached is not None
@@ -134,15 +140,15 @@ class TestDatetimeCleanupOperations:
         # Add entry and mock cleanup with different datetime formats
         key = cache_engine.generate_cache_key("GET", "http://example.com/api")
         cache_engine.set(key, sample_response)
-        
+
         # Mock database to return entries with different datetime formats
         current_time = int(time.time())
-        with patch.object(cache_engine.db_manager, 'execute_query') as mock_query:
+        with patch.object(cache_engine.db_manager, "execute_query") as mock_query:
             mock_query.return_value = [
                 (key, "2025-08-15T12:00:00", 3600),  # ISO format
                 (key + "2", current_time, 1),  # Integer timestamp (expired)
             ]
-            
+
             # Should handle different datetime formats in cleanup
             cache_engine._cleanup_expired_entries()
 
@@ -150,14 +156,14 @@ class TestDatetimeCleanupOperations:
         """Test cleanup operations with datetime objects."""
         key = cache_engine.generate_cache_key("GET", "http://example.com/api")
         cache_engine.set(key, sample_response)
-        
+
         # Mock database to return datetime object
         dt_obj = datetime.now()
-        with patch.object(cache_engine.db_manager, 'execute_query') as mock_query:
+        with patch.object(cache_engine.db_manager, "execute_query") as mock_query:
             mock_query.return_value = [
                 (key, dt_obj, 3600),  # datetime object
             ]
-            
+
             # Should handle datetime object in cleanup
             cache_engine._cleanup_expired_entries()
 
@@ -165,13 +171,13 @@ class TestDatetimeCleanupOperations:
         """Test exception handling when datetime parsing fails during cleanup."""
         key = cache_engine.generate_cache_key("GET", "http://example.com/api")
         cache_engine.set(key, sample_response)
-        
+
         # Mock database to return unparseable datetime
-        with patch.object(cache_engine.db_manager, 'execute_query') as mock_query:
+        with patch.object(cache_engine.db_manager, "execute_query") as mock_query:
             mock_query.return_value = [
                 (key, "invalid-datetime-format", 3600),
             ]
-            
+
             # Should handle unparseable datetime in cleanup
             # This should fall back to fromisoformat and then handle the exception
             with pytest.raises(ValueError):
@@ -181,15 +187,15 @@ class TestDatetimeCleanupOperations:
         """Test cleanup with standard datetime string format."""
         key = cache_engine.generate_cache_key("GET", "http://example.com/api")
         cache_engine.set(key, sample_response)
-        
+
         # Mock database to return standard datetime string
-        with patch.object(cache_engine.db_manager, 'execute_query') as mock_query:
+        with patch.object(cache_engine.db_manager, "execute_query") as mock_query:
             # Use a time in the past to ensure cleanup occurs
             past_time = "2020-01-01 12:00:00"
             mock_query.return_value = [
                 (key, past_time, 3600),  # Standard format, expired
             ]
-            
+
             # Should handle standard datetime format and clean up expired entry
             cache_engine._cleanup_expired_entries()
 
@@ -198,18 +204,18 @@ class TestDatetimeCleanupOperations:
         key1 = cache_engine.generate_cache_key("GET", "http://example.com/api/1")
         key2 = cache_engine.generate_cache_key("GET", "http://example.com/api/2")
         key3 = cache_engine.generate_cache_key("GET", "http://example.com/api/3")
-        
+
         cache_engine.set(key1, sample_response)
         cache_engine.set(key2, sample_response)
         cache_engine.set(key3, sample_response)
-        
+
         # Mock database to return mixed datetime formats
-        with patch.object(cache_engine.db_manager, 'execute_query') as mock_query:
+        with patch.object(cache_engine.db_manager, "execute_query") as mock_query:
             mock_query.return_value = [
                 (key1, "2020-01-01 12:00:00", 3600),  # Standard format, expired
-                (key2, "2020-01-01T12:00:00", 3600),   # ISO format, expired
-                (key3, int(time.time()) - 7200, 3600), # Integer timestamp, expired
+                (key2, "2020-01-01T12:00:00", 3600),  # ISO format, expired
+                (key3, int(time.time()) - 7200, 3600),  # Integer timestamp, expired
             ]
-            
+
             # Should handle all datetime formats and clean up all expired entries
             cache_engine._cleanup_expired_entries()

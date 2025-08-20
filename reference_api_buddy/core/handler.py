@@ -165,7 +165,6 @@ class RequestProcessingMixin:
             # Parse the request URL to handle both path-based and full URL requests
             parsed_url = urlparse(self.path)
             request_netloc = parsed_url.netloc
-            request_path = parsed_url.path or "/"
 
             for domain_key, mapping in domain_mappings.items():
                 # Match by netloc (for full URLs like http://example.com/path)

@@ -23,11 +23,20 @@ class MockProxy:
 
     def __init__(self, config=None, security_manager=None):
         class MockLogger:
-            def debug(self, msg): pass
-            def info(self, msg): pass
-            def warning(self, msg): pass
-            def error(self, msg): pass
-            def critical(self, msg): pass
+            def debug(self, msg):
+                pass
+
+            def info(self, msg):
+                pass
+
+            def warning(self, msg):
+                pass
+
+            def error(self, msg):
+                pass
+
+            def critical(self, msg):
+                pass
 
         self.logger = MockLogger()
         self.config = config or {}
@@ -42,15 +51,15 @@ class TestSecurityValidation:
         security_manager = Mock()
         security_manager.extract_secure_key.return_value = ("invalid_key", None)
         security_manager.validate_request.return_value = False
-        
+
         proxy = MockProxy(
             config={
                 "security": {"require_secure_key": True},
-                "domain_mappings": {"testdomain": {"upstream": "http://example.com"}}
+                "domain_mappings": {"testdomain": {"upstream": "http://example.com"}},
             },
-            security_manager=security_manager
+            security_manager=security_manager,
         )
-        
+
         class TestHandler(RequestProcessingMixin):
             def __init__(self):
                 self.proxy = proxy
@@ -58,15 +67,15 @@ class TestSecurityValidation:
                 self.headers = {}
                 self.wfile = io.BytesIO()
                 self._response_status = None
-                
+
             def send_response(self, status):
                 self._response_status = status
-                
+
             def end_headers(self):
                 pass
-        
+
         handler = TestHandler()
-        
+
         # This should trigger security validation failure
         handler._handle_request("GET")
         assert handler._response_status == 401

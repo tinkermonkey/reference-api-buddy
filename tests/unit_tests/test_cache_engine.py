@@ -110,7 +110,7 @@ def test_url_normalization_edge_cases(cache_engine):
     url_with_only_slash = "http://example.com//"
     key = cache_engine.generate_cache_key("GET", url_with_only_slash)
     assert isinstance(key, str)
-    
+
     # Test URL with no path that needs normalization
     url_no_path = "http://example.com"
     normalized_url = cache_engine._normalize_url(url_no_path)
@@ -123,7 +123,7 @@ def test_empty_normalized_path_handling(cache_engine):
     test_url = "http://example.com/"
     key = cache_engine.generate_cache_key("GET", test_url)
     assert isinstance(key, str)
-    
+
     # Verify the URL normalization handles the empty path correctly
     normalized = cache_engine._normalize_url(test_url)
     assert "/" in normalized
@@ -133,10 +133,8 @@ def test_request_body_normalization_exception_handling(cache_engine):
     """Test exception handling in request body normalization."""
     # Test with malformed JSON that will cause an exception
     malformed_json = b'{"unclosed": "json"'  # Missing closing brace
-    
+
     # This should fall back to hash when JSON parsing fails
-    key = cache_engine.generate_cache_key(
-        "POST", "http://example.com/api", malformed_json, "application/json"
-    )
+    key = cache_engine.generate_cache_key("POST", "http://example.com/api", malformed_json, "application/json")
     assert isinstance(key, str)
     assert len(key) == 64  # SHA256 hex length

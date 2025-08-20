@@ -20,7 +20,7 @@ class PerformanceTestSuite:
         """Set up a test proxy instance."""
         # Create a unique cache database for each test
         self.cache_db_path = tmp_path / "perf_test_cache.db"
-        
+
         self.config = {
             "logging": {
                 "level": "INFO",  # Reduce logging verbosity for performance tests
@@ -33,25 +33,22 @@ class PerformanceTestSuite:
             },
             "domain_mappings": {
                 "jsonplaceholder": {"upstream": "https://jsonplaceholder.typicode.com"},
-                "httpbin": {"upstream": "https://httpbin.org"}
+                "httpbin": {"upstream": "https://httpbin.org"},
             },
-            "cache": {
-                "database_path": str(self.cache_db_path),
-                "max_cache_response_size": 10485760
-            },
+            "cache": {"database_path": str(self.cache_db_path), "max_cache_response_size": 10485760},
             "security": {},
             "throttling": {},
             "callbacks": {},
         }
-        
+
         self.proxy = CachingProxy(self.config)
         self.proxy.start(blocking=False)
-        
+
         # Wait for server to start
         time.sleep(0.5)
-        
+
         yield
-        
+
         # Cleanup
         self.proxy.stop()
         if self.cache_db_path.exists():
@@ -60,7 +57,7 @@ class PerformanceTestSuite:
     def make_request(self, url: str, timeout: int = 10) -> Tuple[bool, float, int, str]:
         """
         Make a request and return success, duration, status_code, and error.
-        
+
         Returns:
             Tuple of (success, duration_seconds, status_code, error_message)
         """
@@ -77,7 +74,7 @@ class PerformanceTestSuite:
         """Analyze response time statistics."""
         if not durations:
             return {}
-        
+
         return {
             "min": min(durations),
             "max": max(durations),
@@ -94,16 +91,16 @@ class TestBasicPerformance(PerformanceTestSuite):
     def test_sequential_requests_performance(self):
         """Test sequential request performance with cache hits and misses."""
         base_url = "http://127.0.0.1:18081"
-        
+
         # Test different endpoints
         urls = [
             f"{base_url}/jsonplaceholder/posts/1",
-            f"{base_url}/jsonplaceholder/posts/2", 
+            f"{base_url}/jsonplaceholder/posts/2",
             f"{base_url}/jsonplaceholder/posts/3",
             f"{base_url}/jsonplaceholder/users/1",
             f"{base_url}/jsonplaceholder/users/2",
         ]
-        
+
         # First pass - cache misses
         cache_miss_times = []
         for url in urls:
@@ -111,7 +108,7 @@ class TestBasicPerformance(PerformanceTestSuite):
             assert success, f"Request failed: {error}"
             assert status_code == 200, f"Unexpected status code: {status_code}"
             cache_miss_times.append(duration)
-        
+
         # Second pass - cache hits
         cache_hit_times = []
         for url in urls:
@@ -119,15 +116,15 @@ class TestBasicPerformance(PerformanceTestSuite):
             assert success, f"Request failed: {error}"
             assert status_code == 200, f"Unexpected status code: {status_code}"
             cache_hit_times.append(duration)
-        
+
         # Analyze performance
         miss_stats = self.analyze_response_times(cache_miss_times)
         hit_stats = self.analyze_response_times(cache_hit_times)
-        
+
         # Cache hits should be significantly faster
         assert hit_stats["mean"] < miss_stats["mean"], "Cache hits should be faster than cache misses"
         assert hit_stats["max"] < miss_stats["min"], "Even slowest cache hit should be faster than fastest cache miss"
-        
+
         # Performance assertions
         assert hit_stats["mean"] < 0.025, f"Cache hit average response time too slow: {hit_stats['mean']:.3f}s"
         assert miss_stats["mean"] < 5.0, f"Cache miss average response time too slow: {miss_stats['mean']:.3f}s"
@@ -136,16 +133,16 @@ class TestBasicPerformance(PerformanceTestSuite):
         """Test performance of repeated requests to the same endpoint."""
         url = "http://127.0.0.1:18081/jsonplaceholder/posts/1"
         num_requests = 50
-        
+
         durations = []
         for i in range(num_requests):
             success, duration, status_code, error = self.make_request(url)
             assert success, f"Request {i+1} failed: {error}"
             assert status_code == 200, f"Request {i+1} unexpected status: {status_code}"
             durations.append(duration)
-        
+
         stats = self.analyze_response_times(durations)
-        
+
         # Performance assertions
         assert stats["mean"] < 0.025, f"Average response time too slow: {stats['mean']:.3f}s"
         assert stats["p95"] < 0.05, f"95th percentile too slow: {stats['p95']:.3f}s"
@@ -160,27 +157,29 @@ class TestConcurrentPerformance(PerformanceTestSuite):
         url = "http://127.0.0.1:18081/jsonplaceholder/posts/1"
         num_workers = 10
         num_requests = 50
-        
+
         def make_concurrent_request(request_id: int) -> Tuple[int, bool, float, int, str]:
             success, duration, status_code, error = self.make_request(url)
             return request_id, success, duration, status_code, error
-        
+
         start_time = time.time()
         with concurrent.futures.ThreadPoolExecutor(max_workers=num_workers) as executor:
             futures = [executor.submit(make_concurrent_request, i) for i in range(num_requests)]
             results = [future.result() for future in concurrent.futures.as_completed(futures)]
         total_time = time.time() - start_time
-        
+
         # Analyze results
         successful_requests = [r for r in results if r[1]]  # r[1] is success flag
         failed_requests = [r for r in results if not r[1]]
-        
-        assert len(successful_requests) == num_requests, f"Expected {num_requests} successful requests, got {len(successful_requests)}"
+
+        assert (
+            len(successful_requests) == num_requests
+        ), f"Expected {num_requests} successful requests, got {len(successful_requests)}"
         assert len(failed_requests) == 0, f"Had {len(failed_requests)} failed requests"
-        
+
         durations = [r[2] for r in successful_requests]  # r[2] is duration
         stats = self.analyze_response_times(durations)
-        
+
         # Performance assertions
         throughput = num_requests / total_time
         assert throughput > 20, f"Throughput too low: {throughput:.1f} req/s"
@@ -190,34 +189,34 @@ class TestConcurrentPerformance(PerformanceTestSuite):
     def test_concurrent_requests_different_endpoints(self):
         """Test concurrent requests to different endpoints."""
         base_url = "http://127.0.0.1:18081"
-        urls = [
-            f"{base_url}/jsonplaceholder/posts/{i}" for i in range(1, 21)
-        ] + [
+        urls = [f"{base_url}/jsonplaceholder/posts/{i}" for i in range(1, 21)] + [
             f"{base_url}/jsonplaceholder/users/{i}" for i in range(1, 11)
         ]
-        
+
         num_workers = 15
-        
+
         def make_concurrent_request(url: str) -> Tuple[str, bool, float, int, str]:
             success, duration, status_code, error = self.make_request(url)
             return url, success, duration, status_code, error
-        
+
         start_time = time.time()
         with concurrent.futures.ThreadPoolExecutor(max_workers=num_workers) as executor:
             futures = [executor.submit(make_concurrent_request, url) for url in urls]
             results = [future.result() for future in concurrent.futures.as_completed(futures)]
         total_time = time.time() - start_time
-        
+
         # Analyze results
         successful_requests = [r for r in results if r[1]]
         failed_requests = [r for r in results if not r[1]]
-        
-        assert len(successful_requests) == len(urls), f"Expected {len(urls)} successful requests, got {len(successful_requests)}"
+
+        assert len(successful_requests) == len(
+            urls
+        ), f"Expected {len(urls)} successful requests, got {len(successful_requests)}"
         assert len(failed_requests) == 0, f"Had {len(failed_requests)} failed requests"
-        
+
         durations = [r[2] for r in successful_requests]
         stats = self.analyze_response_times(durations)
-        
+
         # Performance assertions
         throughput = len(urls) / total_time
         assert throughput > 5, f"Throughput too low: {throughput:.1f} req/s"
@@ -231,22 +230,22 @@ class TestLoadPerformance(PerformanceTestSuite):
         """Test high volume of sequential requests."""
         url = "http://127.0.0.1:18081/jsonplaceholder/posts/1"
         num_requests = 100
-        
+
         durations = []
         errors = []
-        
+
         for i in range(num_requests):
             success, duration, status_code, error = self.make_request(url)
             durations.append(duration)
-            
+
             if not success or status_code != 200:
                 errors.append(f"Request {i+1}: success={success}, status={status_code}, error={error}")
-        
+
         # Allow some tolerance for errors under load
         error_rate = len(errors) / num_requests
         assert error_rate < 0.05, f"Error rate too high: {error_rate:.2%}. Errors: {errors[:5]}"
-        
-        successful_durations = durations[:len(durations) - len(errors)]
+
+        successful_durations = durations[: len(durations) - len(errors)]
         if successful_durations:
             stats = self.analyze_response_times(successful_durations)
             assert stats["mean"] < 0.2, f"Average response time too slow: {stats['mean']:.3f}s"
@@ -254,14 +253,12 @@ class TestLoadPerformance(PerformanceTestSuite):
     def test_sustained_concurrent_load(self):
         """Test sustained concurrent load over time."""
         base_url = "http://127.0.0.1:18081"
-        urls = [
-            f"{base_url}/jsonplaceholder/posts/{i}" for i in range(1, 11)
-        ]
-        
+        urls = [f"{base_url}/jsonplaceholder/posts/{i}" for i in range(1, 11)]
+
         num_workers = 20
         requests_per_worker = 10
         total_requests = num_workers * requests_per_worker
-        
+
         def worker_requests(worker_id: int) -> List[Tuple[int, bool, float, int, str]]:
             """Each worker makes multiple requests."""
             results = []
@@ -270,7 +267,7 @@ class TestLoadPerformance(PerformanceTestSuite):
                 success, duration, status_code, error = self.make_request(url)
                 results.append((worker_id, success, duration, status_code, error))
             return results
-        
+
         start_time = time.time()
         with concurrent.futures.ThreadPoolExecutor(max_workers=num_workers) as executor:
             futures = [executor.submit(worker_requests, i) for i in range(num_workers)]
@@ -278,18 +275,18 @@ class TestLoadPerformance(PerformanceTestSuite):
             for future in concurrent.futures.as_completed(futures):
                 all_results.extend(future.result())
         total_time = time.time() - start_time
-        
+
         # Analyze results
         successful_requests = [r for r in all_results if r[1]]  # r[1] is success flag
         failed_requests = [r for r in all_results if not r[1]]
-        
+
         success_rate = len(successful_requests) / total_requests
         assert success_rate > 0.90, f"Success rate too low: {success_rate:.2%}"
-        
+
         if successful_requests:
             durations = [r[2] for r in successful_requests]  # r[2] is duration
             stats = self.analyze_response_times(durations)
-            
+
             # Performance assertions for sustained load
             throughput = len(successful_requests) / total_time
             assert throughput > 15, f"Sustained throughput too low: {throughput:.1f} req/s"
@@ -303,27 +300,27 @@ class TestCachePerformance(PerformanceTestSuite):
     def test_cache_hit_vs_miss_performance(self):
         """Test and compare cache hit vs miss performance."""
         base_url = "http://127.0.0.1:18081"
-        
+
         # URLs for cache misses (first time requests)
         miss_urls = [f"{base_url}/jsonplaceholder/posts/{i}" for i in range(1, 11)]
-        
+
         # Measure cache miss performance
         miss_times = []
         for url in miss_urls:
             success, duration, status_code, error = self.make_request(url)
             assert success and status_code == 200
             miss_times.append(duration)
-        
+
         # Measure cache hit performance (same URLs again)
         hit_times = []
         for url in miss_urls:
             success, duration, status_code, error = self.make_request(url)
             assert success and status_code == 200
             hit_times.append(duration)
-        
+
         miss_stats = self.analyze_response_times(miss_times)
         hit_stats = self.analyze_response_times(hit_times)
-        
+
         # Cache performance assertions
         speedup_factor = miss_stats["mean"] / hit_stats["mean"]
         assert speedup_factor > 3, f"Cache speedup insufficient: {speedup_factor:.1f}x"
@@ -333,7 +330,7 @@ class TestCachePerformance(PerformanceTestSuite):
     def test_mixed_cache_hit_miss_performance(self):
         """Test performance with mixed cache hits and misses."""
         base_url = "http://127.0.0.1:18081"
-        
+
         # Create a pattern of URLs with some repeats (cache hits) and some new (cache misses)
         urls = []
         for i in range(1, 6):  # First set - will be cache misses
@@ -342,15 +339,15 @@ class TestCachePerformance(PerformanceTestSuite):
             urls.append(f"{base_url}/jsonplaceholder/posts/{i}")
         for i in range(6, 11):  # New set - will be cache misses
             urls.append(f"{base_url}/jsonplaceholder/posts/{i}")
-        
+
         durations = []
         for url in urls:
             success, duration, status_code, error = self.make_request(url)
             assert success and status_code == 200
             durations.append(duration)
-        
+
         stats = self.analyze_response_times(durations)
-        
+
         # Mixed workload should still perform well
         assert stats["mean"] < 0.5, f"Mixed workload average too slow: {stats['mean']:.3f}s"
         assert stats["p95"] < 1.0, f"Mixed workload p95 too slow: {stats['p95']:.3f}s"

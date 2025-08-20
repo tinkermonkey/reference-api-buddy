@@ -1,17 +1,18 @@
 """Integration tests for CLI functionality."""
 
 import json
-import subprocess
-import tempfile
-import time
-import signal
 import os
-from pathlib import Path
-import pytest
+import signal
+import subprocess
 
 # Add the project root to the path to import modules
 import sys
-import os
+import tempfile
+import time
+from pathlib import Path
+
+import pytest
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 
@@ -24,9 +25,9 @@ class TestCLIIntegration:
             [sys.executable, "-m", "reference_api_buddy.cli", "--help"],
             capture_output=True,
             text=True,
-            cwd="/Users/austinsand/workspace/reference-api-buddy"
+            cwd="/Users/austinsand/workspace/reference-api-buddy",
         )
-        
+
         assert result.returncode == 0
         assert "Reference API Buddy - HTTP Caching Proxy" in result.stdout
         assert "Examples:" in result.stdout
@@ -40,9 +41,9 @@ class TestCLIIntegration:
             [sys.executable, "-m", "reference_api_buddy.cli", "--version"],
             capture_output=True,
             text=True,
-            cwd="/Users/austinsand/workspace/reference-api-buddy"
+            cwd="/Users/austinsand/workspace/reference-api-buddy",
         )
-        
+
         assert result.returncode == 0
         assert "0.1.0" in result.stdout
 
@@ -53,25 +54,25 @@ class TestCLIIntegration:
             original_cwd = os.getcwd()
             try:
                 os.chdir(temp_dir)
-                
+
                 result = subprocess.run(
                     [sys.executable, "-m", "reference_api_buddy.cli", "--generate-config"],
                     capture_output=True,
                     text=True,
-                    env={**os.environ, "PYTHONPATH": "/Users/austinsand/workspace/reference-api-buddy"}
+                    env={**os.environ, "PYTHONPATH": "/Users/austinsand/workspace/reference-api-buddy"},
                 )
-                
+
                 assert result.returncode == 0
                 assert "Generated default configuration:" in result.stdout
-                
+
                 # Verify config file was created in current directory (temp_dir)
                 config_file = Path("api_buddy_config.json")
                 assert config_file.exists()
-                
+
                 # Verify config file content
                 with open(config_file, "r") as f:
                     config = json.load(f)
-                
+
                 assert "server" in config
                 assert "security" in config
                 assert "cache" in config
@@ -79,7 +80,7 @@ class TestCLIIntegration:
                 assert "domain_mappings" in config
                 assert config["server"]["host"] == "127.0.0.1"
                 assert config["server"]["port"] == 8080
-                
+
             finally:
                 os.chdir(original_cwd)
 
@@ -90,20 +91,20 @@ class TestCLIIntegration:
             capture_output=True,
             text=True,
             cwd="/Users/austinsand/workspace/reference-api-buddy",
-            env={**os.environ, "PYTHONPATH": "/Users/austinsand/workspace/reference-api-buddy"}
+            env={**os.environ, "PYTHONPATH": "/Users/austinsand/workspace/reference-api-buddy"},
         )
-        
+
         assert result.returncode == 0
         assert "Generated security key:" in result.stdout
-        
+
         # Extract the key from the output
-        output_lines = result.stdout.strip().split('\n')
+        output_lines = result.stdout.strip().split("\n")
         key_line = [line for line in output_lines if "Generated security key:" in line][0]
         key = key_line.split("Generated security key: ")[1]
-        
+
         # Verify key format (should be a reasonable length string)
         assert len(key) > 10
-        assert key.isalnum() or '-' in key or '_' in key
+        assert key.isalnum() or "-" in key or "_" in key
 
     def test_cli_with_config_file_integration(self):
         """Test CLI with custom configuration file integration."""
@@ -112,13 +113,13 @@ class TestCLIIntegration:
             "security": {"require_secure_key": False},
             "cache": {"database_path": "test_data/test_cache.db", "default_ttl_days": 3},
             "throttling": {"default_requests_per_hour": 500},
-            "domain_mappings": {"test": {"upstream": "https://api.test.com"}}
+            "domain_mappings": {"test": {"upstream": "https://api.test.com"}},
         }
-        
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
             json.dump(config_data, f)
             config_path = f.name
-        
+
         try:
             # Test that CLI accepts the config file without error
             # We'll use a timeout to prevent the server from running indefinitely
@@ -128,12 +129,12 @@ class TestCLIIntegration:
                 stderr=subprocess.PIPE,
                 text=True,
                 cwd="/Users/austinsand/workspace/reference-api-buddy",
-                env={**os.environ, "PYTHONPATH": "/Users/austinsand/workspace/reference-api-buddy"}
+                env={**os.environ, "PYTHONPATH": "/Users/austinsand/workspace/reference-api-buddy"},
             )
-            
+
             # Let it start up for a moment
             time.sleep(1.0)
-            
+
             # Terminate the process
             process.terminate()
             try:
@@ -141,11 +142,14 @@ class TestCLIIntegration:
             except subprocess.TimeoutExpired:
                 process.kill()
                 stdout, stderr = process.communicate()
-            
+
             # Check that it started successfully (no immediate errors)
             # The process should have printed startup information
-            assert "Starting Reference API Buddy on 127.0.0.1:8081" in stdout or "Starting Reference API Buddy on 127.0.0.1:8081" in stderr
-            
+            assert (
+                "Starting Reference API Buddy on 127.0.0.1:8081" in stdout
+                or "Starting Reference API Buddy on 127.0.0.1:8081" in stderr
+            )
+
         finally:
             Path(config_path).unlink()
 
@@ -156,9 +160,9 @@ class TestCLIIntegration:
             [sys.executable, "-m", "reference_api_buddy.cli", "--port", "invalid"],
             capture_output=True,
             text=True,
-            cwd="/Users/austinsand/workspace/reference-api-buddy"
+            cwd="/Users/austinsand/workspace/reference-api-buddy",
         )
-        
+
         assert result.returncode == 2  # argparse error code
         assert "invalid int value" in result.stderr
 
@@ -168,9 +172,9 @@ class TestCLIIntegration:
             [sys.executable, "-m", "reference_api_buddy.cli", "--log-level", "INVALID"],
             capture_output=True,
             text=True,
-            cwd="/Users/austinsand/workspace/reference-api-buddy"
+            cwd="/Users/austinsand/workspace/reference-api-buddy",
         )
-        
+
         assert result.returncode == 2  # argparse error code
         assert "invalid choice" in result.stderr
 
@@ -181,30 +185,30 @@ class TestCLIIntegration:
             capture_output=True,
             text=True,
             cwd="/Users/austinsand/workspace/reference-api-buddy",
-            env={**os.environ, "PYTHONPATH": "/Users/austinsand/workspace/reference-api-buddy"}
+            env={**os.environ, "PYTHONPATH": "/Users/austinsand/workspace/reference-api-buddy"},
         )
-        
+
         assert result.returncode == 1
         assert "Configuration file not found" in result.stdout
 
     def test_cli_malformed_config_file_integration(self):
         """Test CLI with malformed configuration file integration."""
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
             f.write("{ invalid json content")
             config_path = f.name
-        
+
         try:
             result = subprocess.run(
                 [sys.executable, "-m", "reference_api_buddy.cli", "--config", config_path],
                 capture_output=True,
                 text=True,
                 cwd="/Users/austinsand/workspace/reference-api-buddy",
-                env={**os.environ, "PYTHONPATH": "/Users/austinsand/workspace/reference-api-buddy"}
+                env={**os.environ, "PYTHONPATH": "/Users/austinsand/workspace/reference-api-buddy"},
             )
-            
+
             assert result.returncode == 1
             assert "Invalid JSON in configuration file" in result.stdout
-            
+
         finally:
             Path(config_path).unlink()
 
@@ -217,12 +221,12 @@ class TestCLIIntegration:
             stderr=subprocess.PIPE,
             text=True,
             cwd="/Users/austinsand/workspace/reference-api-buddy",
-            env={**os.environ, "PYTHONPATH": "/Users/austinsand/workspace/reference-api-buddy"}
+            env={**os.environ, "PYTHONPATH": "/Users/austinsand/workspace/reference-api-buddy"},
         )
-        
+
         # Let it start up for a moment
         time.sleep(1.0)
-        
+
         # Terminate the process
         process.terminate()
         try:
@@ -230,6 +234,9 @@ class TestCLIIntegration:
         except subprocess.TimeoutExpired:
             process.kill()
             stdout, stderr = process.communicate()
-        
+
         # Check that it started with custom host and port
-        assert "Starting Reference API Buddy on 0.0.0.0:9090" in stdout or "Starting Reference API Buddy on 0.0.0.0:9090" in stderr
+        assert (
+            "Starting Reference API Buddy on 0.0.0.0:9090" in stdout
+            or "Starting Reference API Buddy on 0.0.0.0:9090" in stderr
+        )
