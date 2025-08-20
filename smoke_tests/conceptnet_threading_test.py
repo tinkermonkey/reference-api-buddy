@@ -8,7 +8,9 @@ import threading
 import time
 
 # Add the parent directory to sys.path to use local source code
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from pathlib import Path
+PROJECT_ROOT = Path(__file__).parent.parent.absolute()
+sys.path.insert(0, str(PROJECT_ROOT))
 
 import requests
 

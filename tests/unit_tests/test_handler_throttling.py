@@ -13,7 +13,10 @@ import time
 from unittest.mock import Mock, patch
 from urllib.parse import urlparse
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Add the project root to the path to import modules
+from pathlib import Path
+PROJECT_ROOT = Path(__file__).parent.parent.parent.absolute()
+sys.path.append(str(PROJECT_ROOT))
 
 import pytest
 

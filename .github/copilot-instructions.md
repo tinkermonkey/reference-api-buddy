@@ -51,10 +51,13 @@ A python module which provides an embeddable HTTP-to-HTTPS caching proxy that of
 - **Virtual Environment**: Use the `.venv` virtual environment when executing python commands, and activate it with `source .venv/bin/activate` before running the server or tests.
 
 ### Testing
+
 - Use `pytest` for running tests.
 - To avoid having to set `PYTHON_PATH` for each test run, update the system path in the test files:
+
 ```python
 import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from pathlib import Path
+PROJECT_ROOT = Path(__file__).parent.parent.absolute()
+sys.path.insert(0, str(PROJECT_ROOT))
 ```

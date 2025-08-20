@@ -12,7 +12,9 @@ from unittest.mock import Mock, mock_open, patch
 
 import pytest
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+# Get the project root directory dynamically
+PROJECT_ROOT = Path(__file__).parent.parent.parent.absolute()
+sys.path.append(str(PROJECT_ROOT))
 
 from reference_api_buddy.cli import create_default_config, load_config, main
 
