@@ -6,10 +6,11 @@ import sys
 import tempfile
 import threading
 from datetime import datetime
-from unittest.mock import MagicMock, Mock, patch
 
 # Add the project root to the path to import modules
 from pathlib import Path
+from unittest.mock import MagicMock, Mock, patch
+
 PROJECT_ROOT = Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(PROJECT_ROOT))
 
@@ -67,7 +68,8 @@ class TestDatabaseInitializationFailures:
                 # Give Windows time to release file locks
                 import platform
                 import time
-                if platform.system() == 'Windows':
+
+                if platform.system() == "Windows":
                     time.sleep(0.1)
             finally:
                 try:
@@ -87,7 +89,8 @@ class TestDatabaseInitializationFailures:
                 # Give Windows time to release file locks
                 import platform
                 import time
-                if platform.system() == 'Windows':
+
+                if platform.system() == "Windows":
                     time.sleep(0.1)
             finally:
                 try:
@@ -371,7 +374,8 @@ class TestDataMigrationEdgeCases:
                 # Give Windows time to release file locks
                 import platform
                 import time
-                if platform.system() == 'Windows':
+
+                if platform.system() == "Windows":
                     time.sleep(0.1)
             finally:
                 try:

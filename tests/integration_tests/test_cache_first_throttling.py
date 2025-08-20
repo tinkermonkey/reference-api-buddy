@@ -27,6 +27,7 @@ class TestCacheFirstThrottling:
         with tempfile.TemporaryDirectory() as temp_dir:
             # Use pathlib for better Windows compatibility
             from pathlib import Path
+
             cache_db_path = str(Path(temp_dir) / "test_cache.db")
 
             # Very aggressive throttling config (1 request per hour)
@@ -143,6 +144,7 @@ class TestCacheFirstThrottling:
         with tempfile.TemporaryDirectory() as temp_dir:
             # Use pathlib for better Windows compatibility
             from pathlib import Path
+
             cache_db_path = str(Path(temp_dir) / "test_cache.db")
 
             config = {

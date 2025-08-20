@@ -21,12 +21,12 @@ sys.path.append(str(PROJECT_ROOT))
 def run_cli_process_with_retry(args, max_retries=3, startup_timeout=5.0):
     """Run CLI process with retry logic for CI reliability."""
     import platform
-    
+
     # Use longer timeout for macOS in CI
-    is_ci = os.environ.get('CI') == 'true' or os.environ.get('GITHUB_ACTIONS') == 'true'
-    if is_ci and platform.system() == 'Darwin':
+    is_ci = os.environ.get("CI") == "true" or os.environ.get("GITHUB_ACTIONS") == "true"
+    if is_ci and platform.system() == "Darwin":
         startup_timeout = 10.0  # Even longer timeout for macOS in CI
-    
+
     for attempt in range(max_retries):
         try:
             # For CI environments, use in-memory database and specific config
@@ -34,7 +34,7 @@ def run_cli_process_with_retry(args, max_retries=3, startup_timeout=5.0):
             if is_ci:
                 env["API_BUDDY_DB_PATH"] = ":memory:"
                 env["API_BUDDY_LOG_LEVEL"] = "DEBUG"
-            
+
             process = subprocess.Popen(
                 args,
                 stdout=subprocess.PIPE,
@@ -42,7 +42,7 @@ def run_cli_process_with_retry(args, max_retries=3, startup_timeout=5.0):
                 text=True,
                 cwd=str(PROJECT_ROOT),
                 env=env,
-                preexec_fn=None if platform.system() == 'Windows' else os.setsid
+                preexec_fn=None if platform.system() == "Windows" else os.setsid,
             )
 
             # Let it start up gradually, checking periodically
@@ -51,7 +51,7 @@ def run_cli_process_with_retry(args, max_retries=3, startup_timeout=5.0):
             while total_waited < startup_timeout:
                 time.sleep(check_interval)
                 total_waited += check_interval
-                
+
                 # Check if process is still running
                 if process.poll() is not None:
                     # Process has already terminated, get output
@@ -59,18 +59,18 @@ def run_cli_process_with_retry(args, max_retries=3, startup_timeout=5.0):
                     return process, stdout, stderr
 
             # Terminate the process gracefully
-            if platform.system() != 'Windows' and hasattr(os, 'killpg'):
+            if platform.system() != "Windows" and hasattr(os, "killpg"):
                 try:
                     os.killpg(os.getpgid(process.pid), signal.SIGTERM)
                 except (OSError, ProcessLookupError):
                     process.terminate()
             else:
                 process.terminate()
-                
+
             try:
                 stdout, stderr = process.communicate(timeout=15)
             except subprocess.TimeoutExpired:
-                if platform.system() != 'Windows' and hasattr(os, 'killpg'):
+                if platform.system() != "Windows" and hasattr(os, "killpg"):
                     try:
                         os.killpg(os.getpgid(process.pid), signal.SIGKILL)
                     except (OSError, ProcessLookupError):
@@ -180,17 +180,17 @@ class TestCLIIntegration:
     def test_cli_with_config_file_integration(self):
         """Test CLI with custom configuration file integration."""
         import platform
-        
+
         # Use in-memory database for CI environments to avoid file permission issues
-        is_ci = os.environ.get('CI') == 'true' or os.environ.get('GITHUB_ACTIONS') == 'true'
-        
+        is_ci = os.environ.get("CI") == "true" or os.environ.get("GITHUB_ACTIONS") == "true"
+
         if is_ci:
             database_path = ":memory:"
         else:
             # Use test_data directory for database
             test_db_path = PROJECT_ROOT / "test_data" / "test_cli_integration.db"
             database_path = str(test_db_path)
-            
+
         config_data = {
             "server": {"host": "127.0.0.1", "port": 8081},
             "security": {"require_secure_key": False},
@@ -235,14 +235,16 @@ class TestCLIIntegration:
             # Check that it started successfully (no immediate errors)
             # The process should have printed startup information
             # On macOS CI, we might need to be more lenient
-            if is_ci and platform.system() == 'Darwin' and process.returncode == -15:
+            if is_ci and platform.system() == "Darwin" and process.returncode == -15:
                 # On macOS CI, SIGTERM might be expected, so check for any reasonable output
                 # or just verify the process didn't crash with an error code
-                assert process.returncode == -15 or expected_message in combined_output, \
-                    f"Expected clean termination or startup message. Return code: {process.returncode}, Output: {combined_output}"
+                assert (
+                    process.returncode == -15 or expected_message in combined_output
+                ), f"Expected clean termination or startup message. Return code: {process.returncode}, Output: {combined_output}"
             else:
-                assert expected_message in combined_output, \
-                    f"Expected startup message not found. Combined output: {combined_output}"
+                assert (
+                    expected_message in combined_output
+                ), f"Expected startup message not found. Combined output: {combined_output}"
 
         finally:
             Path(config_path).unlink()
@@ -309,7 +311,7 @@ class TestCLIIntegration:
     def test_cli_custom_host_port_integration(self):
         """Test CLI with custom host and port integration."""
         import platform
-        
+
         # Test that CLI accepts custom host and port without immediate error
         process, stdout, stderr = run_cli_process_with_retry(
             [sys.executable, "-m", "reference_api_buddy.cli", "--host", "0.0.0.0", "--port", "9090"]
@@ -318,7 +320,7 @@ class TestCLIIntegration:
         # Combine stdout and stderr for checking
         combined_output = f"{stdout}\n{stderr}"
         expected_message = "Starting Reference API Buddy on 0.0.0.0:9090"
-        
+
         # Debug output for CI
         if expected_message not in combined_output:
             print(f"STDOUT: {stdout}")
@@ -330,11 +332,13 @@ class TestCLIIntegration:
 
         # Check that it started with custom host and port
         # On macOS CI, the process might be terminated before full output, so be more lenient
-        is_ci = os.environ.get('CI') == 'true' or os.environ.get('GITHUB_ACTIONS') == 'true'
-        if is_ci and platform.system() == 'Darwin' and process.returncode == -15:
+        is_ci = os.environ.get("CI") == "true" or os.environ.get("GITHUB_ACTIONS") == "true"
+        if is_ci and platform.system() == "Darwin" and process.returncode == -15:
             # For macOS CI with SIGTERM, check if we got any reasonable output or just verify clean termination
-            assert process.returncode == -15 or expected_message in combined_output, \
-                f"Expected clean termination or startup message. Return code: {process.returncode}, Output: {combined_output}"
+            assert (
+                process.returncode == -15 or expected_message in combined_output
+            ), f"Expected clean termination or startup message. Return code: {process.returncode}, Output: {combined_output}"
         else:
-            assert expected_message in combined_output, \
-                f"Expected startup message not found. Combined output: {combined_output}"
+            assert (
+                expected_message in combined_output
+            ), f"Expected startup message not found. Combined output: {combined_output}"

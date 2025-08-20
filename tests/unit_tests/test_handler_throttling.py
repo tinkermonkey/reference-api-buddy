@@ -10,11 +10,12 @@ import io
 import os
 import sys
 import time
-from unittest.mock import Mock, patch
-from urllib.parse import urlparse
 
 # Add the project root to the path to import modules
 from pathlib import Path
+from unittest.mock import Mock, patch
+from urllib.parse import urlparse
+
 PROJECT_ROOT = Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(PROJECT_ROOT))
 

@@ -5,6 +5,7 @@ import sys
 
 # Add the project root to the path to import modules
 from pathlib import Path
+
 PROJECT_ROOT = Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(PROJECT_ROOT))
 
@@ -173,7 +174,7 @@ class TestLoggerFileOutput(unittest.TestCase):
             for handler in logger.parent.handlers:
                 handler.flush()
                 # Close file handlers to release locks on Windows
-                if hasattr(handler, 'close'):
+                if hasattr(handler, "close"):
                     handler.close()
 
             # Read the file and check content
@@ -186,7 +187,8 @@ class TestLoggerFileOutput(unittest.TestCase):
             # Clean up - with Windows file lock handling
             import platform
             import time
-            if platform.system() == 'Windows':
+
+            if platform.system() == "Windows":
                 time.sleep(0.1)
             try:
                 if os.path.exists(temp_path):

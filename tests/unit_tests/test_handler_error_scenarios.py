@@ -11,10 +11,11 @@ import io
 import os
 import sys
 import urllib.error
-from unittest.mock import Mock, patch
 
 # Add the project root to the path to import modules
 from pathlib import Path
+from unittest.mock import Mock, patch
+
 PROJECT_ROOT = Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(PROJECT_ROOT))
 
@@ -118,10 +119,7 @@ class TestInvalidPathHandling:
 class TestNetworkErrorHandling:
     """Test network error scenarios."""
 
-    @pytest.mark.skipif(
-        os.environ.get('CI') == 'true', 
-        reason="Skipping network error tests in CI environment"
-    )
+    @pytest.mark.skipif(os.environ.get("CI") == "true", reason="Skipping network error tests in CI environment")
     def test_network_connection_error(self):
         """Test network connection error handling."""
         proxy = MockProxy(config={"domain_mappings": {"testdomain": {"upstream": "http://example.com"}}})

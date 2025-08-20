@@ -12,10 +12,11 @@ import urllib.error
 import urllib.request
 from http.client import HTTPConnection
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from unittest.mock import MagicMock, Mock, patch
 
 # Add the project root to the path to import modules
 from pathlib import Path
+from unittest.mock import MagicMock, Mock, patch
+
 PROJECT_ROOT = Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(PROJECT_ROOT))
 
@@ -654,10 +655,7 @@ class TestHandlerEdgeCases:
         assert status == 404
         assert b"Domain not mapped" in response_data
 
-    @pytest.mark.skipif(
-        os.environ.get('CI') == 'true', 
-        reason="Skipping network timeout tests in CI environment"
-    )
+    @pytest.mark.skipif(os.environ.get("CI") == "true", reason="Skipping network timeout tests in CI environment")
     def test_timeout_scenarios(self, proxy_with_domain_mapping):
         """Test timeout handling."""
         handler = MockHandler(proxy=proxy_with_domain_mapping, path="/testdomain/test", headers={})

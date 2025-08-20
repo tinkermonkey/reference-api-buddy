@@ -9,10 +9,11 @@ This module tests security-related handler functionality including:
 import io
 import os
 import sys
-from unittest.mock import Mock
 
 # Add the project root to the path to import modules
 from pathlib import Path
+from unittest.mock import Mock
+
 PROJECT_ROOT = Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(PROJECT_ROOT))
 

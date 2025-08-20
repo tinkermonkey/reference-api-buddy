@@ -8,10 +8,11 @@ This module tests header handling functionality including:
 
 import os
 import sys
-from unittest.mock import Mock, patch
 
 # Add the project root to the path to import modules
 from pathlib import Path
+from unittest.mock import Mock, patch
+
 PROJECT_ROOT = Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(PROJECT_ROOT))
 

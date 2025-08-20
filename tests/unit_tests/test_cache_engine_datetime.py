@@ -9,10 +9,11 @@ import os
 import sys
 import time
 from datetime import datetime
-from unittest.mock import patch
 
 # Add the project root to the path to import modules
 from pathlib import Path
+from unittest.mock import patch
+
 PROJECT_ROOT = Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(PROJECT_ROOT))
 

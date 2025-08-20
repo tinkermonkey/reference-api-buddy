@@ -5,6 +5,7 @@ import sys
 
 # Add the project root to the path to import modules
 from pathlib import Path
+
 PROJECT_ROOT = Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(PROJECT_ROOT))
 
@@ -188,10 +189,7 @@ def test_cache_and_upstream(http_server):
     conn.close()
 
 
-@pytest.mark.skipif(
-    os.environ.get('CI') == 'true', 
-    reason="Skipping external network test in CI environment"
-)
+@pytest.mark.skipif(os.environ.get("CI") == "true", reason="Skipping external network test in CI environment")
 def test_configured_upstream_caching():
     """Test caching with a properly configured upstream"""
     # Get a unique port for this test to avoid conflicts
@@ -199,7 +197,7 @@ def test_configured_upstream_caching():
     sock.bind(("127.0.0.1", 0))
     test_port = sock.getsockname()[1]
     sock.close()
-    
+
     # Configure a domain mapping with an actual upstream (using httpbin.org for testing)
     domain_mappings = {"httpbin": {"upstream": "https://httpbin.org"}}
     proxy = DummyProxy(domain_mappings=domain_mappings)
@@ -211,6 +209,7 @@ def test_configured_upstream_caching():
     try:
         # Test external connectivity first
         import urllib.request
+
         try:
             with urllib.request.urlopen("https://httpbin.org/get", timeout=5) as response:
                 if response.getcode() != 200:
@@ -221,22 +220,22 @@ def test_configured_upstream_caching():
         # Retry logic for network issues
         max_retries = 3
         last_error = None
-        
+
         for attempt in range(max_retries):
             try:
                 conn = HTTPConnection("127.0.0.1", test_port)
                 conn.timeout = 35  # Longer timeout for the HTTP connection
-                
+
                 # First request: cache miss, should forward to httpbin and cache
                 conn.request("GET", "/httpbin/get", headers={"X-Secure-Key": "valid-key"})
                 resp = conn.getresponse()
-                
+
                 # If we get a 502, it might be a network issue, so retry
                 if resp.status == 502:
                     body = resp.read()
                     error_msg = body.decode()
                     last_error = f"502 error: {error_msg}"
-                    
+
                     # Only retry on network/timeout errors, not on configuration errors
                     if "timeout" in error_msg.lower() or "network" in error_msg.lower():
                         print(f"Attempt {attempt + 1} failed with network error: {error_msg}")
@@ -247,7 +246,7 @@ def test_configured_upstream_caching():
                     else:
                         # Configuration error, don't retry
                         assert False, f"Configuration error: {error_msg}"
-                
+
                 # Should get 200 from httpbin.org/get endpoint
                 assert resp.status == 200, f"Expected 200, got {resp.status}. Last error: {last_error}"
                 body = resp.read()
@@ -255,7 +254,7 @@ def test_configured_upstream_caching():
                 assert b'"url"' in body  # httpbin response contains URL field
                 conn.close()
                 break
-                
+
             except AssertionError:
                 raise  # Re-raise assertion errors immediately
             except Exception as e:

@@ -10,10 +10,11 @@ import os
 import sys
 import threading
 import time
-from unittest.mock import MagicMock, patch
 
 # Add the project root to the path to import modules
 from pathlib import Path
+from unittest.mock import MagicMock, patch
+
 PROJECT_ROOT = Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(PROJECT_ROOT))
 

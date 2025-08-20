@@ -4,6 +4,7 @@ import time
 
 # Add the parent directory to sys.path to use local source code
 from pathlib import Path
+
 PROJECT_ROOT = Path(__file__).parent.parent.absolute()
 sys.path.insert(0, str(PROJECT_ROOT))
 

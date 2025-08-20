@@ -14,8 +14,8 @@ from reference_api_buddy.core.proxy import CachingProxy
 
 
 @pytest.mark.skipif(
-    platform.system() == 'Windows' and os.environ.get('CI') == 'true',
-    reason="Skipping performance tests on Windows CI due to file locking issues"
+    platform.system() == "Windows" and os.environ.get("CI") == "true",
+    reason="Skipping performance tests on Windows CI due to file locking issues",
 )
 class PerformanceTestSuite:
     """Performance test suite for the caching proxy."""
@@ -59,9 +59,10 @@ class PerformanceTestSuite:
             self.proxy.stop()
             # Give Windows time to release file locks
             import platform
-            if platform.system() == 'Windows':
+
+            if platform.system() == "Windows":
                 time.sleep(0.2)
-            
+
             # Attempt to clean up database file
             if self.cache_db_path.exists():
                 try:

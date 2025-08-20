@@ -324,7 +324,7 @@ proxy.start(blocking=False)
 # First request: goes to upstream, gets cached
 response1 = requests.get("http://localhost:8080/api/data")  # ✓ 200 OK (upstream)
 
-# Second request: cache hit, bypasses throttling entirely  
+# Second request: cache hit, bypasses throttling entirely
 response2 = requests.get("http://localhost:8080/api/data")  # ✓ 200 OK (cache hit)
 
 # Third request: same endpoint, still cache hit
@@ -477,7 +477,7 @@ pip install -e ".[dev,docs]"
 - **Connection Pooling**: Database connections are pooled for efficiency
 - **Thread Safety**: All components are designed for concurrent access
 - **Memory Usage**: Configurable cache size limits and automatic cleanup
-- **Cache-First Throttling**: 
+- **Cache-First Throttling**:
   - **Cache hits bypass throttling entirely** for maximum performance
   - Throttling only applies to upstream requests (cache misses)
   - This ensures cached data is served instantly regardless of rate limits
@@ -492,7 +492,7 @@ By no means does this methodology need to be followed for contributions, this is
 
 As a side quest, this was also built using a little help from our robot friends, chiefly `Claude 4 Sonnet` via `Copilot`. The art of teaching the robots to take over from us is rapidly evolving, so this is offered as a snapshot and a data point.
 
-Aside from helping guide the robots, this methodology was found to be very valueable for the Human In The Loop by forcing the process to more of a "think, analyze, act" process that might resemble a Product Development Lifecycle rather than a perhaps more reductive "build, build, build, think, start over" cycle that might be more representive of a bare SDLC. 
+Aside from helping guide the robots, this methodology was found to be very valueable for the Human In The Loop by forcing the process to more of a "think, analyze, act" process that might resemble a Product Development Lifecycle rather than a perhaps more reductive "build, build, build, think, start over" cycle that might be more representive of a bare SDLC.
 
 `GPT 4.1` contributed some dreck, and some occasional value, and `Claude` and the Human In The Loop cleaned up what we could. If you find duplicate code in the same file, `GPT 4.1` can be thanked. Some of the methods attempted to prevent a large twine-ball of code from being built were:
 
