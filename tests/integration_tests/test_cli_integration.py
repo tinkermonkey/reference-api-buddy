@@ -18,6 +18,38 @@ PROJECT_ROOT = Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(PROJECT_ROOT))
 
 
+def run_cli_process_with_retry(args, max_retries=3):
+    """Run CLI process with retry logic for CI reliability."""
+    for attempt in range(max_retries):
+        try:
+            process = subprocess.Popen(
+                args,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                cwd=str(PROJECT_ROOT),
+                env={**os.environ, "PYTHONPATH": str(PROJECT_ROOT)},
+            )
+
+            # Let it start up for a moment (longer timeout for CI)
+            time.sleep(2.0)
+
+            # Terminate the process
+            process.terminate()
+            try:
+                stdout, stderr = process.communicate(timeout=10)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                stdout, stderr = process.communicate()
+
+            return process, stdout, stderr
+
+        except Exception as e:
+            if attempt == max_retries - 1:
+                raise
+            time.sleep(1.0)  # Wait before retry
+
+
 class TestCLIIntegration:
     """Integration tests for CLI module."""
 
@@ -110,10 +142,20 @@ class TestCLIIntegration:
 
     def test_cli_with_config_file_integration(self):
         """Test CLI with custom configuration file integration."""
+        # Use in-memory database for CI environments to avoid file permission issues
+        is_ci = os.environ.get('CI') == 'true' or os.environ.get('GITHUB_ACTIONS') == 'true'
+        
+        if is_ci:
+            database_path = ":memory:"
+        else:
+            # Use test_data directory for database
+            test_db_path = PROJECT_ROOT / "test_data" / "test_cli_integration.db"
+            database_path = str(test_db_path)
+            
         config_data = {
             "server": {"host": "127.0.0.1", "port": 8081},
             "security": {"require_secure_key": False},
-            "cache": {"database_path": "test_data/test_cache.db", "default_ttl_days": 3},
+            "cache": {"database_path": database_path, "default_ttl_days": 3},
             "throttling": {"default_requests_per_hour": 500},
             "domain_mappings": {"test": {"upstream": "https://api.test.com"}},
         }
@@ -123,34 +165,34 @@ class TestCLIIntegration:
             config_path = f.name
 
         try:
+            # Ensure test_data directory exists for non-CI environments
+            if not is_ci:
+                test_data_dir = PROJECT_ROOT / "test_data"
+                test_data_dir.mkdir(exist_ok=True)
+
             # Test that CLI accepts the config file without error
             # We'll use a timeout to prevent the server from running indefinitely
-            process = subprocess.Popen(
-                [sys.executable, "-m", "reference_api_buddy.cli", "--config", config_path],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True,
-                cwd=str(PROJECT_ROOT),
-                env={**os.environ, "PYTHONPATH": str(PROJECT_ROOT)},
+            process, stdout, stderr = run_cli_process_with_retry(
+                [sys.executable, "-m", "reference_api_buddy.cli", "--config", config_path]
             )
 
-            # Let it start up for a moment
-            time.sleep(1.0)
-
-            # Terminate the process
-            process.terminate()
-            try:
-                stdout, stderr = process.communicate(timeout=5)
-            except subprocess.TimeoutExpired:
-                process.kill()
-                stdout, stderr = process.communicate()
+            # Debug output for CI
+            if "Starting Reference API Buddy on 127.0.0.1:8081" not in stdout and "Starting Reference API Buddy on 127.0.0.1:8081" not in stderr:
+                print(f"STDOUT: {stdout}")
+                print(f"STDERR: {stderr}")
+                print(f"Return code: {process.returncode}")
+                print(f"Config path: {config_path}")
+                print(f"Working directory: {PROJECT_ROOT}")
+                print(f"Database path: {database_path}")
+                if not is_ci:
+                    print(f"Test DB exists: {Path(database_path).exists()}")
 
             # Check that it started successfully (no immediate errors)
             # The process should have printed startup information
             assert (
                 "Starting Reference API Buddy on 127.0.0.1:8081" in stdout
                 or "Starting Reference API Buddy on 127.0.0.1:8081" in stderr
-            )
+            ), f"Expected startup message not found. STDOUT: {stdout}, STDERR: {stderr}"
 
         finally:
             Path(config_path).unlink()
@@ -217,28 +259,19 @@ class TestCLIIntegration:
     def test_cli_custom_host_port_integration(self):
         """Test CLI with custom host and port integration."""
         # Test that CLI accepts custom host and port without immediate error
-        process = subprocess.Popen(
-            [sys.executable, "-m", "reference_api_buddy.cli", "--host", "0.0.0.0", "--port", "9090"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            cwd=str(PROJECT_ROOT),
-            env={**os.environ, "PYTHONPATH": str(PROJECT_ROOT)},
+        process, stdout, stderr = run_cli_process_with_retry(
+            [sys.executable, "-m", "reference_api_buddy.cli", "--host", "0.0.0.0", "--port", "9090"]
         )
 
-        # Let it start up for a moment
-        time.sleep(1.0)
-
-        # Terminate the process
-        process.terminate()
-        try:
-            stdout, stderr = process.communicate(timeout=5)
-        except subprocess.TimeoutExpired:
-            process.kill()
-            stdout, stderr = process.communicate()
+        # Debug output for CI
+        if "Starting Reference API Buddy on 0.0.0.0:9090" not in stdout and "Starting Reference API Buddy on 0.0.0.0:9090" not in stderr:
+            print(f"STDOUT: {stdout}")
+            print(f"STDERR: {stderr}")
+            print(f"Return code: {process.returncode}")
+            print(f"Working directory: {PROJECT_ROOT}")
 
         # Check that it started with custom host and port
         assert (
             "Starting Reference API Buddy on 0.0.0.0:9090" in stdout
             or "Starting Reference API Buddy on 0.0.0.0:9090" in stderr
-        )
+        ), f"Expected startup message not found. STDOUT: {stdout}, STDERR: {stderr}"
