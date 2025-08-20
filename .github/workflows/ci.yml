@@ -33,20 +33,20 @@ jobs:
 
     - name: Lint with flake8
       run: |
-        flake8 reference_api_buddy --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 reference_api_buddy --count --exit-zero --max-complexity=10 --max-line-length=120 --statistics
+        flake8 reference_api_buddy tests --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 reference_api_buddy tests --count --exit-zero --max-complexity=10 --max-line-length=120 --statistics
 
     - name: Check code formatting with black
       run: |
-        black --check reference_api_buddy
+        black --check reference_api_buddy tests
 
     - name: Check import sorting with isort
       run: |
-        isort --check-only reference_api_buddy
+        isort --check-only reference_api_buddy tests
 
     - name: Type check with mypy
       run: |
-        mypy reference_api_buddy
+        mypy reference_api_buddy tests
       continue-on-error: true  # Allow type checking to fail for now
 
     - name: Test with pytest

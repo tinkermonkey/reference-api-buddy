@@ -183,9 +183,10 @@ class CachingProxy:
         if self.running:
             raise RuntimeError("Server is already running")
 
+        host = self.config.get("server", {}).get("host", "127.0.0.1")
+        port = self.config.get("server", {}).get("port", 8080)
+
         if self.server is None:
-            host = self.config.get("server", {}).get("host", "127.0.0.1")
-            port = self.config.get("server", {}).get("port", 8080)
             self.server = ThreadedHTTPServer((host, port), ProxyHTTPRequestHandler, self)
         self.running = True
         self.start_time = time.time()

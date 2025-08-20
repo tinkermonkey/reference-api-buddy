@@ -416,6 +416,78 @@ curl -H "Authorization: Bearer upstream-token-789" \
      http://localhost:8080/proxy-secure-key-123/wikidata/w/api.php?action=query
 ```
 
+## Development Workflow
+
+### Pre-commit Hooks
+
+This project uses pre-commit hooks to automatically enforce code quality standards. The hooks run automatically on every commit to ensure consistent formatting and catch issues early.
+
+#### Setup
+
+Install the development dependencies and pre-commit hooks:
+
+```bash
+# Clone and setup the repository
+git clone https://github.com/tinkermonkey/reference-api-buddy.git
+cd reference-api-buddy
+python -m venv .venv
+source .venv/bin/activate
+
+# Install with development dependencies (includes pre-commit)
+pip install -e ".[dev]"
+
+# Install pre-commit hooks
+pre-commit install
+```
+
+Alternatively, use the Makefile shortcut:
+
+```bash
+make setup-dev  # Installs dependencies and sets up pre-commit hooks
+```
+
+#### What the Hooks Do
+
+The pre-commit hooks automatically:
+- **Format code** with Black (120-character line length)
+- **Sort imports** with isort (compatible with Black)
+- **Lint code** with flake8 for style and quality issues
+- **Type check** with mypy (excluding test files)
+- **Fix common issues** like trailing whitespace and file endings
+- **Validate files** like YAML, JSON, and TOML syntax
+
+#### Usage
+
+Hooks run automatically on commit:
+
+```bash
+git add .
+git commit -m "your changes"  # Hooks run automatically
+```
+
+You can also run hooks manually:
+
+```bash
+# Run all hooks on all files
+pre-commit run --all-files
+
+# Run specific hooks
+pre-commit run black      # Format code
+pre-commit run flake8     # Lint code
+pre-commit run mypy       # Type check
+
+# Format code manually (also available via hooks)
+make format              # Run black and isort
+make lint               # Run all linting tools
+```
+
+If hooks fail, they often auto-fix the issues. Simply re-stage the files and commit again:
+
+```bash
+git add .               # Re-stage the auto-fixed files
+git commit -m "message" # Commit again
+```
+
 ## Testing
 
 ```bash
