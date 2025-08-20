@@ -25,12 +25,19 @@ def load_config(config_path: Path) -> Dict[str, Any]:
 
 def create_default_config() -> Dict[str, Any]:
     """Create a default configuration."""
+    import os
+    
+    # Use environment variable for database path if set (for CI)
+    db_path = os.environ.get("API_BUDDY_DB_PATH", "api_buddy_cache.db")
+    log_level = os.environ.get("API_BUDDY_LOG_LEVEL", "INFO")
+    
     return {
         "server": {"host": "127.0.0.1", "port": 8080},
         "security": {"require_secure_key": True},
-        "cache": {"database_path": "api_buddy_cache.db", "default_ttl_days": 7},
+        "cache": {"database_path": db_path, "default_ttl_days": 7},
         "throttling": {"default_requests_per_hour": 1000},
         "domain_mappings": {"example": {"upstream": "https://api.example.com"}},
+        "logging": {"level": log_level},
     }
 
 
@@ -114,6 +121,7 @@ Examples:
         port = config.get("server", {}).get("port", 8080)
 
         print(f"Starting Reference API Buddy on {host}:{port}")
+        sys.stdout.flush()  # Ensure output is flushed for CI
 
         if config.get("security", {}).get("require_secure_key", False):
             key = proxy.get_secure_key()  # type: ignore
@@ -125,14 +133,25 @@ Examples:
                 print(f"  Header: X-API-Buddy-Key: {key}")
 
         print("\nPress Ctrl+C to stop")
+        sys.stdout.flush()  # Ensure output is flushed for CI
         proxy.start(blocking=True)
 
     except KeyboardInterrupt:
         print("\nShutting down...")
         if "proxy" in locals():
             proxy.stop()
+    except OSError as e:
+        print(f"Error binding to {host}:{port}: {e}")
+        # Try to provide helpful error message for common issues
+        if "Address already in use" in str(e):
+            print(f"Port {port} is already in use. Try a different port with --port option.")
+        elif "Permission denied" in str(e):
+            print(f"Permission denied to bind to {host}:{port}. Try using a port above 1024.")
+        sys.exit(1)
     except Exception as e:
         print(f"Error starting proxy: {e}")
+        import traceback
+        print(f"Traceback: {traceback.format_exc()}")
         sys.exit(1)
 
 

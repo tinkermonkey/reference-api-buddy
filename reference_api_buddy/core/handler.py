@@ -83,8 +83,10 @@ class RequestProcessingMixin:
             if body and method == "POST":
                 req.data = body
 
-            # Make request
-            with urllib.request.urlopen(req, timeout=10) as response:
+            self.logger.debug(f"Making {method} request to {real_url} with timeout=30")
+
+            # Make request with longer timeout for external services
+            with urllib.request.urlopen(req, timeout=30) as response:
                 response_data = response.read()
                 status_code = response.getcode()
                 response_headers = dict(response.headers)
@@ -129,6 +131,16 @@ class RequestProcessingMixin:
 
                 return response_data, status_code, response_headers
 
+        except urllib.error.HTTPError as e:
+            # Handle HTTP errors (4xx, 5xx responses from upstream)
+            self.logger.error(f"HTTP error from upstream {real_url}: {e.code} {e.reason}")
+            error_msg = f"Upstream HTTP error: {e.code} {e.reason}"
+            return error_msg.encode("utf-8"), 502, {"Content-Type": "text/plain"}
+        except urllib.error.URLError as e:
+            # Handle URL/network errors
+            self.logger.error(f"Network error accessing upstream {real_url}: {e.reason}")
+            error_msg = f"Upstream network error: {e.reason}"
+            return error_msg.encode("utf-8"), 502, {"Content-Type": "text/plain"}
         except Exception as e:
             self.logger.error(f"Failed to forward request to {real_url}: {e}")
             # Return 502 Bad Gateway on network/upstream errors

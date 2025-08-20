@@ -188,30 +188,81 @@ def test_cache_and_upstream(http_server):
     conn.close()
 
 
-def test_configured_upstream_caching(server_port):
+def test_configured_upstream_caching():
     """Test caching with a properly configured upstream"""
+    # Get a unique port for this test to avoid conflicts
+    sock = socket.socket()
+    sock.bind(("127.0.0.1", 0))
+    test_port = sock.getsockname()[1]
+    sock.close()
+    
     # Configure a domain mapping with an actual upstream (using httpbin.org for testing)
     domain_mappings = {"httpbin": {"upstream": "https://httpbin.org"}}
     proxy = DummyProxy(domain_mappings=domain_mappings)
-    server = ThreadedHTTPServer(("127.0.0.1", server_port + 1), ProxyHTTPRequestHandler, proxy)
+    server = ThreadedHTTPServer(("127.0.0.1", test_port), ProxyHTTPRequestHandler, proxy)
     thread = threading.Thread(target=server.start, kwargs={"blocking": False}, daemon=True)
     thread.start()
-    time.sleep(0.2)
+    time.sleep(0.5)  # Give server more time to start
 
     try:
-        conn = HTTPConnection("127.0.0.1", server_port + 1)
-        # First request: cache miss, should forward to httpbin and cache
-        conn.request("GET", "/httpbin/get", headers={"X-Secure-Key": "valid-key"})
-        resp = conn.getresponse()
-        # Should get 200 from httpbin.org/get endpoint
-        assert resp.status == 200
-        body = resp.read()
-        # httpbin.org/get returns JSON with request info
-        assert b'"url"' in body  # httpbin response contains URL field
-        conn.close()
+        # Test external connectivity first
+        import urllib.request
+        try:
+            with urllib.request.urlopen("https://httpbin.org/get", timeout=5) as response:
+                if response.getcode() != 200:
+                    pytest.skip("httpbin.org is not accessible - skipping external network test")
+        except Exception:
+            pytest.skip("httpbin.org is not accessible - skipping external network test")
+
+        # Retry logic for network issues
+        max_retries = 3
+        last_error = None
+        
+        for attempt in range(max_retries):
+            try:
+                conn = HTTPConnection("127.0.0.1", test_port)
+                conn.timeout = 35  # Longer timeout for the HTTP connection
+                
+                # First request: cache miss, should forward to httpbin and cache
+                conn.request("GET", "/httpbin/get", headers={"X-Secure-Key": "valid-key"})
+                resp = conn.getresponse()
+                
+                # If we get a 502, it might be a network issue, so retry
+                if resp.status == 502:
+                    body = resp.read()
+                    error_msg = body.decode()
+                    last_error = f"502 error: {error_msg}"
+                    
+                    # Only retry on network/timeout errors, not on configuration errors
+                    if "timeout" in error_msg.lower() or "network" in error_msg.lower():
+                        print(f"Attempt {attempt + 1} failed with network error: {error_msg}")
+                        conn.close()
+                        if attempt < max_retries - 1:
+                            time.sleep(2)  # Wait longer before retry
+                            continue
+                    else:
+                        # Configuration error, don't retry
+                        assert False, f"Configuration error: {error_msg}"
+                
+                # Should get 200 from httpbin.org/get endpoint
+                assert resp.status == 200, f"Expected 200, got {resp.status}. Last error: {last_error}"
+                body = resp.read()
+                # httpbin.org/get returns JSON with request info
+                assert b'"url"' in body  # httpbin response contains URL field
+                conn.close()
+                break
+                
+            except AssertionError:
+                raise  # Re-raise assertion errors immediately
+            except Exception as e:
+                last_error = str(e)
+                print(f"Attempt {attempt + 1} failed with exception: {e}")
+                if attempt == max_retries - 1:
+                    pytest.skip(f"Network test failed after {max_retries} attempts. Last error: {last_error}")
+                time.sleep(2)
 
         # Second request: should be served from cache
-        conn = HTTPConnection("127.0.0.1", server_port + 1)
+        conn = HTTPConnection("127.0.0.1", test_port)
         conn.request("GET", "/httpbin/get", headers={"X-Secure-Key": "valid-key"})
         resp = conn.getresponse()
         assert resp.status == 200
