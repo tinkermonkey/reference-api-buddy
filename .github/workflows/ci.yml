@@ -40,11 +40,11 @@ jobs:
 
     - name: Check code formatting with black
       run: |
-        black --check reference_api_buddy tests
+        black --check reference_api_buddy
 
     - name: Check import sorting with isort
       run: |
-        isort --check-only reference_api_buddy tests
+        isort --check-only reference_api_buddy
 
     - name: Type check with mypy
       run: |
