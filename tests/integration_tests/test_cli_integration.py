@@ -13,7 +13,9 @@ from pathlib import Path
 
 import pytest
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+# Get the project root directory dynamically
+PROJECT_ROOT = Path(__file__).parent.parent.parent.absolute()
+sys.path.append(str(PROJECT_ROOT))
 
 
 class TestCLIIntegration:
@@ -25,7 +27,7 @@ class TestCLIIntegration:
             [sys.executable, "-m", "reference_api_buddy.cli", "--help"],
             capture_output=True,
             text=True,
-            cwd="/Users/austinsand/workspace/reference-api-buddy",
+            cwd=str(PROJECT_ROOT),
         )
 
         assert result.returncode == 0
@@ -41,7 +43,7 @@ class TestCLIIntegration:
             [sys.executable, "-m", "reference_api_buddy.cli", "--version"],
             capture_output=True,
             text=True,
-            cwd="/Users/austinsand/workspace/reference-api-buddy",
+            cwd=str(PROJECT_ROOT),
         )
 
         assert result.returncode == 0
@@ -59,7 +61,7 @@ class TestCLIIntegration:
                     [sys.executable, "-m", "reference_api_buddy.cli", "--generate-config"],
                     capture_output=True,
                     text=True,
-                    env={**os.environ, "PYTHONPATH": "/Users/austinsand/workspace/reference-api-buddy"},
+                    env={**os.environ, "PYTHONPATH": str(PROJECT_ROOT)},
                 )
 
                 assert result.returncode == 0
@@ -90,8 +92,8 @@ class TestCLIIntegration:
             [sys.executable, "-m", "reference_api_buddy.cli", "--security-key-only"],
             capture_output=True,
             text=True,
-            cwd="/Users/austinsand/workspace/reference-api-buddy",
-            env={**os.environ, "PYTHONPATH": "/Users/austinsand/workspace/reference-api-buddy"},
+            cwd=str(PROJECT_ROOT),
+            env={**os.environ, "PYTHONPATH": str(PROJECT_ROOT)},
         )
 
         assert result.returncode == 0
@@ -128,8 +130,8 @@ class TestCLIIntegration:
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True,
-                cwd="/Users/austinsand/workspace/reference-api-buddy",
-                env={**os.environ, "PYTHONPATH": "/Users/austinsand/workspace/reference-api-buddy"},
+                cwd=str(PROJECT_ROOT),
+                env={**os.environ, "PYTHONPATH": str(PROJECT_ROOT)},
             )
 
             # Let it start up for a moment
@@ -160,7 +162,7 @@ class TestCLIIntegration:
             [sys.executable, "-m", "reference_api_buddy.cli", "--port", "invalid"],
             capture_output=True,
             text=True,
-            cwd="/Users/austinsand/workspace/reference-api-buddy",
+            cwd=str(PROJECT_ROOT),
         )
 
         assert result.returncode == 2  # argparse error code
@@ -172,7 +174,7 @@ class TestCLIIntegration:
             [sys.executable, "-m", "reference_api_buddy.cli", "--log-level", "INVALID"],
             capture_output=True,
             text=True,
-            cwd="/Users/austinsand/workspace/reference-api-buddy",
+            cwd=str(PROJECT_ROOT),
         )
 
         assert result.returncode == 2  # argparse error code
@@ -184,8 +186,8 @@ class TestCLIIntegration:
             [sys.executable, "-m", "reference_api_buddy.cli", "--config", "/non/existent/config.json"],
             capture_output=True,
             text=True,
-            cwd="/Users/austinsand/workspace/reference-api-buddy",
-            env={**os.environ, "PYTHONPATH": "/Users/austinsand/workspace/reference-api-buddy"},
+            cwd=str(PROJECT_ROOT),
+            env={**os.environ, "PYTHONPATH": str(PROJECT_ROOT)},
         )
 
         assert result.returncode == 1
@@ -202,8 +204,8 @@ class TestCLIIntegration:
                 [sys.executable, "-m", "reference_api_buddy.cli", "--config", config_path],
                 capture_output=True,
                 text=True,
-                cwd="/Users/austinsand/workspace/reference-api-buddy",
-                env={**os.environ, "PYTHONPATH": "/Users/austinsand/workspace/reference-api-buddy"},
+                cwd=str(PROJECT_ROOT),
+                env={**os.environ, "PYTHONPATH": str(PROJECT_ROOT)},
             )
 
             assert result.returncode == 1
@@ -220,8 +222,8 @@ class TestCLIIntegration:
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
-            cwd="/Users/austinsand/workspace/reference-api-buddy",
-            env={**os.environ, "PYTHONPATH": "/Users/austinsand/workspace/reference-api-buddy"},
+            cwd=str(PROJECT_ROOT),
+            env={**os.environ, "PYTHONPATH": str(PROJECT_ROOT)},
         )
 
         # Let it start up for a moment
