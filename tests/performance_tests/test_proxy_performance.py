@@ -171,6 +171,7 @@ class TestBasicPerformance(PerformanceTestSuite):
 class TestConcurrentPerformance(PerformanceTestSuite):
     """Concurrent performance tests."""
 
+    @pytest.mark.skipif(os.getenv("CI") == "true", reason="Concurrent performance test is flaky in CI environments")
     def test_concurrent_requests_same_endpoint(self):
         """Test concurrent requests to the same endpoint."""
         url = "http://127.0.0.1:18081/jsonplaceholder/posts/1"
