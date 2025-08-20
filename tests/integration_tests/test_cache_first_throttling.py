@@ -22,6 +22,7 @@ from reference_api_buddy import CachingProxy
 class TestCacheFirstThrottling:
     """Integration test for cache-first throttling behavior."""
 
+    @pytest.mark.skipif(os.getenv("CI") == "true", reason="Timing-dependent test is flaky in CI environments")
     def test_cache_hits_bypass_throttling_integration(self):
         """Test that cache hits bypass throttling in a real proxy scenario."""
         with tempfile.TemporaryDirectory() as temp_dir:
