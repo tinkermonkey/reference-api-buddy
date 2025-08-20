@@ -1,0 +1,9 @@
+include README.md
+include LICENSE
+include CHANGELOG.md
+include pyproject.toml
+recursive-include reference_api_buddy *.py
+recursive-exclude tests *
+recursive-exclude documentation *
+recursive-exclude smoke_tests *
+exclude setup.py
