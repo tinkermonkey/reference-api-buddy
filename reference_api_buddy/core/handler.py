@@ -84,12 +84,16 @@ class RequestProcessingMixin:
                 req.data = body
 
             self.logger.debug(f"Making {method} request to {real_url} with timeout=30")
+            self.logger.debug(f"Request headers: {req.headers}")
 
             # Make request with longer timeout for external services
             with urllib.request.urlopen(req, timeout=30) as response:
                 response_data = response.read()
                 status_code = response.getcode()
                 response_headers = dict(response.headers)
+
+                self.logger.debug(f"Received response from {real_url}: {status_code}")
+                self.logger.debug(f"Response headers: {response_headers}")
 
                 # Handle compression
                 encoding = response_headers.get("Content-Encoding", "").lower()
@@ -128,7 +132,15 @@ class RequestProcessingMixin:
                     # Set correct content length for decompressed data
                     response_headers["Content-Length"] = str(len(response_data))
                     self.logger.debug(f"Updated headers after decompression: " f"Content-Length={len(response_data)}")
+                else:
+                    # Even if not decompressed, ensure we have proper headers for the proxy response
+                    # Remove chunked encoding as we'll send the full response at once
+                    if "Transfer-Encoding" in response_headers and response_headers["Transfer-Encoding"] == "chunked":
+                        response_headers.pop("Transfer-Encoding", None)
+                        response_headers["Content-Length"] = str(len(response_data))
+                        self.logger.debug(f"Removed chunked encoding, set Content-Length={len(response_data)}")
 
+                self.logger.debug(f"Final response: {response_data}")
                 return response_data, status_code, response_headers
 
         except urllib.error.HTTPError as e:
@@ -149,6 +161,8 @@ class RequestProcessingMixin:
 
     def _handle_request(self, method: str):
         try:
+            import time
+
             self.logger.debug(f"Handling {method} request for path: {self.path}")
             # 1. Extract and validate secure key
             if hasattr(self.proxy, "security_manager") and self.proxy.security_manager is not None:
@@ -272,18 +286,20 @@ class RequestProcessingMixin:
                     and hasattr(self.proxy, "cache_engine")
                     and self.proxy.cache_engine is not None
                 ):
-                    resp_obj = type(
-                        "Resp",
-                        (),
-                        {
-                            "data": response_data,
-                            "headers": headers,
-                            "status_code": status_code,
-                            "created_at": None,
-                            "ttl_seconds": 60,
-                        },
+                    from reference_api_buddy.database.models import CachedResponse
+
+                    # Create proper CachedResponse object with no explicit TTL (will be set by TTL manager)
+                    resp_obj = CachedResponse(
+                        data=response_data,
+                        headers=headers,
+                        status_code=status_code,
+                        created_at=None,  # Will be set by cache engine
+                        ttl_seconds=None,  # Will be determined by TTL manager based on domain
+                        access_count=0,
+                        last_accessed=None,
                     )
-                    self.proxy.cache_engine.set(cache_key, resp_obj)
+                    # Cache with domain information for TTL resolution
+                    self.proxy.cache_engine.set(cache_key, resp_obj, domain_key=matched_domain_key)
 
                 # Send response to client
                 self.send_response(status_code)

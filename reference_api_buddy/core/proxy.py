@@ -150,7 +150,9 @@ class CachingProxy:
         self.security_manager = SecurityManager(self.config.get("security", {}))
         self.db_manager = DatabaseManager(self.config.get("cache", {}).get("database_path", ":memory:"))
         self.cache_engine = CacheEngine(
-            self.db_manager, max_response_size=self.config.get("cache", {}).get("max_cache_response_size", 10485760)
+            self.db_manager,
+            config=self.config,
+            max_response_size=self.config.get("cache", {}).get("max_cache_response_size", 10485760),
         )
         self.throttle_manager = ThrottleManager(self.config.get("throttling", {}))
         self.metrics_collector = MetricsCollector()
@@ -315,7 +317,9 @@ class CachingProxy:
         self.security_manager = SecurityManager(self.config.get("security", {}))
         self.db_manager = DatabaseManager(self.config.get("cache", {}).get("database_path", ":memory:"))
         self.cache_engine = CacheEngine(
-            self.db_manager, max_response_size=self.config.get("cache", {}).get("max_cache_response_size", 10485760)
+            self.db_manager,
+            config=self.config,
+            max_response_size=self.config.get("cache", {}).get("max_cache_response_size", 10485760),
         )
         self.throttle_manager = ThrottleManager(self.config.get("throttling", {}))
         self.metrics_collector = MetricsCollector()

@@ -68,7 +68,7 @@ class DummyCacheEngine:
     def get(self, cache_key):
         return self._cache.get(cache_key)
 
-    def set(self, cache_key, resp_obj):
+    def set(self, cache_key, resp_obj, domain_key=None):
         # Store as a simple object with .status_code, .headers, .data
         class Resp:
             def __init__(self, data, headers, status_code):
@@ -214,8 +214,8 @@ def test_configured_upstream_caching():
             with urllib.request.urlopen("https://httpbin.org/get", timeout=5) as response:
                 if response.getcode() != 200:
                     pytest.skip("httpbin.org is not accessible - skipping external network test")
-        except Exception:
-            pytest.skip("httpbin.org is not accessible - skipping external network test")
+        except Exception as e:
+            pytest.skip(f"httpbin.org is not accessible - skipping external network test: {e}")
 
         # Retry logic for network issues
         max_retries = 3

@@ -7,7 +7,11 @@ from typing import Any, List, Tuple
 DEFAULT_CONFIG = {
     "server": {"host": "127.0.0.1", "request_timeout": 30},
     "security": {"require_secure_key": False, "log_security_events": True},
-    "cache": {"database_path": ":memory:", "max_cache_response_size": 10485760},  # 10MB
+    "cache": {
+        "database_path": ":memory:",
+        "max_cache_response_size": 10485760,  # 10MB
+        "default_ttl_seconds": 86400,  # 1 day = 24 * 3600 seconds
+    },
     "throttling": {"default_requests_per_hour": 1000, "progressive_max_delay": 300},
     "logging": {
         "level": "INFO",
@@ -64,6 +68,12 @@ class ConfigurationValidator:
             errors.append("cache.database_path must be a string.")
         if not isinstance(cache.get("max_cache_response_size", None), int):
             errors.append("cache.max_cache_response_size must be an integer.")
+
+        # Validate cache TTL
+        default_ttl = cache.get("default_ttl_seconds")
+        if default_ttl is not None and (not isinstance(default_ttl, int) or default_ttl <= 0):
+            errors.append("cache.default_ttl_seconds must be a positive integer.")
+
         # Validate throttling
         throttling = config.get("throttling", {})
         if not isinstance(throttling.get("default_requests_per_hour", None), int):
@@ -90,6 +100,15 @@ class ConfigurationValidator:
             errors.append("logging.max_file_size must be an integer.")
         if not isinstance(logging_cfg.get("backup_count", None), int):
             errors.append("logging.backup_count must be an integer.")
+
+        # Validate domain-specific TTL
+        domain_mappings = config.get("domain_mappings", {})
+        for domain_key, mapping in domain_mappings.items():
+            if isinstance(mapping, dict):
+                ttl = mapping.get("ttl_seconds")
+                if ttl is not None and (not isinstance(ttl, int) or ttl <= 0):
+                    errors.append(f"domain_mappings.{domain_key}.ttl_seconds must be a positive integer.")
+
         # domain_mappings and callbacks can be empty dicts
         return len(errors) == 0, errors
 

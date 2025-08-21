@@ -34,7 +34,7 @@ def create_default_config() -> Dict[str, Any]:
     return {
         "server": {"host": "127.0.0.1", "port": 8080},
         "security": {"require_secure_key": True},
-        "cache": {"database_path": db_path, "default_ttl_days": 7},
+        "cache": {"database_path": db_path, "default_ttl_seconds": 86400},  # 1 day in seconds
         "throttling": {"default_requests_per_hour": 1000},
         "domain_mappings": {"example": {"upstream": "https://api.example.com"}},
         "logging": {"level": log_level},
@@ -52,6 +52,13 @@ Examples:
   api-buddy --port 9090 --host 0.0.0.0             # Custom host/port
   api-buddy --generate-config                       # Generate default config
   api-buddy --security-key-only                     # Just print security key
+
+Configuration:
+  The proxy supports configurable TTL (Time To Live) for cache entries:
+  - System default: cache.default_ttl_seconds (default: 86400 = 1 day)
+  - Per-domain: domain_mappings.{domain}.ttl_seconds (optional override)
+
+  See example_ttl_config.json for comprehensive TTL configuration examples.
         """,
     )
 

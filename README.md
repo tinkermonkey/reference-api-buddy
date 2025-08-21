@@ -229,11 +229,16 @@ from reference_api_buddy import CachingProxy
 config = {
     "domain_mappings": {
         "conceptnet": {
-            "upstream": "https://api.conceptnet.io"
+            "upstream": "https://api.conceptnet.io",
+            "ttl_seconds": 7200  # Optional: 2 hours for ConceptNet
         },
         "dbpedia": {
-            "upstream": "https://lookup.dbpedia.org"
+            "upstream": "https://lookup.dbpedia.org",
+            "ttl_seconds": 86400  # Optional: 1 day for DBpedia
         }
+    },
+    "cache": {
+        "default_ttl_seconds": 43200  # 12 hours default
     },
     "server": {
         "host": "127.0.0.1",
@@ -262,8 +267,14 @@ proxy.stop()
 ```python
 config = {
     "domain_mappings": {
-        "conceptnet": {"upstream": "https://api.conceptnet.io"},
-        "wikidata": {"upstream": "https://www.wikidata.org"}
+        "conceptnet": {
+            "upstream": "https://api.conceptnet.io",
+            "ttl_seconds": 3600  # 1 hour for frequently changing data
+        },
+        "wikidata": {
+            "upstream": "https://www.wikidata.org",
+            "ttl_seconds": 86400  # 1 day for more stable data
+        }
     },
     "server": {
         "host": "127.0.0.1",
@@ -277,7 +288,8 @@ config = {
     "cache": {
         "database_path": "./cache.db",
         "max_cache_response_size": 10485760,  # 10MB
-        "max_cache_entries": 10000
+        "max_cache_entries": 10000,
+        "default_ttl_seconds": 86400  # 1 day default for all domains
     },
     "throttling": {
         "default_requests_per_hour": 1000,
@@ -339,6 +351,75 @@ response4 = requests.get("http://localhost:8080/api/other") # ✗ 429 Throttled 
 - **Upstream APIs are protected** - Throttling only applies to actual upstream requests
 - **Better user experience** - Frequently requested data remains fast
 - **Cost optimization** - Reduces upstream API usage and associated costs
+
+### TTL (Time To Live) Configuration
+
+The proxy supports flexible TTL configuration at both system-wide and per-domain levels:
+
+#### System Default TTL
+Configure a default TTL for all cached responses:
+
+```python
+config = {
+    "cache": {
+        "default_ttl_seconds": 86400  # 1 day default (24 * 3600 seconds)
+    }
+}
+```
+
+#### Domain-Specific TTL
+Override the default TTL for specific domains based on data volatility:
+
+```python
+config = {
+    "cache": {
+        "default_ttl_seconds": 86400  # 1 day default
+    },
+    "domain_mappings": {
+        "weather": {
+            "upstream": "https://api.weather.com",
+            "ttl_seconds": 3600  # 1 hour for weather data
+        },
+        "reference": {
+            "upstream": "https://api.reference.com",
+            "ttl_seconds": 604800  # 1 week for reference data
+        },
+        "news": {
+            "upstream": "https://api.news.com",
+            "ttl_seconds": 1800  # 30 minutes for news
+        }
+    }
+}
+```
+
+#### TTL Behavior
+- **Fallback**: Domains without specific TTL use the system default
+- **Priority**: Domain-specific TTL always overrides the system default
+- **Units**: All TTL values are in seconds for precise control
+- **Validation**: TTL values must be positive integers
+
+#### Example TTL Use Cases
+
+```python
+# Fast-changing data (stock prices, live feeds)
+"stocks": {"upstream": "https://api.stocks.com", "ttl_seconds": 300}  # 5 minutes
+
+# Moderate-changing data (weather, news)
+"weather": {"upstream": "https://api.weather.com", "ttl_seconds": 3600}  # 1 hour
+
+# Stable reference data (dictionaries, ontologies)
+"wordnet": {"upstream": "https://api.wordnet.com", "ttl_seconds": 604800}  # 1 week
+
+# Very stable data (historical facts, archived content)
+"archive": {"upstream": "https://api.archive.com", "ttl_seconds": 2592000}  # 30 days
+```
+
+For comprehensive TTL configuration examples, see `example_ttl_config.json`. For migration from older configurations, see `documentation/02_ttl_config/02.4_ttl_migration_guide.md`.
+
+To see TTL configuration examples in action, run:
+```bash
+python demo_ttl_config.py
+```
 
 ### Security Examples
 

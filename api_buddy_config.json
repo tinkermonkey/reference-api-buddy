@@ -1,21 +1,24 @@
 {
   "server": {
     "host": "127.0.0.1",
-    "port": 18080
+    "port": 8080
   },
   "security": {
     "require_secure_key": true
   },
   "cache": {
     "database_path": "api_buddy_cache.db",
-    "default_ttl_days": 7
+    "default_ttl_seconds": 86400
   },
   "throttling": {
     "default_requests_per_hour": 1000
   },
   "domain_mappings": {
-    "jsonplaceholder": {
-      "upstream": "https://jsonplaceholder.typicode.com"
+    "example": {
+      "upstream": "https://api.example.com"
     }
+  },
+  "logging": {
+    "level": "INFO"
   }
 }

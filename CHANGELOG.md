@@ -8,14 +8,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Initial release of Reference API Buddy
-- HTTP caching proxy with SQLite persistence
-- Progressive throttling with domain-specific rate limits
-- Cryptographic secure key authentication
-- Thread-safe concurrent request handling
-- Comprehensive metrics collection
-- Configurable domain mappings
-- Cache compression and TTL management
 
 ### Changed
 
@@ -26,6 +18,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Security
+
+## [0.2.0] - 2025-08-21
+
+### Added
+- Domain-level TTL configuration support for flexible cache management
+- Enhanced cache engine with configurable TTL per domain mapping
+
+### Fixed
+- Fixed bug in handling `Transfer-Encoding: chunked` responses from upstream servers
+- Fixed previous hard-coded cache entry TTL, now uses domain-specific configuration
 
 ## [0.1.0] - 2025-08-19
 

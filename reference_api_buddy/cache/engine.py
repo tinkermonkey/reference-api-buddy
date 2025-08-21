@@ -29,14 +29,16 @@ class CacheEngine:
     def __init__(
         self,
         db_manager: DatabaseManager,
+        config: dict = None,
         max_response_size: int = 10485760,
         compression_threshold: int = 1024,
         max_cache_entries: int = 1000,
     ) -> None:
-        """Initialize cache engine with database manager and limits.
+        """Initialize cache engine with database manager and configuration.
 
         Args:
             db_manager: Database manager for persistent storage
+            config: Full configuration dictionary for TTL management
             max_response_size: Maximum response size to cache (bytes)
             compression_threshold: Minimum size for compression (bytes)
             max_cache_entries: Maximum number of cache entries
@@ -55,6 +57,15 @@ class CacheEngine:
             "compressed": 0,
             "decompressed": 0,
         }
+
+        # Initialize TTL manager if config is provided
+        if config:
+            from reference_api_buddy.core.ttl_manager import TTLManager
+
+            self._ttl_manager = TTLManager(config)
+        else:
+            self._ttl_manager = None
+
         self._cleanup_expired_entries()
 
     def _normalize_url(self, url: str) -> str:
@@ -204,13 +215,29 @@ class CacheEngine:
                 last_accessed=last_accessed,
             )
 
-    def set(self, cache_key: str, response: CachedResponse) -> bool:
-        """Store a response in the cache if size is within limit.
-        Compress if large."""
+    def set(self, cache_key: str, response: CachedResponse, domain_key: Optional[str] = None) -> bool:
+        """Store a response in the cache with appropriate TTL.
+
+        Args:
+            cache_key: The cache key
+            response: Response object to cache
+            domain_key: Optional domain key for domain-specific TTL
+
+        Returns:
+            True if cached successfully, False otherwise
+        """
         data = response.data
         # Always check original size before compression
         if len(data) > self.max_response_size:
             return False
+
+        # If no TTL is set in response, determine it based on domain/default
+        if hasattr(self, "_ttl_manager") and self._ttl_manager and response.ttl_seconds is None:
+            if domain_key:
+                response.ttl_seconds = self._ttl_manager.get_ttl_for_domain(domain_key)
+            else:
+                response.ttl_seconds = self._ttl_manager.get_default_ttl()
+
         compressed = False
         if len(data) > self.compression_threshold:
             try:

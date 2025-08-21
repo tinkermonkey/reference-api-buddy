@@ -194,7 +194,7 @@ class TestCLIIntegration:
         config_data = {
             "server": {"host": "127.0.0.1", "port": 8081},
             "security": {"require_secure_key": False},
-            "cache": {"database_path": database_path, "default_ttl_days": 3},
+            "cache": {"database_path": database_path, "default_ttl_seconds": 3 * 24 * 60 * 60},
             "throttling": {"default_requests_per_hour": 500},
             "domain_mappings": {"test": {"upstream": "https://api.test.com"}},
         }

@@ -106,7 +106,7 @@ class TestCreateDefaultConfig:
         config = create_default_config()
 
         assert config["cache"]["database_path"] == "api_buddy_cache.db"
-        assert config["cache"]["default_ttl_days"] == 7
+        assert config["cache"]["default_ttl_seconds"] == 86400  # 1 day in seconds
 
     def test_create_default_config_throttling_settings(self):
         """Test default throttling configuration values."""
