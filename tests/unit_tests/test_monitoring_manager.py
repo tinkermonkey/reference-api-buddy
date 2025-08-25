@@ -1,6 +1,7 @@
 """
 Unit tests for MonitoringManager (section 3.2.3/3.2.7 of monitoring design).
 """
+
 import pytest
 
 from reference_api_buddy.monitoring.manager import MonitoringManager

@@ -5,7 +5,6 @@ and health information for the caching proxy module.
 Implements the design in 3.2.2 of the monitoring interface design document.
 """
 
-
 import os
 import threading
 import time
