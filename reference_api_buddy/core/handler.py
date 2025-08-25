@@ -27,6 +27,10 @@ class RequestProcessingMixin:
         """Forward request to upstream server and return response data,
         status, headers."""
 
+        start_time = time.time()
+        domain_key = None
+        real_url = None
+
         try:
             # Map proxy requests to real ones
             domain_mappings = self.proxy.config.get("domain_mappings", {})
@@ -92,6 +96,9 @@ class RequestProcessingMixin:
                 status_code = response.getcode()
                 response_headers = dict(response.headers)
 
+                # Calculate response time
+                response_time_ms = int((time.time() - start_time) * 1000)
+
                 self.logger.debug(f"Received response from {real_url}: {status_code}")
                 self.logger.debug(f"Response headers: {response_headers}")
 
@@ -140,20 +147,85 @@ class RequestProcessingMixin:
                         response_headers["Content-Length"] = str(len(response_data))
                         self.logger.debug(f"Removed chunked encoding, set Content-Length={len(response_data)}")
 
+                # Store upstream metrics for successful requests
+                if domain_key and hasattr(self.proxy, "db_manager"):
+                    try:
+                        self.proxy.db_manager.store_upstream_metrics(
+                            domain=domain_key,
+                            method=method,
+                            response_time_ms=response_time_ms,
+                            response_size_bytes=len(response_data),
+                            cache_hit=False,
+                            status_code=status_code,
+                        )
+                    except Exception as e:
+                        self.logger.debug(f"Failed to store upstream metrics: {e}")
+
                 self.logger.debug(f"Final response: {response_data}")
                 return response_data, status_code, response_headers
 
         except urllib.error.HTTPError as e:
+            # Calculate response time for failed requests too
+            response_time_ms = int((time.time() - start_time) * 1000)
+
+            # Store metrics for HTTP errors
+            if domain_key and hasattr(self.proxy, "db_manager"):
+                try:
+                    self.proxy.db_manager.store_upstream_metrics(
+                        domain=domain_key,
+                        method=method,
+                        response_time_ms=response_time_ms,
+                        response_size_bytes=0,
+                        cache_hit=False,
+                        status_code=e.code,
+                    )
+                except Exception as store_error:
+                    self.logger.debug(f"Failed to store upstream error metrics: {store_error}")
+
             # Handle HTTP errors (4xx, 5xx responses from upstream)
             self.logger.error(f"HTTP error from upstream {real_url}: {e.code} {e.reason}")
             error_msg = f"Upstream HTTP error: {e.code} {e.reason}"
             return error_msg.encode("utf-8"), 502, {"Content-Type": "text/plain"}
         except urllib.error.URLError as e:
+            # Calculate response time for network errors
+            response_time_ms = int((time.time() - start_time) * 1000)
+
+            # Store metrics for network errors
+            if domain_key and hasattr(self.proxy, "db_manager"):
+                try:
+                    self.proxy.db_manager.store_upstream_metrics(
+                        domain=domain_key,
+                        method=method,
+                        response_time_ms=response_time_ms,
+                        response_size_bytes=0,
+                        cache_hit=False,
+                        status_code=502,  # Gateway error
+                    )
+                except Exception as store_error:
+                    self.logger.debug(f"Failed to store upstream network error metrics: {store_error}")
+
             # Handle URL/network errors
             self.logger.error(f"Network error accessing upstream {real_url}: {e.reason}")
             error_msg = f"Upstream network error: {e.reason}"
             return error_msg.encode("utf-8"), 502, {"Content-Type": "text/plain"}
         except Exception as e:
+            # Calculate response time for general errors
+            response_time_ms = int((time.time() - start_time) * 1000)
+
+            # Store metrics for general errors
+            if domain_key and hasattr(self.proxy, "db_manager"):
+                try:
+                    self.proxy.db_manager.store_upstream_metrics(
+                        domain=domain_key,
+                        method=method,
+                        response_time_ms=response_time_ms,
+                        response_size_bytes=0,
+                        cache_hit=False,
+                        status_code=500,  # Internal server error
+                    )
+                except Exception as store_error:
+                    self.logger.debug(f"Failed to store upstream general error metrics: {store_error}")
+
             self.logger.error(f"Failed to forward request to {real_url}: {e}")
             # Return 502 Bad Gateway on network/upstream errors
             error_msg = f"Upstream server error: {str(e)}"
@@ -224,6 +296,21 @@ class RequestProcessingMixin:
                     cached = self.proxy.cache_engine.get(cache_key)
                     if cached:
                         self.logger.info(f"Cache hit for key: {cache_key} {target_url}")
+
+                        # Store cache hit metrics
+                        if matched_domain_key and hasattr(self.proxy, "db_manager"):
+                            try:
+                                self.proxy.db_manager.store_upstream_metrics(
+                                    domain=matched_domain_key,
+                                    method=method,
+                                    response_time_ms=0,  # Cache hits are essentially instantaneous
+                                    response_size_bytes=len(cached.data),
+                                    cache_hit=True,
+                                    status_code=cached.status_code,
+                                )
+                            except Exception as e:
+                                self.logger.debug(f"Failed to store cache hit metrics: {e}")
+
                         self.send_response(cached.status_code)
                         # Send headers (data is already decompressed when cached)
                         for k, v in cached.headers.items():

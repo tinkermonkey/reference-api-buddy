@@ -497,6 +497,268 @@ curl -H "Authorization: Bearer upstream-token-789" \
      http://localhost:8080/proxy-secure-key-123/wikidata/w/api.php?action=query
 ```
 
+## Monitoring and Metrics
+
+The proxy provides comprehensive operational metrics through the `MonitoringManager`. You can access detailed statistics about cache performance, upstream API usage, database health, proxy status, and throttling behavior.
+
+### Accessing Metrics
+
+```python
+from reference_api_buddy import CachingProxy
+
+# Configure and start proxy
+proxy = CachingProxy(config)
+proxy.start(blocking=False)
+
+# Get monitoring manager with convenient method
+monitoring = proxy.get_monitoring_manager()
+
+# Get all metrics at once
+all_stats = {
+    'cache': monitoring.get_cache_stats(),
+    'upstream': monitoring.get_upstream_stats(),
+    'database': monitoring.get_database_stats(),
+    'proxy_health': monitoring.get_proxy_health(),
+    'throttling': monitoring.get_throttling_stats()
+}
+```
+
+### Cache Metrics
+
+Monitor cache performance, hit rates, and storage efficiency:
+
+```python
+cache_stats = monitoring.get_cache_stats()
+print(cache_stats)
+```
+
+**Example Output:**
+```python
+{
+    'total_entries': 1247,
+    'entries_per_domain': {
+        'conceptnet': 892,
+        'dbpedia': 355
+    },
+    'cache_size_bytes': 2485760,
+    'cache_size_per_domain': {
+        'conceptnet': 1847320,
+        'dbpedia': 638440
+    },
+    'hit_count': 3420,
+    'miss_count': 1247,
+    'hit_rate': 0.733,
+    'miss_rate': 0.267,
+    'sets': 1247,
+    'compressed': 892,
+    'decompressed': 3420,
+    'ttl_distribution': {
+        'expired': 23,
+        'valid': 1224,
+        'average_ttl_remaining': 18360
+    },
+    'expired_entries': 23,
+    'evicted_entries': 0
+}
+```
+
+### Upstream API Metrics
+
+Track API response times, error rates, and domain-specific performance:
+
+```python
+upstream_stats = monitoring.get_upstream_stats()
+print(upstream_stats)
+```
+
+**Example Output:**
+```python
+{
+    'overall': {
+        'total_requests': 1247,
+        'avg_response_time_ms': 245.3,
+        'success_rate': 0.967,
+        'error_rate': 0.033,
+        'requests_per_hour': 89.1,
+        'errors_by_status': {
+            '200': 1206,
+            '404': 28,
+            '500': 8,
+            '503': 5,
+            'timeout': 0
+        }
+    },
+    'by_domain': {
+        'conceptnet': {
+            'total_requests': 892,
+            'avg_response_time_ms': 198.7,
+            'success_rate': 0.982,
+            'error_rate': 0.018,
+            'requests_per_hour': 63.7,
+            'errors_by_status': {
+                '200': 876,
+                '404': 12,
+                '500': 3,
+                '503': 1,
+                'timeout': 0
+            }
+        },
+        'dbpedia': {
+            'total_requests': 355,
+            'avg_response_time_ms': 367.2,
+            'success_rate': 0.930,
+            'error_rate': 0.070,
+            'requests_per_hour': 25.4,
+            'errors_by_status': {
+                '200': 330,
+                '404': 16,
+                '500': 5,
+                '503': 4,
+                'timeout': 0
+            }
+        }
+    }
+}
+```
+
+### Database Health
+
+Monitor database file size, connection health, and storage usage:
+
+```python
+db_stats = monitoring.get_database_stats()
+print(db_stats)
+```
+
+**Example Output:**
+```python
+{
+    'db_file_path': '/path/to/api_buddy_cache.db',
+    'db_file_size_bytes': 2847392,
+    'db_health': 'healthy',
+    'in_memory_cache_size': 'unavailable'
+}
+```
+
+### Proxy Health
+
+Track proxy uptime, active connections, and system health:
+
+```python
+health_stats = monitoring.get_proxy_health()
+print(health_stats)
+```
+
+**Example Output:**
+```python
+{
+    'uptime_seconds': 3647.2,
+    'active_threads': 8,
+    'recent_errors': []
+}
+```
+
+### Throttling Metrics
+
+Monitor rate limiting behavior, domain-specific limits, and throttling effectiveness:
+
+```python
+throttle_stats = monitoring.get_throttling_stats()
+print(throttle_stats)
+```
+
+**Example Output:**
+```python
+{
+    'requests_per_domain': {
+        'conceptnet': {
+            'current_hour_requests': 63,
+            'total_requests': 892,
+            'violations': 2,
+            'current_delay_seconds': 4
+        },
+        'dbpedia': {
+            'current_hour_requests': 25,
+            'total_requests': 355,
+            'violations': 0,
+            'current_delay_seconds': 1
+        }
+    },
+    'throttle_state': {
+        'conceptnet': {
+            'is_throttled': True,
+            'violations': 2,
+            'delay_seconds': 4,
+            'last_violation': 1650123456.78
+        },
+        'dbpedia': {
+            'is_throttled': False,
+            'violations': 0,
+            'delay_seconds': 1,
+            'last_violation': 0.0
+        }
+    },
+    'default_requests_per_hour': 1000,
+    'progressive_max_delay': 300,
+    'progressive_enabled': True,
+    'domain_limits': {
+        'conceptnet': 500,
+        'dbpedia': 200
+    }
+}
+```
+
+### Monitoring in Production
+
+For production monitoring, consider periodic metric collection:
+
+```python
+import time
+import json
+
+def monitor_proxy_health(proxy, interval_seconds=60):
+    """Collect and log proxy metrics periodically."""
+    monitoring = proxy.get_monitoring_manager()
+
+    while True:
+        try:
+            # Collect all metrics
+            metrics = {
+                'timestamp': time.time(),
+                'cache': monitoring.get_cache_stats(),
+                'upstream': monitoring.get_upstream_stats(),
+                'database': monitoring.get_database_stats(),
+                'proxy_health': monitoring.get_proxy_health(),
+                'throttling': monitoring.get_throttling_stats()
+            }
+
+            # Log or send to monitoring system
+            print(json.dumps(metrics, indent=2))
+
+            # Check for alerts
+            cache_hit_rate = metrics['cache'].get('hit_rate', 0)
+            if cache_hit_rate < 0.5:
+                print(f"ALERT: Low cache hit rate: {cache_hit_rate:.3f}")
+
+            upstream_error_rate = metrics['upstream']['overall'].get('error_rate', 0)
+            if upstream_error_rate > 0.1:
+                print(f"ALERT: High upstream error rate: {upstream_error_rate:.3f}")
+
+        except Exception as e:
+            print(f"Monitoring error: {e}")
+
+        time.sleep(interval_seconds)
+
+# Start monitoring in a separate thread
+import threading
+monitor_thread = threading.Thread(
+    target=monitor_proxy_health,
+    args=(proxy, 60),
+    daemon=True
+)
+monitor_thread.start()
+```
+
 ## Development Workflow
 
 ### Pre-commit Hooks

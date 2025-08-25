@@ -80,6 +80,13 @@ def test_concurrent_requests():
     logger.info("Waiting for proxy to start...")
     time.sleep(2)
 
+    # Clear the cache to start fresh (to see actual cache misses/hits)
+    try:
+        proxy.cache_engine.clear()
+        logger.info("Cache cleared for fresh testing")
+    except Exception as e:
+        logger.warning(f"Could not clear cache: {e}")
+
     try:
         # Create URLs similar to the ones that were causing issues
         base_url = "http://127.0.0.1:18080"
@@ -135,6 +142,18 @@ def test_concurrent_requests():
                     json_errors += 1
 
         logger.info(f"Completed {len(results)} rapid-fire requests, {json_errors} JSON parsing errors")
+
+        # --- MonitoringManager integration ---
+        try:
+            monitor = proxy.get_monitoring_manager()
+            logger.info("\n--- MonitoringManager Stats ---")
+            logger.info(f"Cache Stats: {monitor.get_cache_stats()}")
+            logger.info(f"Upstream Stats: {monitor.get_upstream_stats()}")
+            logger.info(f"Database Stats: {monitor.get_database_stats()}")
+            logger.info(f"Proxy Health: {monitor.get_proxy_health()}")
+            logger.info(f"Throttling Stats: {monitor.get_throttling_stats()}")
+        except Exception as monitor_exc:
+            logger.error(f"Error invoking MonitoringManager: {monitor_exc}")
 
     finally:
         # Stop the proxy

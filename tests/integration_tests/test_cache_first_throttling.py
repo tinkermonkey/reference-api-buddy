@@ -25,26 +25,28 @@ class TestCacheFirstThrottling:
     @pytest.mark.skipif(os.getenv("CI") == "true", reason="Timing-dependent test is flaky in CI environments")
     def test_cache_hits_bypass_throttling_integration(self):
         """Test that cache hits bypass throttling in a real proxy scenario."""
+        import socket
+
         with tempfile.TemporaryDirectory() as temp_dir:
-            # Use pathlib for better Windows compatibility
             from pathlib import Path
 
             cache_db_path = str(Path(temp_dir) / "test_cache.db")
+            # Find a free port
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.bind(("127.0.0.1", 0))
+                free_port = s.getsockname()[1]
 
-            # Very aggressive throttling config (1 request per hour)
             config = {
                 "domain_mappings": {"httpbin": {"upstream": "https://httpbin.org"}},
-                "server": {"host": "127.0.0.1", "port": 18080},  # Different port to avoid conflicts
-                "cache": {"database_path": cache_db_path, "default_ttl_seconds": 300},  # 5 minutes
+                "server": {"host": "127.0.0.1", "port": free_port},
+                "cache": {"database_path": cache_db_path, "default_ttl_seconds": 300},
                 "throttling": {
-                    "default_requests_per_hour": 1,  # Very restrictive
+                    "default_requests_per_hour": 1,
                     "progressive_max_delay": 300,
-                    "domain_limits": {"httpbin": 1},  # Only 1 request per hour
+                    "domain_limits": {"httpbin": 1},
                 },
                 "security": {"require_secure_key": False},
             }
-
-            # Start proxy
             proxy = CachingProxy(config)
 
             # Mock the _forward_request method to simulate upstream responses
@@ -74,7 +76,7 @@ class TestCacheFirstThrottling:
                     proxy.start(blocking=False)
                     time.sleep(0.1)  # Let server start
 
-                    base_url = f"http://127.0.0.1:18080"
+                    base_url = f"http://127.0.0.1:{free_port}"
                     test_endpoint = f"{base_url}/httpbin/get"
 
                     # First request - should hit upstream and populate cache

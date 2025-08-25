@@ -5,6 +5,8 @@ import threading
 from datetime import datetime
 from typing import Any, List
 
+from reference_api_buddy.utils.logger import get_logger
+
 
 def adapt_datetime_iso(val):
     """Adapt datetime to ISO 8601 date."""
@@ -70,6 +72,7 @@ class DatabaseManager:
     """Manages SQLite database operations with thread safety and connection pooling."""
 
     def __init__(self, database_path: str):
+        self.logger = get_logger("api_buddy.database.manager")
         # Use shared in-memory DB for ":memory:" or file::memory:?cache=shared
         if database_path == ":memory:":
             self.database_path = "file::memory:?cache=shared"
@@ -186,6 +189,222 @@ class DatabaseManager:
                     conn.close()
                 except Exception:
                     pass
+
+    def store_upstream_metrics(
+        self,
+        domain: str,
+        method: str,
+        response_time_ms: int,
+        response_size_bytes: int,
+        cache_hit: bool,
+        status_code: int = 200,
+    ) -> bool:
+        """Store metrics for upstream requests.
+
+        Args:
+            domain: Domain that was contacted
+            method: HTTP method used
+            response_time_ms: Response time in milliseconds
+            response_size_bytes: Size of response body in bytes
+            cache_hit: Whether this was a cache hit or miss
+            status_code: HTTP status code returned
+
+        Returns:
+            True if metrics were stored successfully, False otherwise
+        """
+        try:
+            # First, ensure the metrics table has a status_code column
+            try:
+                # Check if status_code column exists
+                self.execute_query("SELECT status_code FROM metrics LIMIT 1")
+            except Exception as e:
+                # Add status_code column if it doesn't exist
+                self.execute_update("ALTER TABLE metrics ADD COLUMN status_code INTEGER DEFAULT 200")
+                self.logger.debug(f"Added status_code column to metrics table: {e}")
+
+            # Store metrics with proper status code
+            self.execute_update(
+                "INSERT INTO metrics (domain, method, cache_hit, response_time_ms, "
+                "response_size_bytes, status_code, timestamp) VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)",
+                (domain, method, cache_hit, response_time_ms, response_size_bytes, status_code),
+            )
+
+            return True
+        except Exception as e:
+            self.logger.debug(f"Failed to store metrics: {e}")
+            return False
+
+    def get_upstream_metrics(self, domain: str = None, hours: int = 24) -> dict:
+        """Get upstream metrics for the specified time window.
+
+        Args:
+            domain: Optional domain filter. If None, gets metrics for all domains
+            hours: Number of hours back to look for metrics (default 24)
+
+        Returns:
+            Dictionary with overall stats and per-domain breakdowns including
+            response times, error rates, and request volumes
+        """
+        try:
+            # Base query conditions
+            where_conditions = ["datetime(timestamp) >= datetime('now', '-{} hours')".format(hours)]
+            params = []
+
+            if domain:
+                where_conditions.append("domain = ?")
+                params.append(domain)
+
+            where_clause = " AND ".join(where_conditions)
+
+            # Get overall metrics
+            overall_metrics = self._get_domain_metrics(where_clause, tuple(params))
+
+            # Get per-domain metrics if no specific domain was requested
+            domain_metrics = {}
+            if not domain:
+                # Get list of domains
+                domains_query = f"SELECT DISTINCT domain FROM metrics WHERE {where_conditions[0]} " "AND cache_hit = 0"
+                domains = [row[0] for row in self.execute_query(domains_query)]
+
+                # Get metrics for each domain
+                for domain_name in domains:
+                    domain_where = where_conditions[0] + " AND domain = ?"
+                    domain_params = (domain_name,)
+                    domain_metrics[domain_name] = self._get_domain_metrics(domain_where, domain_params)
+
+            result = {"overall": overall_metrics}
+
+            if domain_metrics:
+                result["by_domain"] = domain_metrics
+
+            return result
+
+        except Exception as e:
+            return {
+                "overall": {
+                    "response_times": {"average_ms": 0, "recent_samples": [], "total_samples": 0, "error": str(e)},
+                    "error_rates": {
+                        "total_requests": 0,
+                        "error_count": 0,
+                        "error_rate": 0.0,
+                        "success_rate": 0.0,
+                        "by_status_code": {},
+                    },
+                    "request_volumes": {
+                        "total_requests_last_24h": 0,
+                        "cache_hits_last_24h": 0,
+                        "cache_hit_rate": 0.0,
+                        "hourly_breakdown": [],
+                    },
+                }
+            }
+
+    def _get_domain_metrics(self, where_clause: str, params: tuple) -> dict:
+        """Get metrics for a specific domain or overall.
+
+        Args:
+            where_clause: SQL WHERE clause for filtering
+            params: Parameters for the WHERE clause
+
+        Returns:
+            Dictionary with response times, error rates, and request volumes
+        """
+        try:
+            # Get response times for cache misses (actual upstream requests) - successful requests only
+            response_times_query = f"""
+                SELECT response_time_ms
+                FROM metrics
+                WHERE {where_clause} AND cache_hit = 0 AND status_code < 400
+                ORDER BY timestamp DESC
+                LIMIT 100
+            """
+            response_times = [row[0] for row in self.execute_query(response_times_query, params)]
+
+            # Calculate average response time
+            avg_response_time = sum(response_times) / len(response_times) if response_times else 0
+
+            # Get total requests (cache misses only - actual upstream requests)
+            total_requests_query = f"""
+                SELECT COUNT(*)
+                FROM metrics
+                WHERE {where_clause} AND cache_hit = 0
+            """
+            total_requests = self.execute_query(total_requests_query, params)[0][0]
+
+            # Get error breakdown by status code
+            error_breakdown_query = f"""
+                SELECT status_code, COUNT(*) as count
+                FROM metrics
+                WHERE {where_clause} AND cache_hit = 0 AND status_code >= 400
+                GROUP BY status_code
+                ORDER BY status_code
+            """
+            error_breakdown = {row[0]: row[1] for row in self.execute_query(error_breakdown_query, params)}
+
+            # Count total error responses
+            error_count = sum(error_breakdown.values())
+
+            # Get request volume by hour for the time window (cache misses only)
+            volume_query = f"""
+                SELECT strftime('%Y-%m-%d %H:00:00', timestamp) as hour_bucket,
+                       COUNT(*) as request_count
+                FROM metrics
+                WHERE {where_clause} AND cache_hit = 0
+                GROUP BY hour_bucket
+                ORDER BY hour_bucket DESC
+            """
+            volume_data = self.execute_query(volume_query, params)
+
+            # Get cache hit ratio
+            cache_hits_query = f"""
+                SELECT COUNT(*)
+                FROM metrics
+                WHERE {where_clause} AND cache_hit = 1
+            """
+            cache_hits = self.execute_query(cache_hits_query, params)[0][0]
+
+            total_with_cache = total_requests + cache_hits
+            cache_hit_rate = cache_hits / total_with_cache if total_with_cache > 0 else 0.0
+
+            return {
+                "response_times": {
+                    "average_ms": round(avg_response_time, 2),
+                    "recent_samples": response_times[:10],  # Last 10 response times
+                    "total_samples": len(response_times),
+                },
+                "error_rates": {
+                    "total_requests": total_requests,
+                    "error_count": error_count,
+                    "error_rate": round(error_count / total_requests if total_requests > 0 else 0.0, 4),
+                    "success_rate": round(
+                        (total_requests - error_count) / total_requests if total_requests > 0 else 0.0, 4
+                    ),
+                    "by_status_code": error_breakdown,
+                },
+                "request_volumes": {
+                    "total_requests_last_24h": total_requests,
+                    "cache_hits_last_24h": cache_hits,
+                    "cache_hit_rate": round(cache_hit_rate, 4),
+                    "hourly_breakdown": [{"hour": row[0], "requests": row[1]} for row in volume_data],
+                },
+            }
+        except Exception as e:
+            return {
+                "response_times": {"average_ms": 0, "recent_samples": [], "total_samples": 0, "error": str(e)},
+                "error_rates": {
+                    "total_requests": 0,
+                    "error_count": 0,
+                    "error_rate": 0.0,
+                    "success_rate": 0.0,
+                    "by_status_code": {},
+                },
+                "request_volumes": {
+                    "total_requests_last_24h": 0,
+                    "cache_hits_last_24h": 0,
+                    "cache_hit_rate": 0.0,
+                    "hourly_breakdown": [],
+                },
+            }
 
     def __del__(self):
         self.close()

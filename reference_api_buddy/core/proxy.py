@@ -260,6 +260,22 @@ class CachingProxy:
         """
         return self.metrics_collector.get_metrics()
 
+    def get_monitoring_manager(self):
+        """Get a MonitoringManager instance configured with all proxy components.
+
+        Returns:
+            MonitoringManager instance ready to use for comprehensive metrics
+
+        Example:
+            >>> monitor = proxy.get_monitoring_manager()
+            >>> cache_stats = monitor.get_cache_stats()
+            >>> upstream_stats = monitor.get_upstream_stats()
+            >>> throttle_stats = monitor.get_throttling_stats()
+        """
+        from reference_api_buddy.monitoring.manager import MonitoringManager
+
+        return MonitoringManager(self, self.cache_engine, self.db_manager, self.throttle_manager)
+
     def clear_cache(self, domain: Optional[str] = None) -> int:
         """Clear cache entries for a domain or all domains.
 
