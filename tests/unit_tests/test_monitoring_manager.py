@@ -129,7 +129,7 @@ def test_error_handling_for_missing_methods():
         pass
 
     monitor = MonitoringManager(Empty(), Empty(), Empty(), Empty())
-    assert monitor.get_cache_stats()["total_entries"] == "unavailable"
+    assert monitor.get_cache_stats()["total_entries"] == {"unavailable": {}}
     # Upstream stats fallback is nested under 'overall'
     assert monitor.get_upstream_stats()["overall"]["response_times"] == "unavailable"
     assert monitor.get_database_stats()["db_file_path"] == "in_memory"
