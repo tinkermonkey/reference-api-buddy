@@ -89,11 +89,11 @@ class RequestProcessingMixin:
             if body and method == "POST":
                 req.data = body
 
-            self.logger.debug(f"Making {method} request to {real_url} with timeout=30")
+            self.logger.debug(f"Making {method} request to {real_url} with timeout=60")
             self.logger.debug(f"Request headers: {req.headers}")
 
-            # Make request with longer timeout for external services
-            with urllib.request.urlopen(req, timeout=30) as response:
+            # Make request with longer timeout for external services (especially SPARQL queries)
+            with urllib.request.urlopen(req, timeout=60) as response:
                 response_data = response.read()
                 status_code = response.getcode()
                 response_headers = dict(response.headers)
@@ -104,7 +104,7 @@ class RequestProcessingMixin:
                 self.logger.debug(f"Received response from {real_url}: {status_code}")
                 self.logger.debug(f"Response headers: {response_headers}")
 
-                # Handle compression
+                # Handle compression - be more robust about gzip detection and decompression
                 encoding = response_headers.get("Content-Encoding", "").lower()
                 decompressed = False
 
@@ -115,37 +115,55 @@ class RequestProcessingMixin:
                         f"(first 10 bytes: {response_data[:10].hex()})"
                     )
                     try:
-                        response_data = gzip.decompress(response_data)
+                        decompressed_data = gzip.decompress(response_data)
+                        response_data = decompressed_data
                         decompressed = True
                         self.logger.debug(f"Successfully decompressed gzip data for " f"{real_url}")
-                    except Exception as e:
+                    except (gzip.BadGzipFile, zlib.error, OSError) as e:
                         self.logger.warning(f"Failed to decompress gzipped data for " f"{real_url}: {e}")
+                        # Keep original data if decompression fails
                 elif encoding in ["gzip", "deflate"]:
                     self.logger.debug(f"Detected {encoding} encoding via header for " f"{real_url}")
                     try:
                         if encoding == "gzip":
-                            response_data = gzip.decompress(response_data)
+                            decompressed_data = gzip.decompress(response_data)
                         elif encoding == "deflate":
-                            response_data = zlib.decompress(response_data)
+                            decompressed_data = zlib.decompress(response_data)
+                        response_data = decompressed_data
                         decompressed = True
                         self.logger.debug(f"Successfully decompressed {encoding} data for {real_url}")
-                    except Exception as e:
+                    except (gzip.BadGzipFile, zlib.error, OSError) as e:
                         self.logger.warning(f"Failed to decompress {encoding} data for {real_url}: {e}")
+                        # Keep original data if decompression fails
 
-                # Fix headers after decompression
+                        # Fix headers after decompression
                 if decompressed:
-                    # Remove compression-related headers
-                    response_headers.pop("Content-Encoding", None)
-                    # Remove chunked encoding
-                    response_headers.pop("Transfer-Encoding", None)
+                    # Remove compression-related headers (case-insensitive)
+                    headers_to_remove = []
+                    for key in response_headers.keys():
+                        if key.lower() in ["content-encoding", "transfer-encoding", "content-length"]:
+                            headers_to_remove.append(key)
+
+                    for key in headers_to_remove:
+                        response_headers.pop(key, None)
+
                     # Set correct content length for decompressed data
                     response_headers["Content-Length"] = str(len(response_data))
                     self.logger.debug(f"Updated headers after decompression: " f"Content-Length={len(response_data)}")
                 else:
                     # Even if not decompressed, ensure we have proper headers for the proxy response
                     # Remove chunked encoding as we'll send the full response at once
-                    if "Transfer-Encoding" in response_headers and response_headers["Transfer-Encoding"] == "chunked":
-                        response_headers.pop("Transfer-Encoding", None)
+                    headers_to_remove = []
+                    for key, value in response_headers.items():
+                        if key.lower() == "transfer-encoding" and value.lower() == "chunked":
+                            headers_to_remove.append(key)
+
+                    for key in headers_to_remove:
+                        response_headers.pop(key, None)
+
+                    # Only set Content-Length if not already present (case-insensitive check)
+                    has_content_length = any(key.lower() == "content-length" for key in response_headers.keys())
+                    if not has_content_length:
                         response_headers["Content-Length"] = str(len(response_data))
                         self.logger.debug(f"Removed chunked encoding, set Content-Length={len(response_data)}")
 
