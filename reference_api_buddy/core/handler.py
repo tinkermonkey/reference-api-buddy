@@ -146,14 +146,11 @@ class RequestProcessingMixin:
                 else:
                     # Even if not decompressed, ensure we have proper headers for the proxy response
                     # Remove chunked encoding as we'll send the full response at once
-                    headers_to_remove = []
-                    for key, value in response_headers.items():
-                        if key.lower() == "transfer-encoding" and value.lower() == "chunked":
-                            headers_to_remove.append(key)
-
-                    for key in headers_to_remove:
-                        response_headers.pop(key, None)
-
+                    # Remove 'transfer-encoding: chunked' headers efficiently
+                    response_headers = {
+                        k: v for k, v in response_headers.items()
+                        if not (k.lower() == "transfer-encoding" and v.lower() == "chunked")
+                    }
                     # Only set Content-Length if not already present (case-insensitive check)
                     has_content_length = any(key.lower() == "content-length" for key in response_headers.keys())
                     if not has_content_length:
