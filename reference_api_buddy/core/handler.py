@@ -139,7 +139,11 @@ class RequestProcessingMixin:
                         # Fix headers after decompression
                 if decompressed:
                     # Remove compression-related headers (case-insensitive)
-                    response_headers = {k: v for k, v in response_headers.items() if k.lower() not in ["content-encoding", "transfer-encoding", "content-length"]}
+                    response_headers = {
+                        k: v
+                        for k, v in response_headers.items()
+                        if k.lower() not in ["content-encoding", "transfer-encoding", "content-length"]
+                    }
                     # Set correct content length for decompressed data
                     response_headers["Content-Length"] = str(len(response_data))
                     self.logger.debug(f"Updated headers after decompression: " f"Content-Length={len(response_data)}")
@@ -148,7 +152,8 @@ class RequestProcessingMixin:
                     # Remove chunked encoding as we'll send the full response at once
                     # Remove 'transfer-encoding: chunked' headers efficiently
                     response_headers = {
-                        k: v for k, v in response_headers.items()
+                        k: v
+                        for k, v in response_headers.items()
                         if not (k.lower() == "transfer-encoding" and v.lower() == "chunked")
                     }
                     # Only set Content-Length if not already present (case-insensitive check)
