@@ -4,15 +4,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "reference-api-buddy"
-version = "0.4.2"
+version = "0.4.3"
 description = "HTTP caching proxy module for development environments with reference APIs"
 readme = "README.md"
 license = {file = "LICENSE"}
 authors = [
-    {name = "Reference API Buddy Team", email = "contact@example.com"}
+    {name = "Reference API Buddy Team", email = "tinkermonkey25@gmail.com"}
 ]
 maintainers = [
-    {name = "Reference API Buddy Team", email = "contact@example.com"}
+    {name = "Reference API Buddy Team", email = "tinkermonkey25@gmail.com"}
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -64,7 +64,6 @@ docs = [
 
 [project.urls]
 Homepage = "https://github.com/tinkermonkey/reference-api-buddy"
-Documentation = "https://reference-api-buddy.readthedocs.io/"
 Repository = "https://github.com/tinkermonkey/reference-api-buddy"
 Issues = "https://github.com/tinkermonkey/reference-api-buddy/issues"
 Changelog = "https://github.com/tinkermonkey/reference-api-buddy/blob/main/CHANGELOG.md"

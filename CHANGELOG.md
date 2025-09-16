@@ -6,6 +6,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.4.3] - 2025-09-16
+
+### Added
+- Comprehensive Wikidata SPARQL smoke test for end-to-end validation
+- Enhanced debug logging for gzip decompression and header management
+- Magic number detection for reliable gzip content identification
+
+### Changed
+- Increased proxy timeout from 30 to 60 seconds for complex SPARQL queries
+- Improved gzip decompression with robust error handling for chunked+gzipped responses
+- Enhanced header management with case-insensitive handling for Content-Length conflicts
+
+### Fixed
+- **Critical**: Resolved InvalidChunkLength errors when processing chunked transfer encoding with gzipped responses
+- **Critical**: Fixed Content-Length header conflicts by implementing case-insensitive header removal during decompression
+- Proper cleanup of Transfer-Encoding and Content-Encoding headers after gzip decompression
+- Timeout issues for complex queries requiring more than 30 seconds processing time
+
+### Security
+- Improved error handling prevents potential issues with malformed gzipped responses
+- Enhanced header validation ensures proper HTTP compliance
+
 ## [0.4.2] - 2025-09-16
 
 ### Added
