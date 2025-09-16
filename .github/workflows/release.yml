@@ -42,6 +42,7 @@ jobs:
   publish:
     needs: build
     runs-on: ubuntu-latest
+    environment: release
     if: github.repository == 'tinkermonkey/reference-api-buddy'
     steps:
     - name: Download artifacts
@@ -61,6 +62,7 @@ jobs:
   github-release:
     needs: publish
     runs-on: ubuntu-latest
+    environment: release
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
