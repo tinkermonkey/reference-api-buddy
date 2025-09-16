@@ -139,14 +139,7 @@ class RequestProcessingMixin:
                         # Fix headers after decompression
                 if decompressed:
                     # Remove compression-related headers (case-insensitive)
-                    headers_to_remove = []
-                    for key in response_headers.keys():
-                        if key.lower() in ["content-encoding", "transfer-encoding", "content-length"]:
-                            headers_to_remove.append(key)
-
-                    for key in headers_to_remove:
-                        response_headers.pop(key, None)
-
+                    response_headers = {k: v for k, v in response_headers.items() if k.lower() not in ["content-encoding", "transfer-encoding", "content-length"]}
                     # Set correct content length for decompressed data
                     response_headers["Content-Length"] = str(len(response_data))
                     self.logger.debug(f"Updated headers after decompression: " f"Content-Length={len(response_data)}")
