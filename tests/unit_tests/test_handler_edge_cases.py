@@ -70,6 +70,7 @@ class MockHandler(RequestProcessingMixin):
         self._response_status = None
         self._response_headers = {}
         self._response_written = False
+        self.client_address = ("127.0.0.1", 12345)  # Mock client address for admin rate limiting
 
     def send_response(self, status):
         self._response_status = status
@@ -838,7 +839,15 @@ class TestHandlerEdgeCases:
 
     def test_admin_health_endpoint(self):
         """Test admin health endpoint."""
-        proxy = MockProxy()
+        config = {
+            "admin": {
+                "enabled": True,
+                "rate_limit_per_minute": 10,
+                "include_sensitive_config": False,
+                "log_access": True,
+            }
+        }
+        proxy = MockProxy(config=config)
         handler = MockHandler(proxy=proxy, path="/admin/health", headers={})
 
         handler._handle_request("GET")

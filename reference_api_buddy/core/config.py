@@ -26,6 +26,12 @@ DEFAULT_CONFIG = {
     },
     "domain_mappings": {},
     "callbacks": {},
+    "admin": {
+        "enabled": True,
+        "rate_limit_per_minute": 10,
+        "include_sensitive_config": False,
+        "log_access": True,
+    },
 }
 
 
@@ -108,6 +114,17 @@ class ConfigurationValidator:
                 ttl = mapping.get("ttl_seconds")
                 if ttl is not None and (not isinstance(ttl, int) or ttl <= 0):
                     errors.append(f"domain_mappings.{domain_key}.ttl_seconds must be a positive integer.")
+
+        # Validate admin configuration
+        admin = config.get("admin", {})
+        if not isinstance(admin.get("enabled", None), bool):
+            errors.append("admin.enabled must be a boolean.")
+        if not isinstance(admin.get("rate_limit_per_minute", None), int):
+            errors.append("admin.rate_limit_per_minute must be an integer.")
+        if not isinstance(admin.get("include_sensitive_config", None), bool):
+            errors.append("admin.include_sensitive_config must be a boolean.")
+        if not isinstance(admin.get("log_access", None), bool):
+            errors.append("admin.log_access must be a boolean.")
 
         # domain_mappings and callbacks can be empty dicts
         return len(errors) == 0, errors

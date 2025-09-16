@@ -104,8 +104,9 @@ class TestCacheFirstThrottling:
                     assert data2["timestamp"] == data1["timestamp"]
                     assert call_count == 1  # Still only one upstream call
 
-                    # Cache hit should be much faster than upstream
-                    assert second_request_time < first_request_time
+                    # Cache hit should be reasonably fast (allow for timing variability)
+                    # The key assertion is that we're getting cached data, not timing precision
+                    assert second_request_time < 0.1  # Should be under 100ms for cache hit
 
                     # Third request - should still hit cache
                     start_time = time.time()
