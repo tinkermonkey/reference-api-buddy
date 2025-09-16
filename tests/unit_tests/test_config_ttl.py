@@ -33,6 +33,12 @@ class TestTTLConfiguration:
                 "max_file_size": 10485760,
                 "backup_count": 5,
             },
+            "admin": {
+                "enabled": True,
+                "rate_limit_per_minute": 10,
+                "include_sensitive_config": False,
+                "log_access": True,
+            },
             "domain_mappings": {"api1": {"upstream": "https://api1.com", "ttl_seconds": 1800}},
             "callbacks": {},
         }
@@ -150,6 +156,12 @@ class TestTTLConfiguration:
                 "file_path": None,
                 "max_file_size": 10485760,
                 "backup_count": 5,
+            },
+            "admin": {
+                "enabled": True,
+                "rate_limit_per_minute": 10,
+                "include_sensitive_config": False,
+                "log_access": True,
             },
             "domain_mappings": {},
             "callbacks": {},

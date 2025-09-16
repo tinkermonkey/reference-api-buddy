@@ -153,7 +153,8 @@ def test_admin_health(http_server):
     resp = conn.getresponse()
     assert resp.status == 200
     body = resp.read()
-    assert b"OK" in body
+    # Updated to match new JSON format response
+    assert b'"status": "healthy"' in body
     conn.close()
 
 
