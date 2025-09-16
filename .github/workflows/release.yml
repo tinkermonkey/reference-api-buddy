@@ -68,21 +68,18 @@ jobs:
       id: get_version
       run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
 
-    - name: Extract changelog entry
-      id: changelog
+    - name: Extract latest changelog entry
       run: |
-        # Extract the changelog entry for this version
-        VERSION=${{ steps.get_version.outputs.VERSION }}
-        CHANGELOG_CONTENT=$(awk -v version="$VERSION" '
-          /^## \['"$VERSION"'\]/ { found=1; next }
-          found && /^## \[/ { exit }
-          found { print }
-        ' CHANGELOG.md | sed '/^$/d' | head -50)
+        # Extract the first changelog entry (latest release)
+        awk '/^## \[/{i++} i==2{exit} i==1{print}' CHANGELOG.md > latest_release_notes.md
 
-        # Set multiline output
-        echo "CONTENT<<EOF" >> $GITHUB_OUTPUT
-        echo "$CHANGELOG_CONTENT" >> $GITHUB_OUTPUT
-        echo "EOF" >> $GITHUB_OUTPUT
+        # Add footer with additional information
+        echo "" >> latest_release_notes.md
+        echo "---" >> latest_release_notes.md
+        echo "" >> latest_release_notes.md
+        echo "**Full Changelog**: [CHANGELOG.md](https://github.com/tinkermonkey/reference-api-buddy/blob/main/CHANGELOG.md)" >> latest_release_notes.md
+        echo "" >> latest_release_notes.md
+        echo "**Installation**: \`pip install reference-api-buddy==${{ steps.get_version.outputs.VERSION }}\`" >> latest_release_notes.md
 
     - name: Create GitHub Release
       uses: actions/create-release@v1
@@ -91,15 +88,6 @@ jobs:
       with:
         tag_name: ${{ github.ref_name }}
         release_name: "Release v${{ steps.get_version.outputs.VERSION }}"
-        body: |
-          ## Changes in v${{ steps.get_version.outputs.VERSION }}
-
-          ${{ steps.changelog.outputs.CONTENT }}
-
-          ---
-
-          **Full Changelog**: [CHANGELOG.md](https://github.com/tinkermonkey/reference-api-buddy/blob/main/CHANGELOG.md)
-
-          **Installation**: `pip install reference-api-buddy==${{ steps.get_version.outputs.VERSION }}`
+        body_path: latest_release_notes.md
         draft: false
         prerelease: false

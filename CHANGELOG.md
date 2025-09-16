@@ -6,36 +6,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [0.3.0] - 2025-08-22
-
-### Added
-- Monitoring interface (`MonitoringManager`) for programmatic access to proxy, cache, upstream, database, and throttling metrics
-- Unit tests for monitoring interface
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
-
-## [Unreleased]
-
-### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
-
 ## [0.4.0] - 2025-09-16
 
 ### Added
@@ -72,6 +42,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Sensitive configuration data is automatically sanitized in API responses
 - Admin access attempts are logged for security auditing
 - Secure key validation prevents unauthorized access to administrative functions
+
+## [0.3.0] - 2025-08-22
+
+### Added
+- Monitoring interface (`MonitoringManager`) for programmatic access to proxy, cache, upstream, database, and throttling metrics
+- Unit tests for monitoring interface
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
 
 ## [0.2.0] - 2025-08-21
 
