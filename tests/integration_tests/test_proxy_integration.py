@@ -33,6 +33,11 @@ class DummyThrottleManager:
         self.calls = {}
         self.time_window = 60
         self.domain_limits = {"throttled.com": 1}
+        self.max_delay = 300
+        self.default_limit = 1000
+        # Pre-populate throttled.com with enough requests to trigger throttling
+        now = time.time()
+        self.calls["throttled.com"] = [now - 1, now - 0.5]  # 2 requests within window, limit is 1
 
     def record_request(self, domain):
         now = time.time()
@@ -42,10 +47,15 @@ class DummyThrottleManager:
         # Remove old timestamps
         self.calls[domain] = [t for t in self.calls[domain] if now - t < self.time_window]
 
-    def should_throttle(self, domain):
+    def get_required_delay(self, domain):
+        """Return delay needed to stay within rate limits, or -1 if exceeds max_delay."""
         limit = self.domain_limits.get(domain, 1000)
-        self.record_request(domain)
-        return len(self.calls.get(domain, [])) > limit
+        current_count = len(self.calls.get(domain, []))
+
+        if current_count >= limit:
+            # Would need to wait for the window to expire - exceeds max_delay
+            return -1.0
+        return 0.0
 
     def get_throttle_delay(self, domain):
         return 1
@@ -107,6 +117,7 @@ class DummyProxy:
         self.security_manager = DummySecurityManager()
         self.throttle_manager = DummyThrottleManager()
         self.cache_engine = DummyCacheEngine()
+        self.inflight_tracker = None  # Disable deduplication for integration tests
 
 
 @pytest.fixture(scope="module")

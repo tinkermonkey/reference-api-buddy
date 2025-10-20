@@ -107,13 +107,23 @@ class ConfigurationValidator:
         if not isinstance(logging_cfg.get("backup_count", None), int):
             errors.append("logging.backup_count must be an integer.")
 
-        # Validate domain-specific TTL
+        # Validate domain-specific TTL and rate limits
         domain_mappings = config.get("domain_mappings", {})
         for domain_key, mapping in domain_mappings.items():
             if isinstance(mapping, dict):
                 ttl = mapping.get("ttl_seconds")
                 if ttl is not None and (not isinstance(ttl, int) or ttl <= 0):
                     errors.append(f"domain_mappings.{domain_key}.ttl_seconds must be a positive integer.")
+
+                # Validate max_requests_per_minute
+                rpm = mapping.get("max_requests_per_minute")
+                if rpm is not None and (not isinstance(rpm, int) or rpm <= 0):
+                    errors.append(f"domain_mappings.{domain_key}.max_requests_per_minute must be a positive integer.")
+
+                # Validate max_requests_per_second
+                rps = mapping.get("max_requests_per_second")
+                if rps is not None and (not isinstance(rps, int) or rps <= 0):
+                    errors.append(f"domain_mappings.{domain_key}.max_requests_per_second must be a positive integer.")
 
         # Validate admin configuration
         admin = config.get("admin", {})

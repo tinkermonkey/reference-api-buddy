@@ -1,13 +1,15 @@
 # Reference API Buddy
 
-A Python caching proxy module designed for reference APIs where the data is non-secure and not changing frequently (ConceptNet, DBpedia, Wikidata, etc). The proxy provides configurable caching, progressive throttling, and detailed metrics to reduce API costs and prevent rate limiting. It is designed to be run on the "client" device, either embedded in a python app or standalone, and to service only specific domains through url manipulation and typically `HTTP` to `HTTPS` (`http://127.0.0.1/conceptnet/query...` -> `https://api.conceptnet.io/query...`). The URL manipulation scheme allows you to not need an `HTTP` proxy at the application level, so most traffic from your app will not pass through API Buddy. The `HTTP` -> `HTTPS` leg obviously meaningfuly shifts the security footprint for these requests, but if you need caching, this can be a lesser evil as you don't need to a) write your own custom API clients if this is only used during the dev cycle and b) ignore certs for `HTTPS` traffic in your app. So while the `HTTPS` security for the traffic to the reference sources is compromised, it leaves the rest of the traffic in your app secure. If your upstream API is highly sensitive and you think someone might be monitoring traffic on your local device, this is not for you.
+A Python caching proxy module designed for reference APIs where the data is non-secure and not changing frequently (ConceptNet, DBpedia, Wikidata, etc). The proxy provides configurable caching, progressive throttling, and detailed metrics to reduce API costs and prevent rate limiting. It is designed to be run on the "client" device, either embedded in a python app or standalone, and to service only specific domains through url manipulation and typically `HTTP` to `HTTPS` (`http://127.0.0.1/conceptnet/query...` -> `https://api.conceptnet.io/query...`). The URL manipulation scheme allows you to not need an `HTTP` proxy at the application level, so most traffic from your app will not pass through API Buddy. The `HTTP` -> `HTTPS` leg obviously meaningfuly shifts the security footprint for these requests, but if you need caching, this can be a lesser evil as you don't need to a) write your own custom API clients if this is only used during the dev cycle and b) ignore certs for `HTTPS` traffic in your app. So while the traffic to the reference sources is HTTP locally inside of your process, all traffic leaving your system is HTTPS and certificates are still vetted for your sources. If your upstream API is highly sensitive and you think someone might be monitoring traffic on your local device, this is not for you.
 
 Currently this doesn't function as a vanilla MITM proxy since none of the upstream sources of interest are `HTTP` and this was built specifically to avoid having to disable `HTTPS` cert validation. If you're looking for a MITM proxy, there are many out there.
 
 ## Features
 
 - **Persistent Caching**: Persistent SQLite-based cache (in-memory or on-disk) with configurable TTL and compression
-- **Progressive Throttling**: Domain-specific rate limiting with exponential backoff (applied only to upstream requests)
+- **Request Deduplication**: Automatic coalescing of concurrent requests for the same resource to prevent duplicate upstream calls
+- **Fine-Grained Rate Limiting**: Per-second, per-minute, and per-hour rate limits with automatic request throttling (applied only to cache misses)
+- **Progressive Throttling**: Domain-specific rate limiting with exponential backoff
 - **Proxy Security**: Optional secure key authentication to control proxy access
 - **Upstream Pass-through**: Transparent forwarding of API keys and authentication to upstream APIs
 - **Metrics Collection**: Detailed statistics on cache performance, request patterns, and throttling
@@ -269,11 +271,14 @@ config = {
     "domain_mappings": {
         "conceptnet": {
             "upstream": "https://api.conceptnet.io",
-            "ttl_seconds": 3600  # 1 hour for frequently changing data
+            "ttl_seconds": 3600,  # 1 hour for frequently changing data
+            "max_requests_per_minute": 60,  # Optional: limit to 60 requests per minute
+            "max_requests_per_second": 10   # Optional: limit to 10 requests per second
         },
         "wikidata": {
             "upstream": "https://www.wikidata.org",
-            "ttl_seconds": 86400  # 1 day for more stable data
+            "ttl_seconds": 86400,  # 1 day for more stable data
+            "max_requests_per_minute": 30   # Optional: limit to 30 requests per minute
         }
     },
     "server": {
@@ -351,6 +356,142 @@ response4 = requests.get("http://localhost:8080/api/other") # ✗ 429 Throttled 
 - **Upstream APIs are protected** - Throttling only applies to actual upstream requests
 - **Better user experience** - Frequently requested data remains fast
 - **Cost optimization** - Reduces upstream API usage and associated costs
+
+### Request Deduplication
+
+When multiple clients make concurrent requests for the same resource and the cache misses, the proxy automatically **deduplicates** these requests to prevent unnecessary duplicate calls to the upstream API.
+
+#### How It Works
+
+**Automatic Coalescing:**
+- When a cache miss occurs, the proxy checks if another thread is already fetching that resource
+- If yes, subsequent requests **wait** for the first request to complete
+- Once the first request finishes, **all waiting requests** receive the same result
+- The result is then cached for future requests
+
+**Example Scenario:**
+
+```python
+# Client A, B, and C all request the same resource simultaneously
+# (e.g., from a burst of parallel requests in an LLM pipeline)
+
+Client A → Cache miss → Starts fetching from upstream
+Client B → Cache miss → Sees A is fetching, waits for A's result
+Client C → Cache miss → Sees A is fetching, waits for A's result
+
+# When A completes:
+A finishes → Returns result to Client A
+           → Returns same result to Client B (deduplicated)
+           → Returns same result to Client C (deduplicated)
+           → Caches result for future requests
+
+# Result: Only 1 upstream request instead of 3!
+```
+
+#### Benefits
+
+- **Reduces upstream load**: Prevents duplicate requests during bursts
+- **Cost savings**: Fewer API calls = lower costs for paid APIs
+- **Faster responses**: Waiting requests get results instantly (no upstream round-trip)
+- **Automatic**: No configuration required, works out of the box
+
+#### Error Handling
+
+- If the first request fails, the error is propagated to all waiting requests
+- If the first request times out, waiting requests receive a 504 Gateway Timeout
+- Default wait timeout is 60 seconds (configurable per request)
+
+**Note**: Deduplication is based on the cache key (URL + method + body), so requests with different parameters are handled independently.
+
+---
+
+### Fine-Grained Rate Limiting
+
+In addition to the hour-level throttling (configured via `throttling.domain_limits`), you can configure per-minute and per-second rate limits for individual domains. This is useful for APIs with strict rate limits or when you want to avoid bursting requests.
+
+#### Configuration
+
+Rate limits are configured per-domain in `domain_mappings`:
+
+```python
+config = {
+    "domain_mappings": {
+        "wikidata": {
+            "upstream": "https://www.wikidata.org",
+            "max_requests_per_minute": 60,  # Limit to 60 requests per minute
+            "max_requests_per_second": 10   # Limit to 10 requests per second
+        },
+        "openai": {
+            "upstream": "https://api.openai.com",
+            "max_requests_per_minute": 500  # Only per-minute limit
+        }
+    },
+    "throttling": {
+        "default_requests_per_hour": 1000,  # Hour-level limit (all domains)
+        "progressive_max_delay": 300,       # Max time to wait before returning 429
+        "domain_limits": {
+            "wikidata": 3000  # Hour-level limit for wikidata specifically
+        }
+    }
+}
+```
+
+#### How It Works
+
+**Automatic Request Throttling:**
+- When a cache miss occurs, the system calculates the required delay to stay within ALL configured rate limits (per-second, per-minute, and per-hour)
+- If a delay is needed, the proxy **automatically sleeps** for that duration before making the upstream request
+- The request eventually succeeds (no 429 error returned to client)
+
+**Maximum Delay Protection:**
+- If the required delay exceeds `progressive_max_delay` (default 300 seconds), the proxy returns `429 Too Many Requests` instead of waiting
+- This prevents requests from blocking for excessive periods
+
+**Multi-Window Priority:**
+- The system checks all configured time windows and uses the **maximum delay** required across all windows
+- Example: If per-second limit needs 0.5s delay and per-minute limit needs 5s delay, the proxy waits 5 seconds
+
+**Example Flow:**
+
+```python
+# With max_requests_per_second: 2 configured
+proxy.start(blocking=False)
+
+# Request 1 - No delay, immediate
+response1 = requests.get("http://localhost:8080/wikidata/query?...")  # Instant
+
+# Request 2 - No delay, immediate
+response2 = requests.get("http://localhost:8080/wikidata/query?...")  # Instant
+
+# Request 3 - Automatic delay before upstream request
+response3 = requests.get("http://localhost:8080/wikidata/query?...")  # Waits ~1 second, then completes
+
+# Cache hits are NEVER delayed
+cached = requests.get("http://localhost:8080/wikidata/query?...")     # Instant (cache hit)
+```
+
+#### Use Cases
+
+**Per-Second Limits:**
+- Prevent request bursts
+- Smooth out traffic to upstream APIs
+- Comply with strict burst rate limits
+
+**Per-Minute Limits:**
+- Control sustained request rates
+- Stay within API tier limits (e.g., "60 requests per minute")
+- Avoid triggering upstream rate limiters
+
+**Combined Limits:**
+- Enforce both burst protection (per-second) and sustained rate control (per-minute/hour)
+- Example: "Max 10 req/sec, 300 req/min, 5000 req/hour"
+
+#### Configuration Notes
+
+- All rate limit parameters are **optional**
+- Rate limits apply **only to cache misses** (cache hits bypass all throttling)
+- Parameters only need to be specified for domains that require rate limiting
+- If not specified, only the hour-level throttling applies (via `throttling.domain_limits`)
 
 ### TTL (Time To Live) Configuration
 

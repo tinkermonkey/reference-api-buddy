@@ -32,6 +32,7 @@ class TestHandlerTTLIntegration:
         proxy.logger = Mock()
         proxy.security_manager = None
         proxy.throttle_manager = None
+        proxy.inflight_tracker = None
         proxy.metrics_collector = None
 
         # Mock cache engine with TTL manager

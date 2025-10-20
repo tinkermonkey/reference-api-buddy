@@ -31,6 +31,7 @@ class DummyThrottleManager:
         self.domain = "throttled.com"
         self.delay = 7
         self.limit = 5
+        self.max_delay = 300
         self.state = type(
             "State", (), {"request_timestamps": [time.time()] * 6, "violations": 2, "delay_seconds": self.delay}
         )()
@@ -38,8 +39,9 @@ class DummyThrottleManager:
     def record_request(self, domain):
         self.calls += 1
 
-    def should_throttle(self, domain):
-        return domain == self.domain
+    def get_required_delay(self, domain):
+        """Return -1 if throttled (exceeds max_delay), else 0."""
+        return -1.0 if domain == self.domain else 0.0
 
     def get_throttle_delay(self, domain):
         return self.delay
@@ -99,6 +101,7 @@ class DummyProxy:
         self.security_manager = DummySecurityManager()
         self.throttle_manager = DummyThrottleManager()
         self.cache_engine = DummyCacheEngine()
+        self.inflight_tracker = None  # Disable deduplication for integration tests
 
 
 @pytest.fixture(scope="module")
@@ -134,7 +137,7 @@ def test_throttle_headers(http_server):
     assert "X-RateLimit-Limit" in headers
     assert "X-RateLimit-Remaining" in headers
     assert "X-RateLimit-Reset" in headers
-    assert int(headers["Retry-After"]) == 7
+    assert int(headers["Retry-After"]) == 300  # max_delay is now used instead of get_throttle_delay
     assert int(headers["X-RateLimit-Limit"]) == 5
     assert int(headers["X-RateLimit-Remaining"]) == 0
     assert int(headers["X-RateLimit-Reset"]) > 0

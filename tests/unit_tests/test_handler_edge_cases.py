@@ -431,8 +431,8 @@ class TestHandlerEdgeCases:
         """Test metrics collection when throttling occurs."""
         throttle_manager = Mock()
         throttle_manager.record_request.return_value = None
-        throttle_manager.should_throttle.return_value = True
-        throttle_manager.get_throttle_delay.return_value = 5
+        throttle_manager.get_required_delay.return_value = -1.0  # Exceeds max_delay
+        throttle_manager.max_delay = 300
         throttle_manager.domain_limits = {}
         throttle_manager.default_limit = 1000
         throttle_manager.time_window = 3600
@@ -444,6 +444,7 @@ class TestHandlerEdgeCases:
         metrics_collector = Mock()
         config = {"domain_mappings": {"testdomain": {"upstream": "http://example.com"}}}
         proxy = MockProxy(config=config, throttle_manager=throttle_manager)
+        proxy.inflight_tracker = None  # Disable deduplication for this test
         proxy.metrics_collector = metrics_collector
 
         handler = MockHandler(proxy=proxy, path="/testdomain/test")
@@ -857,8 +858,8 @@ class TestHandlerEdgeCases:
         """Test throttling manager integration."""
         throttle_manager = Mock()
         throttle_manager.record_request.return_value = None
-        throttle_manager.should_throttle.return_value = True
-        throttle_manager.get_throttle_delay.return_value = 5
+        throttle_manager.get_required_delay.return_value = -1.0  # Exceeds max_delay
+        throttle_manager.max_delay = 300
         throttle_manager.domain_limits = {"": 100}  # Empty domain for urlparse
         throttle_manager.default_limit = 1000
         throttle_manager.time_window = 3600
@@ -875,7 +876,7 @@ class TestHandlerEdgeCases:
         handler._handle_request_safe("GET")
 
         assert handler._response_status == 429
-        assert "5" in handler._response_headers.get("Retry-After", "")
+        assert "300" in handler._response_headers.get("Retry-After", "")
 
     def test_cache_hit_scenario(self):
         """Test cache hit scenario."""
@@ -1035,8 +1036,8 @@ class TestHandlerEdgeCases:
         """Test metrics collection when throttling occurs."""
         throttle_manager = Mock()
         throttle_manager.record_request.return_value = None
-        throttle_manager.should_throttle.return_value = True
-        throttle_manager.get_throttle_delay.return_value = 5
+        throttle_manager.get_required_delay.return_value = -1.0  # Exceeds max_delay
+        throttle_manager.max_delay = 300
         throttle_manager.domain_limits = {}
         throttle_manager.default_limit = 1000
         throttle_manager.time_window = 3600
