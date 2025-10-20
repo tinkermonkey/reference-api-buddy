@@ -4,6 +4,12 @@ A Python caching proxy module designed for reference APIs where the data is non-
 
 Currently this doesn't function as a vanilla MITM proxy since none of the upstream sources of interest are `HTTP` and this was built specifically to avoid having to disable `HTTPS` cert validation. If you're looking for a MITM proxy, there are many out there.
 
+## Intstall
+
+`pip install reference-api-buddy`
+
+[https://pypi.org/project/reference-api-buddy/](https://pypi.org/project/reference-api-buddy/)
+
 ## Features
 
 - **Persistent Caching**: Persistent SQLite-based cache (in-memory or on-disk) with configurable TTL and compression
