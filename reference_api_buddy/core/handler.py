@@ -37,39 +37,43 @@ class RequestProcessingMixin:
             # Map proxy requests to real ones
             domain_mappings = self.proxy.config.get("domain_mappings", {})
 
-            # Parse the path to extract domain key
-            path_parts = target_url.lstrip("/").split("/")
-            if path_parts:
-                domain_key = path_parts[0]
-                if domain_key in domain_mappings:
-                    upstream = domain_mappings[domain_key].get("upstream", "")
-                    if upstream:
-                        # Replace domain key with real upstream URL
-                        real_path = "/" + "/".join(path_parts[1:]) if len(path_parts) > 1 else "/"
-                        # Handle query parameters
-                        if "?" in target_url:
-                            path_part, query_part = target_url.split("?", 1)
-                            real_path = "/" + "/".join(path_part.lstrip("/").split("/")[1:])
-                            if not real_path or real_path == "/":
-                                real_path = "/"
-                            real_url = upstream.rstrip("/") + real_path + "?" + query_part
-                        else:
-                            real_url = upstream.rstrip("/") + real_path
-                    else:
-                        # No upstream configured, return 502 Bad Gateway
-                        error_msg = f"No upstream configured for domain: {domain_key}"
-                        self.logger.error(error_msg)
-                        return error_msg.encode("utf-8"), 502, {"Content-Type": "text/plain"}
-                else:
-                    # Domain not mapped, return 404 Not Found
-                    error_msg = f"Domain not mapped: {domain_key}"
-                    self.logger.warning(error_msg)
-                    return error_msg.encode("utf-8"), 404, {"Content-Type": "text/plain"}
+            # Parse the target URL to handle both full URLs and path-based URLs
+            parsed = urlparse(target_url)
+            query_string = parsed.query
+
+            # If this is a full URL (has netloc), use it as the domain key
+            if parsed.netloc:
+                domain_key = parsed.netloc
+                request_path = parsed.path or "/"
             else:
-                # Invalid path, return 400 Bad Request
-                error_msg = "Invalid request path"
-                self.logger.warning(f"Invalid path: {target_url}")
-                return error_msg.encode("utf-8"), 400, {"Content-Type": "text/plain"}
+                # Parse the path to extract domain key (path-based URL like /domain/resource)
+                path_only = parsed.path  # This excludes query string
+                path_parts = path_only.lstrip("/").split("/") if path_only.lstrip("/") else []
+                if not path_parts or not path_parts[0]:
+                    # Empty domain key - treat as unmapped domain
+                    domain_key = ""
+                    request_path = "/"
+                else:
+                    domain_key = path_parts[0]
+                    request_path = "/" + "/".join(path_parts[1:]) if len(path_parts) > 1 else "/"
+
+            if domain_key in domain_mappings:
+                upstream = domain_mappings[domain_key].get("upstream", "")
+                if upstream:
+                    # Build the real URL from upstream + request_path + query_string
+                    real_url = upstream.rstrip("/") + request_path
+                    if query_string:
+                        real_url += "?" + query_string
+                else:
+                    # No upstream configured, return 502 Bad Gateway
+                    error_msg = f"No upstream configured for domain: {domain_key}"
+                    self.logger.error(error_msg)
+                    return error_msg.encode("utf-8"), 502, {"Content-Type": "text/plain"}
+            else:
+                # Domain not mapped, return 404 Not Found
+                error_msg = f"Domain not mapped: {domain_key}"
+                self.logger.warning(error_msg)
+                return error_msg.encode("utf-8"), 404, {"Content-Type": "text/plain"}
 
             self.logger.debug(f"Forwarding {method} request from {target_url} to {real_url}")
 

@@ -47,3 +47,11 @@ repos:
         pass_filenames: false
         always_run: true
         verbose: true
+
+      - id: pytest-check
+        name: run full test suite
+        entry: .venv/bin/pytest tests/ -v --timeout=300
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [push]
