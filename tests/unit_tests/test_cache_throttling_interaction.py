@@ -82,6 +82,7 @@ class TestCacheThrottlingInteraction:
             throttle_manager=throttle_manager,
             cache_engine=cache_engine,
         )
+        proxy.inflight_tracker = None  # Disable deduplication for this test
 
         class TestHandler(RequestProcessingMixin):
             def __init__(self):
@@ -131,8 +132,8 @@ class TestCacheThrottlingInteraction:
         # Setup throttle manager that will throttle
         throttle_manager = Mock()
         throttle_manager.record_request.return_value = None
-        throttle_manager.should_throttle.return_value = True
-        throttle_manager.get_throttle_delay.return_value = 5
+        throttle_manager.get_required_delay.return_value = -1.0  # Exceeds max_delay
+        throttle_manager.max_delay = 300
         throttle_manager.domain_limits = {"testdomain": 100}
         throttle_manager.default_limit = 1000
         throttle_manager.time_window = 3600
@@ -153,6 +154,7 @@ class TestCacheThrottlingInteraction:
             throttle_manager=throttle_manager,
             cache_engine=cache_engine,
         )
+        proxy.inflight_tracker = None  # Disable deduplication for this test
         proxy.metrics_collector = metrics_collector
 
         class TestHandler(RequestProcessingMixin):
@@ -186,8 +188,7 @@ class TestCacheThrottlingInteraction:
         cache_engine.get.assert_called_once()
 
         # Throttling should be invoked only after cache miss
-        throttle_manager.record_request.assert_called_once_with("testdomain")
-        throttle_manager.should_throttle.assert_called_once_with("testdomain")
+        throttle_manager.get_required_delay.assert_called_once_with("testdomain")
 
         # Metrics should record the throttle event with cache_miss flag
         metrics_collector.record_event.assert_called_once()
@@ -200,7 +201,7 @@ class TestCacheThrottlingInteraction:
         # Setup throttle manager that will NOT throttle
         throttle_manager = Mock()
         throttle_manager.record_request.return_value = None
-        throttle_manager.should_throttle.return_value = False  # Won't throttle
+        throttle_manager.get_required_delay.return_value = 0.0  # No delay needed
 
         # Setup cache engine with a cache miss
         cache_engine = Mock()
@@ -213,6 +214,7 @@ class TestCacheThrottlingInteraction:
             throttle_manager=throttle_manager,
             cache_engine=cache_engine,
         )
+        proxy.inflight_tracker = None  # Disable deduplication for this test
 
         class TestHandler(RequestProcessingMixin):
             def __init__(self):
@@ -249,8 +251,8 @@ class TestCacheThrottlingInteraction:
         cache_engine.get.assert_called_once()
 
         # Throttling should be invoked but not trigger throttling
+        throttle_manager.get_required_delay.assert_called_once_with("testdomain")
         throttle_manager.record_request.assert_called_once_with("testdomain")
-        throttle_manager.should_throttle.assert_called_once_with("testdomain")
 
         # Response should be cached
         cache_engine.set.assert_called_once()

@@ -2,6 +2,7 @@ import time
 from typing import Any, Dict, List, Optional, Tuple
 
 from reference_api_buddy.cache.engine import CacheEngine
+from reference_api_buddy.core.inflight_tracker import InFlightTracker
 from reference_api_buddy.database.manager import DatabaseManager
 from reference_api_buddy.security.manager import SecurityManager
 from reference_api_buddy.throttling.manager import ThrottleManager
@@ -154,7 +155,10 @@ class CachingProxy:
             config=self.config,
             max_response_size=self.config.get("cache", {}).get("max_cache_response_size", 10485760),
         )
-        self.throttle_manager = ThrottleManager(self.config.get("throttling", {}))
+        self.throttle_manager = ThrottleManager(
+            self.config.get("throttling", {}), domain_mappings=self.config.get("domain_mappings", {})
+        )
+        self.inflight_tracker = InFlightTracker()
         self.metrics_collector = MetricsCollector()
         self.callbacks = self.config.get("callbacks", {})
         self.server: Optional[Any] = None
@@ -337,7 +341,10 @@ class CachingProxy:
             config=self.config,
             max_response_size=self.config.get("cache", {}).get("max_cache_response_size", 10485760),
         )
-        self.throttle_manager = ThrottleManager(self.config.get("throttling", {}))
+        self.throttle_manager = ThrottleManager(
+            self.config.get("throttling", {}), domain_mappings=self.config.get("domain_mappings", {})
+        )
+        self.inflight_tracker = InFlightTracker()
         self.metrics_collector = MetricsCollector()
         self.callbacks = self.config.get("callbacks", {})
 

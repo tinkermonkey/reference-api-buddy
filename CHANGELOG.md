@@ -6,6 +6,44 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.5.0] - 2025-10-20
+
+### Added
+- **Fine-grained rate limiting**: Per-second and per-minute rate limits for domain-specific throttling
+  - Configure `max_requests_per_second` and `max_requests_per_minute` in domain mappings
+  - Automatic request throttling with configurable delay tolerance
+  - Multi-window priority system (second → minute → hour)
+  - Sliding window implementation for accurate rate limiting
+  - Backward compatible with existing hour-level throttling
+- **Request deduplication**: Automatic coalescing of concurrent requests to the same resource
+  - `InFlightTracker` class for tracking in-flight upstream requests
+  - Thread-safe coordination using threading events
+  - Prevents duplicate upstream API calls during request bursts
+  - Error propagation and timeout handling for waiting requests
+  - Automatic cleanup of completed requests
+  - Statistics reporting via `get_stats()`
+- Comprehensive test coverage with 8 new tests for request deduplication and 9 tests for rate limiting
+- Configuration validation for new rate limiting parameters
+
+### Changed
+- `ThrottleManager` now accepts `domain_mappings` parameter to extract per-minute/per-second limits
+- `ThrottleManager` extends `ThrottleState` to track minute and second-level request windows
+- Request handler flow modified to use `get_required_delay()` instead of `should_throttle()`
+- Proxy now sleeps automatically to stay within rate limits rather than rejecting requests with 429
+- Only returns 429 when required delay exceeds `progressive_max_delay` (default 300 seconds)
+- Request handler wraps upstream forwarding with deduplication logic
+- Updated existing tests to work with new `get_required_delay()` method
+
+### Fixed
+- Prevents burst requests to upstream APIs when multiple clients request the same resource simultaneously
+- Eliminates race conditions during concurrent cache misses for identical resources
+
+### Performance
+- Significant reduction in duplicate upstream API calls during request bursts
+- Faster response times for waiting requests (share result instead of making duplicate calls)
+- Better upstream API utilization with automatic rate smoothing
+- **Deduplicated requests do NOT count against rate limits** - only the first upstream request is rate-limited
+
 ## [0.4.3] - 2025-09-16
 
 ### Added

@@ -349,51 +349,153 @@ class RequestProcessingMixin:
                     else:
                         self.logger.info(f"Cache miss for key: {cache_key}")
 
-                # Throttling - only apply when forwarding to upstream (cache miss)
-                if hasattr(self.proxy, "throttle_manager") and self.proxy.throttle_manager is not None:
-                    # Use the matched domain key for throttling
-                    domain = matched_domain_key
-                    self.proxy.throttle_manager.record_request(domain)
-                    if self.proxy.throttle_manager.should_throttle(domain):
-                        delay = self.proxy.throttle_manager.get_throttle_delay(domain)
-                        limit = getattr(self.proxy.throttle_manager, "domain_limits", {}).get(
-                            domain, getattr(self.proxy.throttle_manager, "default_limit", 1000)
-                        )
-                        state = self.proxy.throttle_manager.get_state(domain)
-                        remaining = max(0, limit - len(state.request_timestamps))
-                        reset = 1
-                        if state.request_timestamps:
-                            reset = int(
-                                self.proxy.throttle_manager.time_window - (time.time() - state.request_timestamps[0])
-                            )
-                        self.logger.info(
-                            f"Throttling upstream request for domain {domain}: "
-                            f"delay={delay}, limit={limit}, "
-                            f"remaining={remaining}, reset={reset}"
-                        )
-                        self.send_response(429)
-                        self.send_header("Retry-After", str(delay))
-                        self.send_header("X-RateLimit-Limit", str(limit))
-                        self.send_header("X-RateLimit-Remaining", str(remaining))
-                        self.send_header("X-RateLimit-Reset", str(reset))
-                        if hasattr(self.proxy, "metrics_collector") and self.proxy.metrics_collector:
-                            self.proxy.metrics_collector.record_event(
-                                "throttle",
-                                {
-                                    "domain": domain,
-                                    "delay": delay,
-                                    "limit": limit,
-                                    "remaining": remaining,
-                                    "reset": reset,
-                                    "cache_miss": True,  # Mark this as a cache miss throttle
-                                },
-                            )
-                        self.end_headers()
-                        self.wfile.write(b"Too Many Requests\n")
-                        return
+                # Check if another thread is already fetching this resource (deduplication)
+                # Do this BEFORE rate limiting to avoid counting duplicate requests
+                if hasattr(self.proxy, "inflight_tracker") and self.proxy.inflight_tracker is not None:
+                    inflight_request = self.proxy.inflight_tracker.should_wait(cache_key)
 
-                # Forward to upstream if cache miss
-                response_data, status_code, headers = self._forward_request(method, target_url, body, self.headers)
+                    if inflight_request is not None:
+                        # Another thread is fetching this, wait for its result
+                        # Deduplicated requests do NOT count against rate limits
+                        self.logger.info(f"Request already in-flight for key: {cache_key}, waiting for result")
+                        result, error = self.proxy.inflight_tracker.wait_for_result(cache_key, inflight_request)
+
+                        if error:
+                            # The in-flight request failed
+                            self.logger.error(f"In-flight request failed: {error}")
+                            self.send_response(500)
+                            self.send_header("Content-Type", "text/plain")
+                            self.end_headers()
+                            self.wfile.write(f"Error: {str(error)}".encode())
+                            return
+
+                        if result is None:
+                            # Timeout waiting for in-flight request
+                            self.logger.warning(f"Timeout waiting for in-flight request: {cache_key}")
+                            self.send_response(504)
+                            self.send_header("Content-Type", "text/plain")
+                            self.end_headers()
+                            self.wfile.write(b"Gateway Timeout: In-flight request timed out")
+                            return
+
+                        # Use the result from the in-flight request
+                        response_data, status_code, headers = result
+                        self.logger.info(f"Using deduplicated result for key: {cache_key}")
+                    else:
+                        # We're the first thread for this resource
+                        # Apply rate limiting ONLY to the actual upstream request
+                        if hasattr(self.proxy, "throttle_manager") and self.proxy.throttle_manager is not None:
+                            # Use the matched domain key for throttling
+                            domain = matched_domain_key
+
+                            # Calculate required delay to stay within rate limits
+                            delay = self.proxy.throttle_manager.get_required_delay(domain)
+
+                            if delay == -1.0:
+                                # Delay exceeds max_delay, return 429
+                                limit = getattr(self.proxy.throttle_manager, "domain_limits", {}).get(
+                                    domain, getattr(self.proxy.throttle_manager, "default_limit", 1000)
+                                )
+                                state = self.proxy.throttle_manager.get_state(domain)
+                                remaining = max(0, limit - len(state.request_timestamps))
+                                reset = 1
+                                if state.request_timestamps:
+                                    reset = int(
+                                        self.proxy.throttle_manager.time_window
+                                        - (time.time() - state.request_timestamps[0])
+                                    )
+                                max_delay = self.proxy.throttle_manager.max_delay
+                                self.logger.info(
+                                    f"Throttling upstream request for domain {domain}: "
+                                    f"required delay exceeds max_delay ({max_delay}s), returning 429"
+                                )
+                                self.send_response(429)
+                                self.send_header("Retry-After", str(max_delay))
+                                self.send_header("X-RateLimit-Limit", str(limit))
+                                self.send_header("X-RateLimit-Remaining", str(remaining))
+                                self.send_header("X-RateLimit-Reset", str(reset))
+                                if hasattr(self.proxy, "metrics_collector") and self.proxy.metrics_collector:
+                                    self.proxy.metrics_collector.record_event(
+                                        "throttle",
+                                        {
+                                            "domain": domain,
+                                            "delay": max_delay,
+                                            "limit": limit,
+                                            "remaining": remaining,
+                                            "reset": reset,
+                                            "cache_miss": True,
+                                        },
+                                    )
+                                self.end_headers()
+                                self.wfile.write(b"Too Many Requests\n")
+                                return
+                            elif delay > 0:
+                                # Sleep to stay within rate limits
+                                self.logger.info(f"Rate limiting: delaying request to domain {domain} by {delay:.3f}s")
+                                time.sleep(delay)
+
+                            # Record the request after delay (only for actual upstream requests)
+                            self.proxy.throttle_manager.record_request(domain)
+
+                        # Make the actual upstream request
+                        try:
+                            response_data, status_code, headers = self._forward_request(
+                                method, target_url, body, self.headers
+                            )
+                            # Notify waiters of success
+                            self.proxy.inflight_tracker.complete_request(
+                                cache_key, result=(response_data, status_code, headers)
+                            )
+                        except Exception as e:
+                            # Notify waiters of failure
+                            self.proxy.inflight_tracker.complete_request(cache_key, error=e)
+                            raise
+                else:
+                    # No deduplication, apply rate limiting and make the request
+                    if hasattr(self.proxy, "throttle_manager") and self.proxy.throttle_manager is not None:
+                        domain = matched_domain_key
+                        delay = self.proxy.throttle_manager.get_required_delay(domain)
+
+                        if delay == -1.0:
+                            # Return 429 if delay exceeds tolerance
+                            limit = getattr(self.proxy.throttle_manager, "domain_limits", {}).get(
+                                domain, getattr(self.proxy.throttle_manager, "default_limit", 1000)
+                            )
+                            state = self.proxy.throttle_manager.get_state(domain)
+                            remaining = max(0, limit - len(state.request_timestamps))
+                            reset = 1
+                            if state.request_timestamps:
+                                reset = int(
+                                    self.proxy.throttle_manager.time_window
+                                    - (time.time() - state.request_timestamps[0])
+                                )
+                            max_delay = self.proxy.throttle_manager.max_delay
+                            self.send_response(429)
+                            self.send_header("Retry-After", str(max_delay))
+                            self.send_header("X-RateLimit-Limit", str(limit))
+                            self.send_header("X-RateLimit-Remaining", str(remaining))
+                            self.send_header("X-RateLimit-Reset", str(reset))
+                            if hasattr(self.proxy, "metrics_collector") and self.proxy.metrics_collector:
+                                self.proxy.metrics_collector.record_event(
+                                    "throttle",
+                                    {
+                                        "domain": domain,
+                                        "delay": max_delay,
+                                        "limit": limit,
+                                        "remaining": remaining,
+                                        "reset": reset,
+                                        "cache_miss": True,
+                                    },
+                                )
+                            self.end_headers()
+                            self.wfile.write(b"Too Many Requests\n")
+                            return
+                        elif delay > 0:
+                            time.sleep(delay)
+
+                        self.proxy.throttle_manager.record_request(domain)
+
+                    response_data, status_code, headers = self._forward_request(method, target_url, body, self.headers)
 
                 # Cache the response (data is already decompressed by _forward_request)
                 if (

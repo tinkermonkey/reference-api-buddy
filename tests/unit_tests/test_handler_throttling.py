@@ -57,8 +57,8 @@ class TestThrottlingIntegration:
         """Test throttling with metrics collection."""
         throttle_manager = Mock()
         throttle_manager.record_request.return_value = None
-        throttle_manager.should_throttle.return_value = True
-        throttle_manager.get_throttle_delay.return_value = 5
+        throttle_manager.get_required_delay.return_value = -1.0  # Exceeds max_delay
+        throttle_manager.max_delay = 300
         throttle_manager.domain_limits = {}
         throttle_manager.default_limit = 1000
         throttle_manager.time_window = 3600
@@ -73,6 +73,7 @@ class TestThrottlingIntegration:
             config={"domain_mappings": {"testdomain": {"upstream": "http://example.com"}}},
             throttle_manager=throttle_manager,
         )
+        proxy.inflight_tracker = None  # Disable deduplication for this test
         proxy.metrics_collector = metrics_collector
 
         class TestHandler(RequestProcessingMixin):
