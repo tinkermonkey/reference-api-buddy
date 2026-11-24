@@ -267,7 +267,7 @@ class TestHandlerEdgeCases:
     def test_security_manager_authorized(self):
         """Test security manager allowing authorized request."""
         security_manager = Mock()
-        security_manager.extract_secure_key.return_value = ("valid_key", None)
+        security_manager.extract_secure_key.return_value = ("valid_key", "/testdomain/test")
         security_manager.validate_request.return_value = True
 
         config = {
@@ -818,7 +818,7 @@ class TestHandlerEdgeCases:
     def test_security_manager_valid_key(self):
         """Test security manager with valid key."""
         security_manager = Mock()
-        security_manager.extract_secure_key.return_value = ("valid_key", None)
+        security_manager.extract_secure_key.return_value = ("valid_key", "/testdomain/test")
         security_manager.validate_request.return_value = True
 
         config = {

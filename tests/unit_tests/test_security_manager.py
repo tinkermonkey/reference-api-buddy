@@ -104,3 +104,41 @@ def test_extract_secure_key_priority():
     extracted, sanitized = sm.extract_secure_key(path, headers, query_params)
     assert extracted is None
     assert sanitized == "/domain.com/api"
+
+
+def test_extract_from_query_accepts_parse_qs_lists():
+    sm = SecurityManager({})
+    key = sm.secure_key
+    path = f"/domain.com/api?a=1&key={key}&b=2"
+    extracted, sanitized = sm._extract_from_query(path, {"key": [key], "a": ["1"], "b": ["2"]})
+    assert extracted == key
+    assert sanitized == "/domain.com/api?a=1&b=2"
+    extracted, sanitized = sm._extract_from_query("/api", {"key": []})
+    assert extracted is None
+    assert sanitized == "/api"
+
+
+def test_extract_secure_key_strips_query_key():
+    sm = SecurityManager({})
+    key = sm.secure_key
+    extracted, sanitized = sm.extract_secure_key(f"/domain.com/api?key={key}", {}, {"key": [key]})
+    assert extracted == key
+    assert sanitized == "/domain.com/api"
+
+
+def test_remove_query_param_keeps_other_parameters_verbatim():
+    remove = SecurityManager._remove_query_param
+    assert remove("/api?key=abc", "key") == "/api"
+    assert remove("/api?q=a%20b&key=abc&key=def&r=", "key") == "/api?q=a%20b&r="
+    assert remove("/api?keys=1&monkey=2", "key") == "/api?keys=1&monkey=2"
+    assert remove("/api", "key") == "/api"
+
+
+def test_is_proxy_authorization():
+    sm = SecurityManager({})
+    key = sm.secure_key
+    assert sm.is_proxy_authorization(f"Bearer {key}")
+    assert sm.is_proxy_authorization(f"bearer {key}")
+    assert not sm.is_proxy_authorization("Bearer upstream-token")
+    assert not sm.is_proxy_authorization(f"Basic {key}")
+    assert not sm.is_proxy_authorization(None)
