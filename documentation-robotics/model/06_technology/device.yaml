@@ -1,0 +1,19 @@
+technology.device.developer-workstation:
+  id: 2cd43e13-d851-4ebc-8cef-e0392eb88184
+  path: technology.device.developer-workstation
+  spec_node_id: technology.device
+  type: device
+  layer_id: technology
+  name: Developer Workstation
+  description: The machine that runs the pipeline and the proxy (Linux, macOS or
+    Windows per the CI matrix).
+  attributes:
+    deviceType: workstation
+  source_reference:
+    provenance: manual
+    locations:
+      - file: .github/workflows/ci.yml
+  metadata:
+    created_at: 2026-11-24T17:55:54.547Z
+    updated_at: 2026-11-24T17:55:54.547Z
+    version: 1

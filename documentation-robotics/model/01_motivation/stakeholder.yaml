@@ -1,0 +1,31 @@
+motivation.stakeholder.pipeline-developer:
+  id: 5d97b625-521b-4531-89af-d197412a944a
+  path: motivation.stakeholder.pipeline-developer
+  spec_node_id: motivation.stakeholder
+  type: stakeholder
+  layer_id: motivation
+  name: Pipeline Developer
+  description: Developers building and tuning NLP and LLM pipelines, bots and
+    graphs that call public reference APIs (ConceptNet, DBpedia, Wikidata) and
+    paid APIs such as search engines on every run.
+  attributes:
+    type: end-user
+  metadata:
+    created_at: 2026-11-24T17:55:54.496Z
+    updated_at: 2026-11-24T17:55:54.496Z
+    version: 1
+motivation.stakeholder.reference-api-provider:
+  id: 7adf66a1-e96c-4b95-9f6e-a855acfc1d84
+  path: motivation.stakeholder.reference-api-provider
+  spec_node_id: motivation.stakeholder
+  type: stakeholder
+  layer_id: motivation
+  name: Reference API Provider
+  description: Operators of the public and paid upstream APIs the proxy fronts.
+    They publish rate limits and bear the load of repeated identical requests.
+  attributes:
+    type: external
+  metadata:
+    created_at: 2026-11-24T17:55:54.499Z
+    updated_at: 2026-11-24T17:55:54.499Z
+    version: 1

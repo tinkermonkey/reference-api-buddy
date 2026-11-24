@@ -1,0 +1,1049 @@
+api.response.get-proxied-upstream-request-200:
+  id: 003ed397-047b-4349-9765-227c8c10600e
+  path: api.response.get-proxied-upstream-request-200
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Proxied Upstream Request 200
+  description: Upstream response (2xx is cached); upstream error statuses and
+    bodies pass through.
+  attributes:
+    description: Upstream response (2xx is cached); upstream error statuses and
+      bodies pass through.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.537Z
+    updated_at: 2026-11-24T17:55:54.537Z
+    version: 1
+api.response.get-proxied-upstream-request-401:
+  id: 7cba4aa4-b30f-42f1-8b27-afff23809b24
+  path: api.response.get-proxied-upstream-request-401
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Proxied Upstream Request 401
+  description: Secure key required and missing or wrong.
+  attributes:
+    description: Secure key required and missing or wrong.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.get-proxied-upstream-request-404:
+  id: 65ed3356-69f5-4c68-941c-b30e90a4b3e3
+  path: api.response.get-proxied-upstream-request-404
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Proxied Upstream Request 404
+  description: Domain key not in domain_mappings.
+  attributes:
+    description: Domain key not in domain_mappings.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.get-proxied-upstream-request-429:
+  id: a1a54180-b698-4b08-b0a8-afb6990f0c63
+  path: api.response.get-proxied-upstream-request-429
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Proxied Upstream Request 429
+  description: Upstream rate limit would need a delay over progressive_max_delay.
+  attributes:
+    description: Upstream rate limit would need a delay over progressive_max_delay.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.get-proxied-upstream-request-500:
+  id: 01caed70-6bbc-4d82-9c48-777ca7bb88fa
+  path: api.response.get-proxied-upstream-request-500
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Proxied Upstream Request 500
+  description: Unhandled error while processing the request.
+  attributes:
+    description: Unhandled error while processing the request.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.get-proxied-upstream-request-502:
+  id: 5e1ae303-4885-400f-9438-66763bf85064
+  path: api.response.get-proxied-upstream-request-502
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Proxied Upstream Request 502
+  description: Upstream unreachable, or the mapping has no upstream.
+  attributes:
+    description: Upstream unreachable, or the mapping has no upstream.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.get-proxied-upstream-request-504:
+  id: 47efb56e-28da-401a-ae75-ce26e1513abd
+  path: api.response.get-proxied-upstream-request-504
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Proxied Upstream Request 504
+  description: Timed out waiting for a concurrent identical request.
+  attributes:
+    description: Timed out waiting for a concurrent identical request.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.post-proxied-upstream-request-200:
+  id: 7d2bce65-bd0b-4185-9d35-2d2ed3846f59
+  path: api.response.post-proxied-upstream-request-200
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: POST Proxied Upstream Request 200
+  description: Upstream response (2xx is cached); upstream error statuses and
+    bodies pass through.
+  attributes:
+    description: Upstream response (2xx is cached); upstream error statuses and
+      bodies pass through.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.post-proxied-upstream-request-401:
+  id: c56f1235-84dd-4ee4-baf8-471ff788b23f
+  path: api.response.post-proxied-upstream-request-401
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: POST Proxied Upstream Request 401
+  description: Secure key required and missing or wrong.
+  attributes:
+    description: Secure key required and missing or wrong.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.post-proxied-upstream-request-404:
+  id: fc853ab8-7d4b-47d6-9ab0-824519886a83
+  path: api.response.post-proxied-upstream-request-404
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: POST Proxied Upstream Request 404
+  description: Domain key not in domain_mappings.
+  attributes:
+    description: Domain key not in domain_mappings.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.post-proxied-upstream-request-429:
+  id: 94f6b59f-93ed-4001-a959-b2d1ee45701e
+  path: api.response.post-proxied-upstream-request-429
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: POST Proxied Upstream Request 429
+  description: Upstream rate limit would need a delay over progressive_max_delay.
+  attributes:
+    description: Upstream rate limit would need a delay over progressive_max_delay.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.post-proxied-upstream-request-500:
+  id: 2e97dc19-b14d-4ec8-b2be-0a4f9280b94d
+  path: api.response.post-proxied-upstream-request-500
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: POST Proxied Upstream Request 500
+  description: Unhandled error while processing the request.
+  attributes:
+    description: Unhandled error while processing the request.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.post-proxied-upstream-request-502:
+  id: 36901027-b35b-4019-a14f-83488799df72
+  path: api.response.post-proxied-upstream-request-502
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: POST Proxied Upstream Request 502
+  description: Upstream unreachable, or the mapping has no upstream.
+  attributes:
+    description: Upstream unreachable, or the mapping has no upstream.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.post-proxied-upstream-request-504:
+  id: 19e71086-181f-4267-a2ca-ca0a331f8609
+  path: api.response.post-proxied-upstream-request-504
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: POST Proxied Upstream Request 504
+  description: Timed out waiting for a concurrent identical request.
+  attributes:
+    description: Timed out waiting for a concurrent identical request.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.put-proxied-upstream-request-200:
+  id: 6a5f99b6-0190-4274-83e2-31ae305a6762
+  path: api.response.put-proxied-upstream-request-200
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: PUT Proxied Upstream Request 200
+  description: Upstream response, passed through and never cached.
+  attributes:
+    description: Upstream response, passed through and never cached.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.put-proxied-upstream-request-401:
+  id: 746b85b0-b935-451f-bd0a-ec4e49499309
+  path: api.response.put-proxied-upstream-request-401
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: PUT Proxied Upstream Request 401
+  description: Secure key required and missing or wrong.
+  attributes:
+    description: Secure key required and missing or wrong.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.put-proxied-upstream-request-404:
+  id: 37e5d16d-d2f9-43d9-9b0c-3873300df1b1
+  path: api.response.put-proxied-upstream-request-404
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: PUT Proxied Upstream Request 404
+  description: Domain key not in domain_mappings.
+  attributes:
+    description: Domain key not in domain_mappings.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.put-proxied-upstream-request-429:
+  id: 00588378-6388-46ee-91f8-9eb450feac1a
+  path: api.response.put-proxied-upstream-request-429
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: PUT Proxied Upstream Request 429
+  description: Upstream rate limit would need a delay over progressive_max_delay.
+  attributes:
+    description: Upstream rate limit would need a delay over progressive_max_delay.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.put-proxied-upstream-request-500:
+  id: 46742e35-4c2e-4e88-a268-4d84377f4545
+  path: api.response.put-proxied-upstream-request-500
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: PUT Proxied Upstream Request 500
+  description: Unhandled error while processing the request.
+  attributes:
+    description: Unhandled error while processing the request.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.put-proxied-upstream-request-502:
+  id: 38cd01c7-ad72-4688-a20a-d71410ba5bb7
+  path: api.response.put-proxied-upstream-request-502
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: PUT Proxied Upstream Request 502
+  description: Upstream unreachable, or the mapping has no upstream.
+  attributes:
+    description: Upstream unreachable, or the mapping has no upstream.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.delete-proxied-upstream-request-200:
+  id: fbe00400-23e2-4af5-89fd-aabbe43a56c9
+  path: api.response.delete-proxied-upstream-request-200
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: DELETE Proxied Upstream Request 200
+  description: Upstream response, passed through and never cached.
+  attributes:
+    description: Upstream response, passed through and never cached.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.delete-proxied-upstream-request-401:
+  id: 0075f50a-543f-4059-b42d-7478a3a15ce2
+  path: api.response.delete-proxied-upstream-request-401
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: DELETE Proxied Upstream Request 401
+  description: Secure key required and missing or wrong.
+  attributes:
+    description: Secure key required and missing or wrong.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.delete-proxied-upstream-request-404:
+  id: cf6edee9-4b10-48c4-a9c1-feb03fedcb4f
+  path: api.response.delete-proxied-upstream-request-404
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: DELETE Proxied Upstream Request 404
+  description: Domain key not in domain_mappings.
+  attributes:
+    description: Domain key not in domain_mappings.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.delete-proxied-upstream-request-429:
+  id: f42f2588-8272-476d-ae75-dcb3bd966ff2
+  path: api.response.delete-proxied-upstream-request-429
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: DELETE Proxied Upstream Request 429
+  description: Upstream rate limit would need a delay over progressive_max_delay.
+  attributes:
+    description: Upstream rate limit would need a delay over progressive_max_delay.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.delete-proxied-upstream-request-500:
+  id: ca223481-0d3d-4928-be9e-d90a837f29dc
+  path: api.response.delete-proxied-upstream-request-500
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: DELETE Proxied Upstream Request 500
+  description: Unhandled error while processing the request.
+  attributes:
+    description: Unhandled error while processing the request.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.delete-proxied-upstream-request-502:
+  id: 2f963bf4-35e9-49ac-a3bd-b47b5ea10dd0
+  path: api.response.delete-proxied-upstream-request-502
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: DELETE Proxied Upstream Request 502
+  description: Upstream unreachable, or the mapping has no upstream.
+  attributes:
+    description: Upstream unreachable, or the mapping has no upstream.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.response.get-admin-health-200:
+  id: c494dee5-e97f-435f-8ced-0a27cdc2c92b
+  path: api.response.get-admin-health-200
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Health 200
+  description: "{status: healthy, timestamp}."
+  attributes:
+    description: "{status: healthy, timestamp}."
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_health
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.response.get-admin-health-401:
+  id: 547c070d-56d5-4b0d-aa1e-8649f1751129
+  path: api.response.get-admin-health-401
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Health 401
+  description: Secure key required and missing or wrong.
+  attributes:
+    description: Secure key required and missing or wrong.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_health
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.response.get-admin-health-429:
+  id: 34589d8e-fdd8-4e5e-b5d1-a9b7694c7900
+  path: api.response.get-admin-health-429
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Health 429
+  description: "RATE_LIMIT_EXCEEDED: admin rate limit hit."
+  attributes:
+    description: "RATE_LIMIT_EXCEEDED: admin rate limit hit."
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_health
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.response.get-admin-config-200:
+  id: 461a3d9d-eaa0-4a54-9911-560abc301c3d
+  path: api.response.get-admin-config-200
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Config 200
+  description: Sanitized configuration and the list of redacted fields.
+  attributes:
+    description: Sanitized configuration and the list of redacted fields.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.response.get-admin-config-500:
+  id: 14cbf945-50ac-4021-827f-d2d0842025b8
+  path: api.response.get-admin-config-500
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Config 500
+  description: CONFIG_ERROR.
+  attributes:
+    description: CONFIG_ERROR.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.response.get-admin-config-401:
+  id: fd524137-69a0-430f-80f5-c730889abbf3
+  path: api.response.get-admin-config-401
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Config 401
+  description: Secure key required and missing or wrong.
+  attributes:
+    description: Secure key required and missing or wrong.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.response.get-admin-config-429:
+  id: 84f3de3a-a166-4e19-947c-f1af74a26e26
+  path: api.response.get-admin-config-429
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Config 429
+  description: "RATE_LIMIT_EXCEEDED: admin rate limit hit."
+  attributes:
+    description: "RATE_LIMIT_EXCEEDED: admin rate limit hit."
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.response.get-admin-status-200:
+  id: 370b323d-9476-4935-bc7f-60d5e3b8faec
+  path: api.response.get-admin-status-200
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Status 200
+  description: Overall status, uptime, component statuses and metrics.
+  attributes:
+    description: Overall status, uptime, component statuses and metrics.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_status
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.response.get-admin-status-500:
+  id: ef249bd0-b9a8-41bb-8bd9-dca83fd344f6
+  path: api.response.get-admin-status-500
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Status 500
+  description: STATUS_ERROR.
+  attributes:
+    description: STATUS_ERROR.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_status
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.response.get-admin-status-401:
+  id: e287752b-32d9-4297-a2bd-eac0599757cd
+  path: api.response.get-admin-status-401
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Status 401
+  description: Secure key required and missing or wrong.
+  attributes:
+    description: Secure key required and missing or wrong.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_status
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.response.get-admin-status-429:
+  id: d5f90254-de25-4669-b1ed-50e43cb56710
+  path: api.response.get-admin-status-429
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Status 429
+  description: "RATE_LIMIT_EXCEEDED: admin rate limit hit."
+  attributes:
+    description: "RATE_LIMIT_EXCEEDED: admin rate limit hit."
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_status
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.response.get-admin-domains-200:
+  id: 1e2b69f1-c32b-4e4c-997f-10c55de79e74
+  path: api.response.get-admin-domains-200
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Domains 200
+  description: Per-domain upstream, TTL and request statistics.
+  attributes:
+    description: Per-domain upstream, TTL and request statistics.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_domains
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.response.get-admin-domains-500:
+  id: 66786aac-0287-4fd2-8774-d7ed3aa270e6
+  path: api.response.get-admin-domains-500
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Domains 500
+  description: DOMAINS_ERROR.
+  attributes:
+    description: DOMAINS_ERROR.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_domains
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.response.get-admin-domains-401:
+  id: 798bb5f5-9c29-4c73-b2ed-55bd8a4eaf2f
+  path: api.response.get-admin-domains-401
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Domains 401
+  description: Secure key required and missing or wrong.
+  attributes:
+    description: Secure key required and missing or wrong.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_domains
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.response.get-admin-domains-429:
+  id: c179a6ca-9cfe-4d00-9b06-fe9f482c4b58
+  path: api.response.get-admin-domains-429
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Domains 429
+  description: "RATE_LIMIT_EXCEEDED: admin rate limit hit."
+  attributes:
+    description: "RATE_LIMIT_EXCEEDED: admin rate limit hit."
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_domains
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.response.get-admin-cache-200:
+  id: a18576c5-b295-4d70-a1ef-d96ae9b118d2
+  path: api.response.get-admin-cache-200
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Cache 200
+  description: Cache backend, size, entry counts and hit statistics.
+  attributes:
+    description: Cache backend, size, entry counts and hit statistics.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_cache
+  metadata:
+    created_at: 2026-11-24T17:55:54.540Z
+    updated_at: 2026-11-24T17:55:54.540Z
+    version: 1
+api.response.get-admin-cache-500:
+  id: eec53a40-4b3e-4081-994d-a771b7c5df5c
+  path: api.response.get-admin-cache-500
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Cache 500
+  description: CACHE_ERROR.
+  attributes:
+    description: CACHE_ERROR.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_cache
+  metadata:
+    created_at: 2026-11-24T17:55:54.540Z
+    updated_at: 2026-11-24T17:55:54.540Z
+    version: 1
+api.response.get-admin-cache-401:
+  id: 07b2adbe-2de9-431a-90e9-1909a35b7ce5
+  path: api.response.get-admin-cache-401
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Cache 401
+  description: Secure key required and missing or wrong.
+  attributes:
+    description: Secure key required and missing or wrong.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_cache
+  metadata:
+    created_at: 2026-11-24T17:55:54.540Z
+    updated_at: 2026-11-24T17:55:54.540Z
+    version: 1
+api.response.get-admin-cache-429:
+  id: cb1b5e68-42f6-4906-ba68-9985d955cf3e
+  path: api.response.get-admin-cache-429
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Cache 429
+  description: "RATE_LIMIT_EXCEEDED: admin rate limit hit."
+  attributes:
+    description: "RATE_LIMIT_EXCEEDED: admin rate limit hit."
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_cache
+  metadata:
+    created_at: 2026-11-24T17:55:54.540Z
+    updated_at: 2026-11-24T17:55:54.540Z
+    version: 1
+api.response.get-admin-cache-domain-200:
+  id: 3c641259-f557-4451-be0f-09cffc82b99e
+  path: api.response.get-admin-cache-domain-200
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Cache Domain 200
+  description: Cache statistics for one mapped domain.
+  attributes:
+    description: Cache statistics for one mapped domain.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_cache_domain
+  metadata:
+    created_at: 2026-11-24T17:55:54.540Z
+    updated_at: 2026-11-24T17:55:54.540Z
+    version: 1
+api.response.get-admin-cache-domain-404:
+  id: 593b5341-6cc6-48f3-8f1a-d3470f68d68b
+  path: api.response.get-admin-cache-domain-404
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Cache Domain 404
+  description: DOMAIN_NOT_FOUND.
+  attributes:
+    description: DOMAIN_NOT_FOUND.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_cache_domain
+  metadata:
+    created_at: 2026-11-24T17:55:54.540Z
+    updated_at: 2026-11-24T17:55:54.540Z
+    version: 1
+api.response.get-admin-cache-domain-500:
+  id: 9fcdc943-fa33-407e-8f83-ffa2769d5b69
+  path: api.response.get-admin-cache-domain-500
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Cache Domain 500
+  description: CACHE_ERROR.
+  attributes:
+    description: CACHE_ERROR.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_cache_domain
+  metadata:
+    created_at: 2026-11-24T17:55:54.540Z
+    updated_at: 2026-11-24T17:55:54.540Z
+    version: 1
+api.response.get-admin-cache-domain-401:
+  id: af6ea84a-1b03-4808-85f9-d23db6b7a18f
+  path: api.response.get-admin-cache-domain-401
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Cache Domain 401
+  description: Secure key required and missing or wrong.
+  attributes:
+    description: Secure key required and missing or wrong.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_cache_domain
+  metadata:
+    created_at: 2026-11-24T17:55:54.540Z
+    updated_at: 2026-11-24T17:55:54.540Z
+    version: 1
+api.response.get-admin-cache-domain-429:
+  id: 3d267eb8-1201-4a78-bf86-ff2eb0221e56
+  path: api.response.get-admin-cache-domain-429
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: GET Admin Cache Domain 429
+  description: "RATE_LIMIT_EXCEEDED: admin rate limit hit."
+  attributes:
+    description: "RATE_LIMIT_EXCEEDED: admin rate limit hit."
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_cache_domain
+  metadata:
+    created_at: 2026-11-24T17:55:54.540Z
+    updated_at: 2026-11-24T17:55:54.540Z
+    version: 1
+api.response.post-admin-validate-config-200:
+  id: a3c3dfb9-f4d2-4189-9c50-e1a0d3e10234
+  path: api.response.post-admin-validate-config-200
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: POST Admin Validate Config 200
+  description: Configuration is valid.
+  attributes:
+    description: Configuration is valid.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.540Z
+    updated_at: 2026-11-24T17:55:54.540Z
+    version: 1
+api.response.post-admin-validate-config-400:
+  id: 837d8c5d-da05-4932-a57d-e71dbf88285f
+  path: api.response.post-admin-validate-config-400
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: POST Admin Validate Config 400
+  description: Invalid configuration, empty body or invalid JSON.
+  attributes:
+    description: Invalid configuration, empty body or invalid JSON.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.540Z
+    updated_at: 2026-11-24T17:55:54.540Z
+    version: 1
+api.response.post-admin-validate-config-500:
+  id: f47dd441-b3dd-49f5-89a9-1dd7ee87000c
+  path: api.response.post-admin-validate-config-500
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: POST Admin Validate Config 500
+  description: VALIDATION_ERROR.
+  attributes:
+    description: VALIDATION_ERROR.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.540Z
+    updated_at: 2026-11-24T17:55:54.540Z
+    version: 1
+api.response.post-admin-validate-config-401:
+  id: 9b7ea68e-31fe-41b9-88e0-207dd0d8e481
+  path: api.response.post-admin-validate-config-401
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: POST Admin Validate Config 401
+  description: Secure key required and missing or wrong.
+  attributes:
+    description: Secure key required and missing or wrong.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.540Z
+    updated_at: 2026-11-24T17:55:54.540Z
+    version: 1
+api.response.post-admin-validate-config-429:
+  id: 8d8a9d21-d173-4ef1-be12-b980e4006b01
+  path: api.response.post-admin-validate-config-429
+  spec_node_id: api.response
+  type: response
+  layer_id: api
+  name: POST Admin Validate Config 429
+  description: "RATE_LIMIT_EXCEEDED: admin rate limit hit."
+  attributes:
+    description: "RATE_LIMIT_EXCEEDED: admin rate limit hit."
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.540Z
+    updated_at: 2026-11-24T17:55:54.540Z
+    version: 1

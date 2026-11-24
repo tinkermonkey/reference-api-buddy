@@ -1,0 +1,14 @@
+business.businessobject.reference-data:
+  id: 4b06c12b-38aa-4543-8e0f-bda1194bb546
+  path: business.businessobject.reference-data
+  spec_node_id: business.businessobject
+  type: businessobject
+  layer_id: business
+  name: Reference Data
+  description: Slowly-changing public or paid data (ConceptNet assertions, DBpedia
+    and Wikidata entities, search results) that pipelines read from external
+    APIs.
+  metadata:
+    created_at: 2026-11-24T17:55:54.505Z
+    updated_at: 2026-11-24T17:55:54.505Z
+    version: 1

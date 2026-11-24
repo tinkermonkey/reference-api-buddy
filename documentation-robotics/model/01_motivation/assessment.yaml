@@ -1,0 +1,24 @@
+motivation.assessment.secure-key-placement-gaps:
+  id: 4c974716-5b52-438b-8916-a650121650fa
+  path: motivation.assessment.secure-key-placement-gaps
+  spec_node_id: motivation.assessment
+  type: assessment
+  layer_id: motivation
+  name: Secure Key Placement Gaps
+  description: "Checked against 0.5.2 with a running proxy: the X-API-Buddy-Key
+    header and Authorization Bearer placements work, but a key in the path
+    prefix gets 404 'Domain not mapped' (domain matching uses the raw path, not
+    the path with the key stripped) and a ?key= query parameter gets 500
+    (parse_qs yields a list, which validate_request cannot encode). The header
+    key is also forwarded to the upstream with the other request headers."
+  attributes:
+    assessmentType: gap
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.502Z
+    updated_at: 2026-11-24T17:55:54.502Z
+    version: 1

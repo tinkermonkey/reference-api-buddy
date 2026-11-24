@@ -1,0 +1,331 @@
+application.applicationcomponent.caching-proxy:
+  id: a2cc49e6-a818-4dad-ae6d-5c9e4bf95ba5
+  path: application.applicationcomponent.caching-proxy
+  spec_node_id: application.applicationcomponent
+  type: applicationcomponent
+  layer_id: application
+  name: Caching Proxy
+  description: "Facade and composition root: builds the security, database, cache,
+    throttle, in-flight and metrics components from the config, owns the server
+    lifecycle (start/stop, context manager), and offers clear_cache,
+    update_config, reload_config, get_metrics and get_monitoring_manager."
+  attributes:
+    type: internal
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/proxy.py
+        symbol: CachingProxy
+  metadata:
+    created_at: 2026-11-24T17:55:54.511Z
+    updated_at: 2026-11-24T17:55:54.511Z
+    version: 1
+application.applicationcomponent.proxy-http-request-handler:
+  id: ac81c005-0955-4209-bb10-25ea6084da04
+  path: application.applicationcomponent.proxy-http-request-handler
+  spec_node_id: application.applicationcomponent
+  type: applicationcomponent
+  layer_id: application
+  name: Proxy HTTP Request Handler
+  description: http.server request handler (with RequestProcessingMixin) that runs
+    the request pipeline for GET, POST, PUT and DELETE and serves the admin
+    endpoints.
+  attributes:
+    type: internal
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: ProxyHTTPRequestHandler
+  metadata:
+    created_at: 2026-11-24T17:55:54.512Z
+    updated_at: 2026-11-24T17:55:54.512Z
+    version: 1
+application.applicationcomponent.threaded-http-server:
+  id: 41e4d641-6d06-47fb-8e7d-029489becefc
+  path: application.applicationcomponent.threaded-http-server
+  spec_node_id: application.applicationcomponent
+  type: applicationcomponent
+  layer_id: application
+  name: Threaded HTTP Server
+  description: ThreadingHTTPServer subclass that injects the proxy into each
+    handler and serves blocking or on a daemon thread.
+  attributes:
+    type: internal
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/server.py
+        symbol: ThreadedHTTPServer
+  metadata:
+    created_at: 2026-11-24T17:55:54.513Z
+    updated_at: 2026-11-24T17:55:54.513Z
+    version: 1
+application.applicationcomponent.cache-engine:
+  id: 68631a91-977a-4114-8a0a-6f40fb886237
+  path: application.applicationcomponent.cache-engine
+  spec_node_id: application.applicationcomponent
+  type: applicationcomponent
+  layer_id: application
+  name: Cache Engine
+  description: Generates cache keys, reads and writes cache_entries with TTL
+    expiry, zlib compression over 1 KB, a response size cap and LRU eviction,
+    and keeps hit/miss statistics.
+  attributes:
+    type: internal
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/cache/engine.py
+        symbol: CacheEngine
+  metadata:
+    created_at: 2026-11-24T17:55:54.513Z
+    updated_at: 2026-11-24T17:55:54.513Z
+    version: 1
+application.applicationcomponent.ttl-manager:
+  id: ad75c818-e5d2-42cf-bf88-865389685478
+  path: application.applicationcomponent.ttl-manager
+  spec_node_id: application.applicationcomponent
+  type: applicationcomponent
+  layer_id: application
+  name: TTL Manager
+  description: "Resolves the TTL for a domain key: domain ttl_seconds or
+    cache.default_ttl_seconds."
+  attributes:
+    type: internal
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/ttl_manager.py
+        symbol: TTLManager
+  metadata:
+    created_at: 2026-11-24T17:55:54.513Z
+    updated_at: 2026-11-24T17:55:54.513Z
+    version: 1
+application.applicationcomponent.database-manager:
+  id: 07d92cf1-e7ee-4bfd-90b7-55730acc4c58
+  path: application.applicationcomponent.database-manager
+  spec_node_id: application.applicationcomponent
+  type: applicationcomponent
+  layer_id: application
+  name: Database Manager
+  description: SQLite access with a pool of five connections (WAL, busy_timeout 5
+    s), schema creation, locked-database retries with backoff, and upstream
+    metrics storage and aggregation.
+  attributes:
+    type: internal
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: DatabaseManager
+  metadata:
+    created_at: 2026-11-24T17:55:54.513Z
+    updated_at: 2026-11-24T17:55:54.513Z
+    version: 1
+application.applicationcomponent.throttle-manager:
+  id: b4fa0858-eba9-4d27-bd90-ab371ee7e60c
+  path: application.applicationcomponent.throttle-manager
+  spec_node_id: application.applicationcomponent
+  type: applicationcomponent
+  layer_id: application
+  name: Throttle Manager
+  description: Per-domain sliding-window request tracking for hour, minute and
+    second windows; computes the delay a request needs, and keeps
+    progressive-throttling state.
+  attributes:
+    type: internal
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/throttling/manager.py
+        symbol: ThrottleManager
+  metadata:
+    created_at: 2026-11-24T17:55:54.513Z
+    updated_at: 2026-11-24T17:55:54.513Z
+    version: 1
+application.applicationcomponent.in-flight-tracker:
+  id: 3bb6ed94-3ca3-439a-8ef0-abc7848c6dbd
+  path: application.applicationcomponent.in-flight-tracker
+  spec_node_id: application.applicationcomponent
+  type: applicationcomponent
+  layer_id: application
+  name: In Flight Tracker
+  description: Coalesces concurrent upstream fetches for the same cache key with a
+    threading.Event per key.
+  attributes:
+    type: internal
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/inflight_tracker.py
+        symbol: InFlightTracker
+  metadata:
+    created_at: 2026-11-24T17:55:54.513Z
+    updated_at: 2026-11-24T17:55:54.513Z
+    version: 1
+application.applicationcomponent.security-manager:
+  id: 47fd5824-bdf2-4817-945e-ede50f17d7db
+  path: application.applicationcomponent.security-manager
+  spec_node_id: application.applicationcomponent
+  type: applicationcomponent
+  layer_id: application
+  name: Security Manager
+  description: Generates the secure key, extracts it from path, query or headers,
+    and validates it with a constant-time comparison.
+  attributes:
+    type: internal
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/security/manager.py
+        symbol: SecurityManager
+  metadata:
+    created_at: 2026-11-24T17:55:54.513Z
+    updated_at: 2026-11-24T17:55:54.513Z
+    version: 1
+application.applicationcomponent.metrics-collector:
+  id: 2c6471f8-ed7c-4e23-9408-f67a34a7481d
+  path: application.applicationcomponent.metrics-collector
+  spec_node_id: application.applicationcomponent
+  type: applicationcomponent
+  layer_id: application
+  name: Metrics Collector
+  description: In-memory counters of requests, cache hits and misses, throttles
+    and errors, with an event list, returned by CachingProxy.get_metrics(). Only
+    throttle events are recorded by the handler today.
+  attributes:
+    type: internal
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/proxy.py
+        symbol: MetricsCollector
+  metadata:
+    created_at: 2026-11-24T17:55:54.513Z
+    updated_at: 2026-11-24T17:55:54.513Z
+    version: 1
+application.applicationcomponent.monitoring-manager:
+  id: 74c8646b-76c0-4c5b-b8d5-2e432bc3cb2a
+  path: application.applicationcomponent.monitoring-manager
+  spec_node_id: application.applicationcomponent
+  type: applicationcomponent
+  layer_id: application
+  name: Monitoring Manager
+  description: Read-only view over the cache engine, database manager and throttle
+    manager that assembles cache, upstream, database, health and throttling
+    statistics. Created on demand by CachingProxy.get_monitoring_manager(); the
+    admin status and domains endpoints only use it if a caller sets
+    proxy.monitoring_manager.
+  attributes:
+    type: internal
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/monitoring/manager.py
+        symbol: MonitoringManager
+  metadata:
+    created_at: 2026-11-24T17:55:54.513Z
+    updated_at: 2026-11-24T17:55:54.513Z
+    version: 1
+application.applicationcomponent.admin-rate-limiter:
+  id: da64eeb6-18e7-4965-bcfc-51273f257699
+  path: application.applicationcomponent.admin-rate-limiter
+  spec_node_id: application.applicationcomponent
+  type: applicationcomponent
+  layer_id: application
+  name: Admin Rate Limiter
+  description: Per-client-IP sliding one-minute counter guarding the admin endpoints.
+  attributes:
+    type: internal
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/admin_utils.py
+        symbol: AdminRateLimiter
+  metadata:
+    created_at: 2026-11-24T17:55:54.513Z
+    updated_at: 2026-11-24T17:55:54.513Z
+    version: 1
+application.applicationcomponent.configuration-manager:
+  id: 35a9ef0b-0f11-47cb-9e10-558e497cc870
+  path: application.applicationcomponent.configuration-manager
+  spec_node_id: application.applicationcomponent
+  type: applicationcomponent
+  layer_id: application
+  name: Configuration Manager
+  description: Holds DEFAULT_CONFIG, deep-merges user config into it and validates
+    types. CachingProxy does not use it (it applies its own minimal defaults);
+    the validator backs POST /admin/validate-config.
+  attributes:
+    type: internal
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationManager
+  metadata:
+    created_at: 2026-11-24T17:55:54.513Z
+    updated_at: 2026-11-24T17:55:54.513Z
+    version: 1
+application.applicationcomponent.logger-manager:
+  id: 4723697e-42b3-4e1d-9d6c-78bd3e8f508f
+  path: application.applicationcomponent.logger-manager
+  spec_node_id: application.applicationcomponent
+  type: applicationcomponent
+  layer_id: application
+  name: Logger Manager
+  description: "Configures the package's loggers: level, format, colour console
+    handler, rotating file handler, optional parent logger."
+  attributes:
+    type: internal
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/utils/logger.py
+        symbol: LoggerManager
+  metadata:
+    created_at: 2026-11-24T17:55:54.513Z
+    updated_at: 2026-11-24T17:55:54.513Z
+    version: 1
+application.applicationcomponent.api-buddy-cli:
+  id: aa7f1787-7de4-462e-8cbb-1491a1ee7709
+  path: application.applicationcomponent.api-buddy-cli
+  spec_node_id: application.applicationcomponent
+  type: applicationcomponent
+  layer_id: application
+  name: Api Buddy CLI
+  description: argparse entry point (api-buddy console script) that loads or
+    generates config, applies host, port and log-level overrides and runs the
+    proxy blocking.
+  attributes:
+    type: internal
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/cli.py
+        symbol: main
+  metadata:
+    created_at: 2026-11-24T17:55:54.513Z
+    updated_at: 2026-11-24T17:55:54.513Z
+    version: 1
+application.applicationcomponent.upstream-reference-api:
+  id: 1ada9a5d-0e6f-4c24-a544-57e1e183d50a
+  path: application.applicationcomponent.upstream-reference-api
+  spec_node_id: application.applicationcomponent
+  type: applicationcomponent
+  layer_id: application
+  name: Upstream Reference API
+  description: Any HTTPS API configured as a domain_mappings upstream (ConceptNet,
+    DBpedia, DBpedia Spotlight, Wikidata, search APIs). Called with
+    urllib.request with a 60 s timeout and gzip/deflate accepted.
+  attributes:
+    type: external
+  source_reference:
+    provenance: manual
+    locations:
+      - file: api_buddy_config.json
+  metadata:
+    created_at: 2026-11-24T17:55:54.513Z
+    updated_at: 2026-11-24T17:55:54.513Z
+    version: 1

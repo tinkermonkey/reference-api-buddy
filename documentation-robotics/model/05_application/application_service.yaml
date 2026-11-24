@@ -1,0 +1,79 @@
+application.applicationservice.cached-reference-proxying:
+  id: b644b9ec-7a62-44d7-a3a4-c8bf161f7fc8
+  path: application.applicationservice.cached-reference-proxying
+  spec_node_id: application.applicationservice
+  type: applicationservice
+  layer_id: application
+  name: Cached Reference Proxying
+  description: Forward a client's request to the mapped upstream, answering from
+    the cache when it can and pacing the upstream otherwise.
+  attributes:
+    serviceType: synchronous
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.513Z
+    updated_at: 2026-11-24T17:55:54.513Z
+    version: 1
+application.applicationservice.admin-diagnostics:
+  id: ab56af55-45fd-4705-b09e-17c4f23bf238
+  path: application.applicationservice.admin-diagnostics
+  spec_node_id: application.applicationservice
+  type: applicationservice
+  layer_id: application
+  name: Admin Diagnostics
+  description: Health, sanitized configuration, component status, domain mappings,
+    cache statistics and configuration validation over HTTP.
+  attributes:
+    serviceType: synchronous
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.514Z
+    updated_at: 2026-11-24T17:55:54.514Z
+    version: 1
+application.applicationservice.monitoring-statistics:
+  id: c95f9588-93f0-4a7d-92f2-25b8410a028b
+  path: application.applicationservice.monitoring-statistics
+  spec_node_id: application.applicationservice
+  type: applicationservice
+  layer_id: application
+  name: Monitoring Statistics
+  description: Programmatic cache, upstream, database, health and throttling metrics.
+  attributes:
+    serviceType: synchronous
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/monitoring/manager.py
+        symbol: MonitoringManager
+  metadata:
+    created_at: 2026-11-24T17:55:54.514Z
+    updated_at: 2026-11-24T17:55:54.514Z
+    version: 1
+application.applicationservice.embedded-proxy-control:
+  id: 3d673afd-419e-4e64-91aa-4ee427b61e2b
+  path: application.applicationservice.embedded-proxy-control
+  spec_node_id: application.applicationservice
+  type: applicationservice
+  layer_id: application
+  name: Embedded Proxy Control
+  description: Start, stop, reconfigure and clear the cache of an embedded proxy,
+    and read its secure key.
+  attributes:
+    serviceType: synchronous
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/proxy.py
+        symbol: CachingProxy
+  metadata:
+    created_at: 2026-11-24T17:55:54.514Z
+    updated_at: 2026-11-24T17:55:54.514Z
+    version: 1

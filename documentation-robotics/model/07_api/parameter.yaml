@@ -1,0 +1,60 @@
+api.parameter.domain-key:
+  id: 23b6b392-29d2-4030-b83f-ec66cbfd3666
+  path: api.parameter.domain-key
+  spec_node_id: api.parameter
+  type: parameter
+  layer_id: api
+  name: domain key
+  description: "First path segment: a domain_mappings key."
+  attributes:
+    in: path
+    required: true
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._forward_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.535Z
+    updated_at: 2026-11-24T17:55:54.535Z
+    version: 1
+api.parameter.upstream-path:
+  id: d1b95baf-dbc8-4aa5-9a7f-eb86baa60b44
+  path: api.parameter.upstream-path
+  spec_node_id: api.parameter
+  type: parameter
+  layer_id: api
+  name: upstream path
+  description: Rest of the path, appended to the upstream base URL with the query string.
+  attributes:
+    in: path
+    required: true
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._forward_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.536Z
+    updated_at: 2026-11-24T17:55:54.536Z
+    version: 1
+api.parameter.cache-domain:
+  id: da7feb23-a943-4945-96a2-d34d817dd9fc
+  path: api.parameter.cache-domain
+  spec_node_id: api.parameter
+  type: parameter
+  layer_id: api
+  name: cache domain
+  description: Domain key whose cache statistics are wanted.
+  attributes:
+    in: path
+    required: true
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._route_admin_get
+  metadata:
+    created_at: 2026-11-24T17:55:54.536Z
+    updated_at: 2026-11-24T17:55:54.536Z
+    version: 1

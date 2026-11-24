@@ -1,0 +1,38 @@
+api.requestbody.proxied-post-body:
+  id: d4f05385-dc96-49ee-a2b9-f8cf33bd94df
+  path: api.requestbody.proxied-post-body
+  spec_node_id: api.requestbody
+  type: requestbody
+  layer_id: api
+  name: Proxied POST Body
+  description: Forwarded to the upstream; JSON bodies are normalized for the cache key.
+  attributes:
+    required: false
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.requestbody.validate-config-body:
+  id: 21ed9867-398f-4142-9c94-abd10669f193
+  path: api.requestbody.validate-config-body
+  spec_node_id: api.requestbody
+  type: requestbody
+  layer_id: api
+  name: Validate Config Body
+  description: JSON with a configuration object.
+  attributes:
+    required: true
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.540Z
+    updated_at: 2026-11-24T17:55:54.540Z
+    version: 1

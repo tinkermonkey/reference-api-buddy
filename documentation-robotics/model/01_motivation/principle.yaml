@@ -1,0 +1,32 @@
+motivation.principle.standard-library-only:
+  id: 4def6062-dc7b-499d-b197-51d2a9563385
+  path: motivation.principle.standard-library-only
+  spec_node_id: motivation.principle
+  type: principle
+  layer_id: motivation
+  name: Standard Library Only
+  description: The package keeps its runtime dependencies to the Python standard
+    library (pyproject dependencies = []) to stay small and easy to embed.
+  attributes:
+    category: development
+  metadata:
+    created_at: 2026-11-24T17:55:54.500Z
+    updated_at: 2026-11-24T17:55:54.500Z
+    version: 1
+motivation.principle.keep-upstream-tls-verification:
+  id: 31d5c5f0-d1d9-4349-8d63-2afb5604ab37
+  path: motivation.principle.keep-upstream-tls-verification
+  spec_node_id: motivation.principle
+  type: principle
+  layer_id: motivation
+  name: Keep Upstream TLS Verification
+  description: Clients talk plain HTTP to the local proxy, but every request
+    leaving the machine goes to the upstream over HTTPS with normal certificate
+    verification; the proxy never asks the application to disable certificate
+    checks.
+  attributes:
+    category: security
+  metadata:
+    created_at: 2026-11-24T17:55:54.500Z
+    updated_at: 2026-11-24T17:55:54.500Z
+    version: 1

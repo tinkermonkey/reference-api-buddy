@@ -1,0 +1,187 @@
+api.responses.get-proxied-upstream-request-responses:
+  id: c5980c10-e76b-439c-89fb-6d25d26c801a
+  path: api.responses.get-proxied-upstream-request-responses
+  spec_node_id: api.responses
+  type: responses
+  layer_id: api
+  name: GET Proxied Upstream Request responses
+  description: Responses of GET /{domainKey}/{path}.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.537Z
+    updated_at: 2026-11-24T17:55:54.537Z
+    version: 1
+api.responses.post-proxied-upstream-request-responses:
+  id: 00a5f82a-72e1-4c22-a061-dc49efc3722b
+  path: api.responses.post-proxied-upstream-request-responses
+  spec_node_id: api.responses
+  type: responses
+  layer_id: api
+  name: POST Proxied Upstream Request responses
+  description: Responses of POST /{domainKey}/{path}.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.responses.put-proxied-upstream-request-responses:
+  id: b4868663-59d4-4188-954e-bd6b4bd9b1b9
+  path: api.responses.put-proxied-upstream-request-responses
+  spec_node_id: api.responses
+  type: responses
+  layer_id: api
+  name: PUT Proxied Upstream Request responses
+  description: Responses of PUT /{domainKey}/{path}.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.responses.delete-proxied-upstream-request-responses:
+  id: 0a8e6710-38c7-4509-a384-3458c708381a
+  path: api.responses.delete-proxied-upstream-request-responses
+  spec_node_id: api.responses
+  type: responses
+  layer_id: api
+  name: DELETE Proxied Upstream Request responses
+  description: Responses of DELETE /{domainKey}/{path}.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.responses.get-admin-health-responses:
+  id: 2b76debe-8fe1-4a14-b16c-7e7394df2665
+  path: api.responses.get-admin-health-responses
+  spec_node_id: api.responses
+  type: responses
+  layer_id: api
+  name: GET Admin Health responses
+  description: Responses of GET /admin/health.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_health
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.responses.get-admin-config-responses:
+  id: bcdf4ff8-3035-4550-9bc6-f164fc5d77dc
+  path: api.responses.get-admin-config-responses
+  spec_node_id: api.responses
+  type: responses
+  layer_id: api
+  name: GET Admin Config responses
+  description: Responses of GET /admin/config.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.responses.get-admin-status-responses:
+  id: 55df2d79-7a86-4fcd-937c-fe8dde5b50ca
+  path: api.responses.get-admin-status-responses
+  spec_node_id: api.responses
+  type: responses
+  layer_id: api
+  name: GET Admin Status responses
+  description: Responses of GET /admin/status.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_status
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.responses.get-admin-domains-responses:
+  id: 0cf70fc0-43ea-405b-bf44-db95e768b5f2
+  path: api.responses.get-admin-domains-responses
+  spec_node_id: api.responses
+  type: responses
+  layer_id: api
+  name: GET Admin Domains responses
+  description: Responses of GET /admin/domains.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_domains
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.responses.get-admin-cache-responses:
+  id: 7628a4a6-f549-412c-8198-5d35b8858719
+  path: api.responses.get-admin-cache-responses
+  spec_node_id: api.responses
+  type: responses
+  layer_id: api
+  name: GET Admin Cache responses
+  description: Responses of GET /admin/cache.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_cache
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.responses.get-admin-cache-domain-responses:
+  id: 55d922b1-e366-4369-977b-a49bb7b50408
+  path: api.responses.get-admin-cache-domain-responses
+  spec_node_id: api.responses
+  type: responses
+  layer_id: api
+  name: GET Admin Cache Domain responses
+  description: Responses of GET /admin/cache/{domain}.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_cache_domain
+  metadata:
+    created_at: 2026-11-24T17:55:54.540Z
+    updated_at: 2026-11-24T17:55:54.540Z
+    version: 1
+api.responses.post-admin-validate-config-responses:
+  id: 0410729a-4331-4b1c-b793-a1db876ce7f0
+  path: api.responses.post-admin-validate-config-responses
+  spec_node_id: api.responses
+  type: responses
+  layer_id: api
+  name: POST Admin Validate Config responses
+  description: Responses of POST /admin/validate-config.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.540Z
+    updated_at: 2026-11-24T17:55:54.540Z
+    version: 1

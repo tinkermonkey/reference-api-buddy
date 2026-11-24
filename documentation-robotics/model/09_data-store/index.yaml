@@ -1,0 +1,63 @@
+data-store.index.idx-cache-created-ttl:
+  id: b7711b86-decd-4b2c-9263-bac5537986d9
+  path: data-store.index.idx-cache-created-ttl
+  spec_node_id: data-store.index
+  type: index
+  layer_id: data-store
+  name: idx_cache_created_ttl
+  description: Index on cache_entries(created_at, ttl_seconds).
+  attributes:
+    fields: created_at, ttl_seconds
+    unique: false
+    method: BTREE
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.524Z
+    updated_at: 2026-11-24T17:55:54.524Z
+    version: 1
+data-store.index.idx-metrics-domain-timestamp:
+  id: 706924b6-39f7-4440-b05f-884bb0e7924c
+  path: data-store.index.idx-metrics-domain-timestamp
+  spec_node_id: data-store.index
+  type: index
+  layer_id: data-store
+  name: idx_metrics_domain_timestamp
+  description: Index on metrics(domain, timestamp).
+  attributes:
+    fields: domain, timestamp
+    unique: false
+    method: BTREE
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.525Z
+    updated_at: 2026-11-24T17:55:54.525Z
+    version: 1
+data-store.index.idx-cache-last-accessed:
+  id: 3216432e-84a7-4b2d-af9d-4471cf5eec4d
+  path: data-store.index.idx-cache-last-accessed
+  spec_node_id: data-store.index
+  type: index
+  layer_id: data-store
+  name: idx_cache_last_accessed
+  description: Index on cache_entries(last_accessed).
+  attributes:
+    fields: last_accessed
+    unique: false
+    method: BTREE
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.525Z
+    updated_at: 2026-11-24T17:55:54.525Z
+    version: 1

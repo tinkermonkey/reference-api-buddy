@@ -1,0 +1,104 @@
+security.threat.unauthorized-local-use-of-the-proxy:
+  id: a784ad54-8944-4bac-9687-44db66fedcb0
+  path: security.threat.unauthorized-local-use-of-the-proxy
+  spec_node_id: security.threat
+  type: threat
+  layer_id: security
+  name: Unauthorized Local Use Of The Proxy
+  description: Other software on the machine uses the proxy and its upstream
+    credentials or quota.
+  attributes:
+    threatens: Proxy Endpoint Resource
+    likelihood: moderate
+    impact: moderate
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+  metadata:
+    created_at: 2026-11-24T17:55:54.544Z
+    updated_at: 2026-11-24T17:55:54.544Z
+    version: 1
+security.threat.timing-attack-on-secure-key:
+  id: 98ede1a3-1630-4ea4-af94-d82db63206aa
+  path: security.threat.timing-attack-on-secure-key
+  spec_node_id: security.threat
+  type: threat
+  layer_id: security
+  name: Timing Attack On Secure Key
+  description: Guessing the key from comparison timing.
+  attributes:
+    threatens: Proxy Endpoint Resource
+    likelihood: low
+    impact: low
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+  metadata:
+    created_at: 2026-11-24T17:55:54.545Z
+    updated_at: 2026-11-24T17:55:54.545Z
+    version: 1
+security.threat.secret-disclosure-via-admin-config:
+  id: 53fef41f-8298-4766-8b68-7ce0aa2defb7
+  path: security.threat.secret-disclosure-via-admin-config
+  spec_node_id: security.threat
+  type: threat
+  layer_id: security
+  name: Secret Disclosure Via Admin Config
+  description: Reading keys or tokens from /admin/config.
+  attributes:
+    threatens: Admin Endpoint Resource
+    likelihood: moderate
+    impact: moderate
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+  metadata:
+    created_at: 2026-11-24T17:55:54.545Z
+    updated_at: 2026-11-24T17:55:54.545Z
+    version: 1
+security.threat.admin-endpoint-abuse:
+  id: 62143c65-540a-4fd7-8b24-79814e8170d6
+  path: security.threat.admin-endpoint-abuse
+  spec_node_id: security.threat
+  type: threat
+  layer_id: security
+  name: Admin Endpoint Abuse
+  description: Flooding admin endpoints that run database queries.
+  attributes:
+    threatens: Admin Endpoint Resource
+    likelihood: low
+    impact: low
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+  metadata:
+    created_at: 2026-11-24T17:55:54.545Z
+    updated_at: 2026-11-24T17:55:54.545Z
+    version: 1
+security.threat.proxy-key-forwarded-upstream:
+  id: 1c8309ad-dfa7-415e-99ed-ee54519b8fb5
+  path: security.threat.proxy-key-forwarded-upstream
+  spec_node_id: security.threat
+  type: threat
+  layer_id: security
+  name: Proxy Key Forwarded Upstream
+  description: Request headers are forwarded to the upstream unfiltered, so an
+    X-API-Buddy-Key header (or a Bearer token used as the proxy key) reaches the
+    upstream API. No countermeasure in 0.5.2.
+  attributes:
+    threatens: Proxy Endpoint Resource
+    likelihood: high
+    impact: low
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._forward_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.545Z
+    updated_at: 2026-11-24T17:55:54.545Z
+    version: 1

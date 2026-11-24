@@ -1,0 +1,17 @@
+api.paths.reference-api-buddy-paths:
+  id: 559a33a4-82c6-49ca-b73d-e224bb5cc726
+  path: api.paths.reference-api-buddy-paths
+  spec_node_id: api.paths
+  type: paths
+  layer_id: api
+  name: Reference API Buddy Paths
+  description: All proxied and admin paths.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.530Z
+    updated_at: 2026-11-24T17:55:54.530Z
+    version: 1

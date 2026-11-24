@@ -1,0 +1,57 @@
+technology.artifact.reference-api-buddy-package:
+  id: 7bcd36bc-eeee-48af-810a-1bb03f356b99
+  path: technology.artifact.reference-api-buddy-package
+  spec_node_id: technology.artifact
+  type: artifact
+  layer_id: technology
+  name: Reference API Buddy Package
+  description: reference-api-buddy 0.5.2 wheel and sdist published to PyPI;
+    console script api-buddy.
+  attributes:
+    artifactType: library
+  source_reference:
+    provenance: manual
+    locations:
+      - file: pyproject.toml
+  metadata:
+    created_at: 2026-11-24T17:55:54.548Z
+    updated_at: 2026-11-24T17:55:54.548Z
+    version: 1
+technology.artifact.api-buddy-config-file:
+  id: df06a0e2-4e16-4008-8d18-5937dee5d536
+  path: technology.artifact.api-buddy-config-file
+  spec_node_id: technology.artifact
+  type: artifact
+  layer_id: technology
+  name: Api Buddy Config File
+  description: JSON configuration read by api-buddy --config and written by
+    --generate-config.
+  attributes:
+    artifactType: configuration
+  source_reference:
+    provenance: manual
+    locations:
+      - file: api_buddy_config.json
+  metadata:
+    created_at: 2026-11-24T17:55:54.549Z
+    updated_at: 2026-11-24T17:55:54.549Z
+    version: 1
+technology.artifact.api-buddy-cache-file:
+  id: dc31e929-2b93-49fe-9966-11a0fe36a916
+  path: technology.artifact.api-buddy-cache-file
+  spec_node_id: technology.artifact
+  type: artifact
+  layer_id: technology
+  name: Api Buddy Cache File
+  description: SQLite cache file with its -wal and -shm companions.
+  attributes:
+    artifactType: file
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: DatabaseManager
+  metadata:
+    created_at: 2026-11-24T17:55:54.549Z
+    updated_at: 2026-11-24T17:55:54.549Z
+    version: 1

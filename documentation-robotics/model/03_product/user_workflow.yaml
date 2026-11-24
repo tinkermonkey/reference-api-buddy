@@ -1,0 +1,16 @@
+product.userworkflow.route-pipeline-calls-through-the-proxy:
+  id: 985fa612-2dec-48df-ae3c-afd1e5abf809
+  path: product.userworkflow.route-pipeline-calls-through-the-proxy
+  spec_node_id: product.userworkflow
+  type: userworkflow
+  layer_id: product
+  name: Route Pipeline Calls Through The Proxy
+  description: Configure the proxy for the APIs a pipeline uses, start it, point
+    the API clients at it and rerun the pipeline with repeat calls answered from
+    the cache.
+  attributes:
+    complexity: simple
+  metadata:
+    created_at: 2026-11-24T17:55:54.509Z
+    updated_at: 2026-11-24T17:55:54.509Z
+    version: 1

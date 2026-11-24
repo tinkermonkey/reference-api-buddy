@@ -1,0 +1,13 @@
+business.businessrole.pipeline-developer-role:
+  id: 0f9141bc-106b-4d92-a860-08a93bde3de9
+  path: business.businessrole.pipeline-developer-role
+  spec_node_id: business.businessrole
+  type: businessrole
+  layer_id: business
+  name: Pipeline Developer Role
+  description: The person who builds, runs and tunes a data or LLM pipeline that
+    depends on external reference data.
+  metadata:
+    created_at: 2026-11-24T17:55:54.503Z
+    updated_at: 2026-11-24T17:55:54.503Z
+    version: 1

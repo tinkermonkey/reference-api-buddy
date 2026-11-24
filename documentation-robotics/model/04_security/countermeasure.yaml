@@ -1,0 +1,126 @@
+security.countermeasure.secure-key-authentication:
+  id: 8cca2d50-d5e1-4998-9132-f3829e87fdb2
+  path: security.countermeasure.secure-key-authentication
+  spec_node_id: security.countermeasure
+  type: countermeasure
+  layer_id: security
+  name: Secure Key Authentication
+  description: Optional 256-bit proxy key required on every request.
+  attributes:
+    type: technical
+    effectiveness: medium
+    implemented: true
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/security/manager.py
+        symbol: SecurityManager.validate_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.543Z
+    updated_at: 2026-11-24T17:55:54.543Z
+    version: 1
+security.countermeasure.constant-time-key-comparison:
+  id: 00b6df2e-d74a-41b6-a498-2c32e7a98c19
+  path: security.countermeasure.constant-time-key-comparison
+  spec_node_id: security.countermeasure
+  type: countermeasure
+  layer_id: security
+  name: Constant Time Key Comparison
+  description: hmac.compare_digest prevents timing attacks on the key.
+  attributes:
+    type: technical
+    effectiveness: high
+    implemented: true
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/security/manager.py
+        symbol: SecurityManager.validate_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.544Z
+    updated_at: 2026-11-24T17:55:54.544Z
+    version: 1
+security.countermeasure.admin-rate-limiting:
+  id: 201df3d1-04a4-4783-9ffb-2912aa2aace7
+  path: security.countermeasure.admin-rate-limiting
+  spec_node_id: security.countermeasure
+  type: countermeasure
+  layer_id: security
+  name: Admin Rate Limiting
+  description: Per-IP limit on admin endpoints.
+  attributes:
+    type: technical
+    effectiveness: medium
+    implemented: true
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/admin_utils.py
+        symbol: AdminRateLimiter.is_allowed
+  metadata:
+    created_at: 2026-11-24T17:55:54.544Z
+    updated_at: 2026-11-24T17:55:54.544Z
+    version: 1
+security.countermeasure.config-secret-redaction:
+  id: bcf125cb-5e01-4c0f-b072-64d3549b13f1
+  path: security.countermeasure.config-secret-redaction
+  spec_node_id: security.countermeasure
+  type: countermeasure
+  layer_id: security
+  name: Config Secret Redaction
+  description: Sensitive-looking fields are redacted in admin output.
+  attributes:
+    type: technical
+    effectiveness: medium
+    implemented: true
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._get_sanitized_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.544Z
+    updated_at: 2026-11-24T17:55:54.544Z
+    version: 1
+security.countermeasure.loopback-default-bind:
+  id: 357a9b43-480a-4d18-bc92-4d2c9b575945
+  path: security.countermeasure.loopback-default-bind
+  spec_node_id: security.countermeasure
+  type: countermeasure
+  layer_id: security
+  name: Loopback Default Bind
+  description: The server binds to 127.0.0.1 unless configured otherwise.
+  attributes:
+    type: technical
+    effectiveness: medium
+    implemented: true
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/cli.py
+        symbol: main
+  metadata:
+    created_at: 2026-11-24T17:55:54.544Z
+    updated_at: 2026-11-24T17:55:54.544Z
+    version: 1
+security.countermeasure.admin-endpoints-switch:
+  id: 03eeb86d-e9ff-4642-b3b9-afb033cb3aeb
+  path: security.countermeasure.admin-endpoints-switch
+  spec_node_id: security.countermeasure
+  type: countermeasure
+  layer_id: security
+  name: Admin Endpoints Switch
+  description: admin.enabled=false makes /admin/* answer 404.
+  attributes:
+    type: technical
+    effectiveness: high
+    implemented: true
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._is_admin_enabled
+  metadata:
+    created_at: 2026-11-24T17:55:54.544Z
+    updated_at: 2026-11-24T17:55:54.544Z
+    version: 1

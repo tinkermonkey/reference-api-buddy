@@ -1,0 +1,19 @@
+api.info.reference-api-buddy-info:
+  id: 3469562c-6a9d-4416-8f17-8f28fc8f90cb
+  path: api.info.reference-api-buddy-info
+  spec_node_id: api.info
+  type: info
+  layer_id: api
+  name: Reference API Buddy Info
+  description: API metadata.
+  attributes:
+    title: Reference API Buddy
+    version: 0.5.2
+  source_reference:
+    provenance: manual
+    locations:
+      - file: pyproject.toml
+  metadata:
+    created_at: 2026-11-24T17:55:54.529Z
+    updated_at: 2026-11-24T17:55:54.529Z
+    version: 1

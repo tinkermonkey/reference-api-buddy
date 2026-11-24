@@ -1,0 +1,17 @@
+product.persona.pipeline-builder:
+  id: 5193a5e1-9ba9-435f-b38b-2341dc3845ca
+  path: product.persona.pipeline-builder
+  spec_node_id: product.persona
+  type: persona
+  layer_id: product
+  name: Pipeline Builder
+  description: A Python developer wiring reference APIs into an NLP or LLM
+    pipeline, comfortable with configuration files and HTTP clients, who reruns
+    the pipeline many times a day.
+  attributes:
+    category: primary
+    proficiency: intermediate
+  metadata:
+    created_at: 2026-11-24T17:55:54.506Z
+    updated_at: 2026-11-24T17:55:54.506Z
+    version: 1

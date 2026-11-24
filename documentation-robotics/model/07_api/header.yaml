@@ -1,0 +1,68 @@
+api.header.retry-after:
+  id: ad1dc4b0-8831-42bc-add9-cedcc57baecf
+  path: api.header.retry-after
+  spec_node_id: api.header
+  type: header
+  layer_id: api
+  name: Retry-After
+  description: "Seconds to wait: progressive_max_delay."
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._throttle_upstream_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.533Z
+    updated_at: 2026-11-24T17:55:54.533Z
+    version: 1
+api.header.x-rate-limit-limit:
+  id: 997117e7-a97d-4393-807b-49caeec1b638
+  path: api.header.x-rate-limit-limit
+  spec_node_id: api.header
+  type: header
+  layer_id: api
+  name: X-RateLimit-Limit
+  description: The domain's hourly limit.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._throttle_upstream_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.534Z
+    updated_at: 2026-11-24T17:55:54.534Z
+    version: 1
+api.header.x-rate-limit-remaining:
+  id: 01e6f341-67c3-4e53-a6e5-1f86277b56d3
+  path: api.header.x-rate-limit-remaining
+  spec_node_id: api.header
+  type: header
+  layer_id: api
+  name: X-RateLimit-Remaining
+  description: Requests left in the hour window.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._throttle_upstream_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.534Z
+    updated_at: 2026-11-24T17:55:54.534Z
+    version: 1
+api.header.x-rate-limit-reset:
+  id: 7364b930-0924-455d-930b-c7b7e7a5236f
+  path: api.header.x-rate-limit-reset
+  spec_node_id: api.header
+  type: header
+  layer_id: api
+  name: X-RateLimit-Reset
+  description: Seconds until the oldest request leaves the hour window.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._throttle_upstream_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.534Z
+    updated_at: 2026-11-24T17:55:54.534Z
+    version: 1

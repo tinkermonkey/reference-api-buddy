@@ -1,0 +1,320 @@
+motivation.requirement.cache-get-and-post-by-request-signature:
+  id: ef2cf007-4811-413e-80cb-c9ad7c100466
+  path: motivation.requirement.cache-get-and-post-by-request-signature
+  spec_node_id: motivation.requirement
+  type: requirement
+  layer_id: motivation
+  name: Cache GET And POST By Request Signature
+  description: GET responses are cached by method plus normalized URL (lower-cased
+    scheme and host, sorted query, trailing slash ignored); POST responses also
+    key on the request body, JSON bodies normalized with sorted keys and other
+    bodies hashed. PUT and DELETE are forwarded without caching. (PATCH has no
+    handler, so http.server answers 501.)
+  attributes:
+    requirementType: functional
+    priority: critical
+  source_reference:
+    provenance: manual
+    locations:
+      - file: documentation/01_poc/01.1_poc_requirements.md
+  metadata:
+    created_at: 2026-11-24T17:55:54.501Z
+    updated_at: 2026-11-24T17:55:54.501Z
+    version: 1
+motivation.requirement.persistent-or-in-memory-cache:
+  id: 18cd67db-9005-40fb-9e92-50e8c607e000
+  path: motivation.requirement.persistent-or-in-memory-cache
+  spec_node_id: motivation.requirement
+  type: requirement
+  layer_id: motivation
+  name: Persistent Or In Memory Cache
+  description: cache.database_path selects an on-disk SQLite file, or ':memory:'
+    for a shared in-memory SQLite database.
+  attributes:
+    requirementType: functional
+    priority: high
+  source_reference:
+    provenance: manual
+    locations:
+      - file: documentation/01_poc/01.1_poc_requirements.md
+  metadata:
+    created_at: 2026-11-24T17:55:54.502Z
+    updated_at: 2026-11-24T17:55:54.502Z
+    version: 1
+motivation.requirement.configurable-cache-ttl:
+  id: a1f852a9-a395-4806-9662-ed8406e4e663
+  path: motivation.requirement.configurable-cache-ttl
+  spec_node_id: motivation.requirement
+  type: requirement
+  layer_id: motivation
+  name: Configurable Cache TTL
+  description: Cache entries expire after cache.default_ttl_seconds (default
+    86400) unless the domain mapping sets ttl_seconds; expired entries are
+    deleted on read and at startup.
+  attributes:
+    requirementType: functional
+    priority: high
+  source_reference:
+    provenance: manual
+    locations:
+      - file: documentation/02_ttl_config/02.1_ttl_config_requirements.md
+  metadata:
+    created_at: 2026-11-24T17:55:54.502Z
+    updated_at: 2026-11-24T17:55:54.502Z
+    version: 1
+motivation.requirement.cache-only-successful-responses:
+  id: f6a846c8-0e50-4006-80a6-38e42500f730
+  path: motivation.requirement.cache-only-successful-responses
+  spec_node_id: motivation.requirement
+  type: requirement
+  layer_id: motivation
+  name: Cache Only Successful Responses
+  description: Only 2xx responses are cached, so upstream errors, 429s and
+    replayed 304s are never served for a whole TTL.
+  attributes:
+    requirementType: functional
+    priority: high
+  source_reference:
+    provenance: manual
+    locations:
+      - file: CHANGELOG.md
+  metadata:
+    created_at: 2026-11-24T17:55:54.502Z
+    updated_at: 2026-11-24T17:55:54.502Z
+    version: 1
+motivation.requirement.bounded-cache-size:
+  id: 7dd29e01-9dfe-4497-b460-ee24dab02be1
+  path: motivation.requirement.bounded-cache-size
+  spec_node_id: motivation.requirement
+  type: requirement
+  layer_id: motivation
+  name: Bounded Cache Size
+  description: The cache holds at most cache.max_cache_entries entries (default
+    1000), evicting least recently accessed entries, and skips responses over
+    cache.max_cache_response_size (default 10 MB); bodies over 1 KB are
+    zlib-compressed.
+  attributes:
+    requirementType: non-functional
+    priority: medium
+  source_reference:
+    provenance: manual
+    locations:
+      - file: CHANGELOG.md
+  metadata:
+    created_at: 2026-11-24T17:55:54.502Z
+    updated_at: 2026-11-24T17:55:54.502Z
+    version: 1
+motivation.requirement.per-domain-rate-limiting:
+  id: 3b805db1-6bcd-4b58-a688-3e7f13d4d1fa
+  path: motivation.requirement.per-domain-rate-limiting
+  spec_node_id: motivation.requirement
+  type: requirement
+  layer_id: motivation
+  name: Per Domain Rate Limiting
+  description: "Each mapped domain is limited per hour
+    (throttling.default_requests_per_hour or domain_limits) and optionally per
+    minute and per second (max_requests_per_minute, max_requests_per_second).
+    The proxy sleeps to stay inside the limits, and answers 429 with Retry-After
+    and X-RateLimit headers when the wait would exceed
+    throttling.progressive_max_delay. Only upstream requests count: cache hits
+    are never throttled."
+  attributes:
+    requirementType: functional
+    priority: high
+  source_reference:
+    provenance: manual
+    locations:
+      - file: README.md
+  metadata:
+    created_at: 2026-11-24T17:55:54.502Z
+    updated_at: 2026-11-24T17:55:54.502Z
+    version: 1
+motivation.requirement.deduplicate-concurrent-requests:
+  id: 09598446-9b79-4896-990f-2014d82ba94a
+  path: motivation.requirement.deduplicate-concurrent-requests
+  spec_node_id: motivation.requirement
+  type: requirement
+  layer_id: motivation
+  name: Deduplicate Concurrent Requests
+  description: Concurrent cache misses for the same cache key make one upstream
+    request; the other callers wait (up to 60 s) and share its result, and do
+    not count against rate limits.
+  attributes:
+    requirementType: functional
+    priority: high
+  source_reference:
+    provenance: manual
+    locations:
+      - file: README.md
+  metadata:
+    created_at: 2026-11-24T17:55:54.502Z
+    updated_at: 2026-11-24T17:55:54.502Z
+    version: 1
+motivation.requirement.optional-secure-key-access-control:
+  id: 46ed0e9c-98c4-4e9a-90ac-46fad2b8133d
+  path: motivation.requirement.optional-secure-key-access-control
+  spec_node_id: motivation.requirement
+  type: requirement
+  layer_id: motivation
+  name: Optional Secure Key Access Control
+  description: When security.require_secure_key is set, every request must carry
+    the proxy's secure key (generated as 256 random bits, or supplied as
+    security.secure_key) as a path prefix, a ?key= query parameter, an
+    X-API-Buddy-Key header or an Authorization Bearer token, else 401.
+  attributes:
+    requirementType: functional
+    priority: high
+  source_reference:
+    provenance: manual
+    locations:
+      - file: documentation/01_poc/01.1_poc_requirements.md
+  metadata:
+    created_at: 2026-11-24T17:55:54.502Z
+    updated_at: 2026-11-24T17:55:54.502Z
+    version: 1
+motivation.requirement.admin-debug-endpoints:
+  id: fd72b39f-689c-45f5-8ead-dbbf0fd4b97d
+  path: motivation.requirement.admin-debug-endpoints
+  spec_node_id: motivation.requirement
+  type: requirement
+  layer_id: motivation
+  name: Admin Debug Endpoints
+  description: Expose /admin/health, /admin/config, /admin/status, /admin/domains,
+    /admin/cache, /admin/cache/{domain} and POST /admin/validate-config, behind
+    the secure key, rate limited per client IP, and switchable off with
+    admin.enabled.
+  attributes:
+    requirementType: functional
+    priority: medium
+  source_reference:
+    provenance: manual
+    locations:
+      - file: documentation/04_config_debug/04.1_config_debug_requirements.md
+  metadata:
+    created_at: 2026-11-24T17:55:54.502Z
+    updated_at: 2026-11-24T17:55:54.502Z
+    version: 1
+motivation.requirement.redact-secrets-in-admin-output:
+  id: 571dc495-54e8-4ffc-a4da-dfbdb71b6a1e
+  path: motivation.requirement.redact-secrets-in-admin-output
+  spec_node_id: motivation.requirement
+  type: requirement
+  layer_id: motivation
+  name: Redact Secrets In Admin Output
+  description: Configuration returned by the admin endpoints has every field whose
+    name contains key, secret, password or token replaced by [REDACTED].
+  attributes:
+    requirementType: non-functional
+    priority: high
+  source_reference:
+    provenance: manual
+    locations:
+      - file: documentation/04_config_debug/04.1_config_debug_requirements.md
+  metadata:
+    created_at: 2026-11-24T17:55:54.502Z
+    updated_at: 2026-11-24T17:55:54.502Z
+    version: 1
+motivation.requirement.programmatic-monitoring-interface:
+  id: b5dd42b5-27f5-4939-abc9-46e7697da0c5
+  path: motivation.requirement.programmatic-monitoring-interface
+  spec_node_id: motivation.requirement
+  type: requirement
+  layer_id: motivation
+  name: Programmatic Monitoring Interface
+  description: A monitoring interface reports cache statistics, upstream response
+    times, error rates and volumes, database health, proxy health and throttling
+    state.
+  attributes:
+    requirementType: functional
+    priority: medium
+  source_reference:
+    provenance: manual
+    locations:
+      - file: documentation/03_monitoring/03.1_monitoring_requirements.md
+  metadata:
+    created_at: 2026-11-24T17:55:54.502Z
+    updated_at: 2026-11-24T17:55:54.502Z
+    version: 1
+motivation.requirement.embeddable-module-lifecycle:
+  id: afee4695-cb5f-4089-92f0-7b6fbafd01ca
+  path: motivation.requirement.embeddable-module-lifecycle
+  spec_node_id: motivation.requirement
+  type: requirement
+  layer_id: motivation
+  name: Embeddable Module Lifecycle
+  description: The proxy is importable as a Python class that a parent application
+    starts (blocking or in a background thread), stops, reconfigures at runtime
+    and uses as a context manager.
+  attributes:
+    requirementType: functional
+    priority: high
+  source_reference:
+    provenance: manual
+    locations:
+      - file: documentation/01_poc/01.1_poc_requirements.md
+  metadata:
+    created_at: 2026-11-24T17:55:54.502Z
+    updated_at: 2026-11-24T17:55:54.502Z
+    version: 1
+motivation.requirement.parent-application-logging-integration:
+  id: 18186681-8dbd-44dd-8310-b88951b43f29
+  path: motivation.requirement.parent-application-logging-integration
+  spec_node_id: motivation.requirement
+  type: requirement
+  layer_id: motivation
+  name: Parent Application Logging Integration
+  description: Logging is configurable (level, format, console and rotating file
+    handlers) and can attach to a parent application's logger.
+  attributes:
+    requirementType: functional
+    priority: low
+  source_reference:
+    provenance: manual
+    locations:
+      - file: documentation/01_poc/01.1_poc_requirements.md
+  metadata:
+    created_at: 2026-11-24T17:55:54.502Z
+    updated_at: 2026-11-24T17:55:54.502Z
+    version: 1
+motivation.requirement.thread-safe-concurrent-handling:
+  id: 63562f9a-4bab-44a7-aa0f-fb1829f66619
+  path: motivation.requirement.thread-safe-concurrent-handling
+  spec_node_id: motivation.requirement
+  type: requirement
+  layer_id: motivation
+  name: Thread Safe Concurrent Handling
+  description: Requests are served concurrently by a threading HTTP server; shared
+    cache, throttle and in-flight state is guarded by locks and SQLite access
+    retries on lock contention.
+  attributes:
+    requirementType: non-functional
+    priority: high
+  source_reference:
+    provenance: manual
+    locations:
+      - file: documentation/01_poc/01.1_poc_requirements.md
+  metadata:
+    created_at: 2026-11-24T17:55:54.502Z
+    updated_at: 2026-11-24T17:55:54.502Z
+    version: 1
+motivation.requirement.distinguish-upstream-errors-from-outages:
+  id: f0e2fc5e-4b57-4535-aafe-83e582a82543
+  path: motivation.requirement.distinguish-upstream-errors-from-outages
+  spec_node_id: motivation.requirement
+  type: requirement
+  layer_id: motivation
+  name: Distinguish Upstream Errors From Outages
+  description: Upstream HTTP error statuses, bodies and headers pass through to
+    the client unchanged; network failures and a mapping with no upstream answer
+    502, and an unmapped domain answers 404.
+  attributes:
+    requirementType: functional
+    priority: medium
+  source_reference:
+    provenance: manual
+    locations:
+      - file: CHANGELOG.md
+  metadata:
+    created_at: 2026-11-24T17:55:54.502Z
+    updated_at: 2026-11-24T17:55:54.502Z
+    version: 1

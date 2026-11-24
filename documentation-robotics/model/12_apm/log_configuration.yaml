@@ -1,0 +1,22 @@
+apm.logconfiguration.api-buddy-logging:
+  id: 4a8527fd-a216-4a34-8c63-d1a6c7c45440
+  path: apm.logconfiguration.api-buddy-logging
+  spec_node_id: apm.logconfiguration
+  type: logconfiguration
+  layer_id: apm
+  name: API Buddy Logging
+  description: "Package logging configured from the 'logging' config section:
+    colour console handler, optional rotating file handler, optional parent
+    logger."
+  attributes:
+    serviceName: reference-api-buddy
+    minimumSeverity: INFO
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/utils/logger.py
+        symbol: LoggerManager
+  metadata:
+    created_at: 2026-11-24T17:55:54.549Z
+    updated_at: 2026-11-24T17:55:54.549Z
+    version: 1

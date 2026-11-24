@@ -1,0 +1,21 @@
+apm.resource.reference-api-buddy-process:
+  id: cc0a0d3a-6266-45a4-9a6d-e1f80a196146
+  path: apm.resource.reference-api-buddy-process
+  spec_node_id: apm.resource
+  type: resource
+  layer_id: apm
+  name: Reference API Buddy Process
+  description: The Python process running the proxy; the package sets no
+    OpenTelemetry resource attributes, it logs through the standard logging
+    module.
+  attributes:
+    droppedAttributesCount: 0
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/proxy.py
+        symbol: CachingProxy
+  metadata:
+    created_at: 2026-11-24T17:55:54.552Z
+    updated_at: 2026-11-24T17:55:54.552Z
+    version: 1

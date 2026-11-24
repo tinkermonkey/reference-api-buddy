@@ -1,0 +1,38 @@
+data-store.validationrule.cache-entries-primary-key:
+  id: 2f967713-02ca-4db4-a983-e06812686838
+  path: data-store.validationrule.cache-entries-primary-key
+  spec_node_id: data-store.validationrule
+  type: validationrule
+  layer_id: data-store
+  name: cache_entries primary key
+  description: cache_key is the primary key of cache_entries.
+  attributes:
+    ruleType: PRIMARY_KEY
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.525Z
+    updated_at: 2026-11-24T17:55:54.525Z
+    version: 1
+data-store.validationrule.metrics-primary-key:
+  id: 9597931f-5d8e-4320-b9a6-197a11e8d7dc
+  path: data-store.validationrule.metrics-primary-key
+  spec_node_id: data-store.validationrule
+  type: validationrule
+  layer_id: data-store
+  name: metrics primary key
+  description: id is the primary key of metrics.
+  attributes:
+    ruleType: PRIMARY_KEY
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.526Z
+    updated_at: 2026-11-24T17:55:54.526Z
+    version: 1

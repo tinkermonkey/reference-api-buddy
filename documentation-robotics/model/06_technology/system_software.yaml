@@ -1,0 +1,78 @@
+technology.systemsoftware.cpython-runtime:
+  id: d0a2e885-5f45-45a3-92af-a9883651729c
+  path: technology.systemsoftware.cpython-runtime
+  spec_node_id: technology.systemsoftware
+  type: systemsoftware
+  layer_id: technology
+  name: CPython Runtime
+  description: Python 3.10+ interpreter and standard library; the package has no
+    third-party runtime dependencies.
+  attributes:
+    softwareType: middleware
+  source_reference:
+    provenance: manual
+    locations:
+      - file: pyproject.toml
+  metadata:
+    created_at: 2026-11-24T17:55:54.545Z
+    updated_at: 2026-11-24T17:55:54.545Z
+    version: 1
+technology.systemsoftware.python-http-server:
+  id: 295168f0-0241-4f79-95fc-0fe192be5ada
+  path: technology.systemsoftware.python-http-server
+  spec_node_id: technology.systemsoftware
+  type: systemsoftware
+  layer_id: technology
+  name: Python http.server
+  description: Standard-library ThreadingHTTPServer and BaseHTTPRequestHandler
+    that the proxy's server and handler extend.
+  attributes:
+    softwareType: middleware
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/server.py
+        symbol: ThreadedHTTPServer
+  metadata:
+    created_at: 2026-11-24T17:55:54.547Z
+    updated_at: 2026-11-24T17:55:54.547Z
+    version: 1
+technology.systemsoftware.python-urllib:
+  id: f47d3518-6546-492c-ba06-0dd19cab57eb
+  path: technology.systemsoftware.python-urllib
+  spec_node_id: technology.systemsoftware
+  type: systemsoftware
+  layer_id: technology
+  name: Python urllib
+  description: Standard-library HTTP(S) client used for upstream calls, with
+    default certificate verification.
+  attributes:
+    softwareType: middleware
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._forward_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.547Z
+    updated_at: 2026-11-24T17:55:54.547Z
+    version: 1
+technology.systemsoftware.sqlite:
+  id: fedd0fb3-9407-4bc8-a53e-5ff23f1f09b9
+  path: technology.systemsoftware.sqlite
+  spec_node_id: technology.systemsoftware
+  type: systemsoftware
+  layer_id: technology
+  name: SQLite
+  description: Embedded database engine via the sqlite3 module.
+  attributes:
+    softwareType: dbms
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: DatabaseManager
+  metadata:
+    created_at: 2026-11-24T17:55:54.547Z
+    updated_at: 2026-11-24T17:55:54.547Z
+    version: 1

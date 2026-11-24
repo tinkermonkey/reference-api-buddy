@@ -1,0 +1,174 @@
+product.feature.embeddable-caching-proxy-module:
+  id: 1dec5566-88ad-4774-a04d-5ad6d81c6d50
+  path: product.feature.embeddable-caching-proxy-module
+  spec_node_id: product.feature
+  type: feature
+  layer_id: product
+  name: Embeddable Caching Proxy Module
+  description: CachingProxy class a Python app imports, starts in a background
+    thread or as a context manager, and stops.
+  attributes:
+    priority: critical
+    status: delivered
+  metadata:
+    created_at: 2026-11-24T17:55:54.508Z
+    updated_at: 2026-11-24T17:55:54.508Z
+    version: 1
+product.feature.api-buddy-cli:
+  id: 9de5959c-9586-43d5-9551-1906ceb415be
+  path: product.feature.api-buddy-cli
+  spec_node_id: product.feature
+  type: feature
+  layer_id: product
+  name: Api Buddy CLI
+  description: api-buddy command that runs the proxy standalone from a JSON
+    config, generates a default config, or prints a new secure key.
+  attributes:
+    priority: high
+    status: delivered
+  metadata:
+    created_at: 2026-11-24T17:55:54.509Z
+    updated_at: 2026-11-24T17:55:54.509Z
+    version: 1
+product.feature.path-based-domain-mapping:
+  id: bd705564-895d-428c-b983-b223d83d7d7e
+  path: product.feature.path-based-domain-mapping
+  spec_node_id: product.feature
+  type: feature
+  layer_id: product
+  name: Path Based Domain Mapping
+  description: http://127.0.0.1:<port>/<domain_key>/<path> is forwarded to
+    <upstream><path> with the query string, so a client only changes its base
+    URL.
+  attributes:
+    priority: critical
+    status: delivered
+  metadata:
+    created_at: 2026-11-24T17:55:54.509Z
+    updated_at: 2026-11-24T17:55:54.509Z
+    version: 1
+product.feature.persistent-sqlite-cache:
+  id: 32a12771-00e6-4ae3-9a14-b980e6cf166a
+  path: product.feature.persistent-sqlite-cache
+  spec_node_id: product.feature
+  type: feature
+  layer_id: product
+  name: Persistent SQLite Cache
+  description: On-disk or in-memory SQLite cache with compression, LRU eviction
+    and a size cap.
+  attributes:
+    priority: critical
+    status: delivered
+  metadata:
+    created_at: 2026-11-24T17:55:54.509Z
+    updated_at: 2026-11-24T17:55:54.509Z
+    version: 1
+product.feature.per-domain-ttl:
+  id: ab8c8703-86d7-4021-81d1-dfed07a49cb3
+  path: product.feature.per-domain-ttl
+  spec_node_id: product.feature
+  type: feature
+  layer_id: product
+  name: Per Domain TTL
+  description: System default TTL with per-domain ttl_seconds overrides.
+  attributes:
+    priority: high
+    status: delivered
+  metadata:
+    created_at: 2026-11-24T17:55:54.509Z
+    updated_at: 2026-11-24T17:55:54.509Z
+    version: 1
+product.feature.request-coalescing:
+  id: ca82f2eb-47da-4e96-a04f-38598ad5620c
+  path: product.feature.request-coalescing
+  spec_node_id: product.feature
+  type: feature
+  layer_id: product
+  name: Request Coalescing
+  description: Concurrent identical misses share one upstream fetch.
+  attributes:
+    priority: high
+    status: delivered
+  metadata:
+    created_at: 2026-11-24T17:55:54.509Z
+    updated_at: 2026-11-24T17:55:54.509Z
+    version: 1
+product.feature.fine-grained-rate-limits:
+  id: a732f4da-7de2-47b8-ac9f-af5a0e3b9e1e
+  path: product.feature.fine-grained-rate-limits
+  spec_node_id: product.feature
+  type: feature
+  layer_id: product
+  name: Fine Grained Rate Limits
+  description: Per-second, per-minute and per-hour limits per domain, delays
+    applied only to cache misses, 429 past the maximum delay.
+  attributes:
+    priority: high
+    status: delivered
+  metadata:
+    created_at: 2026-11-24T17:55:54.509Z
+    updated_at: 2026-11-24T17:55:54.509Z
+    version: 1
+product.feature.secure-key-authentication:
+  id: 9ed50982-44e7-4fa9-ada4-7c5dfe7e8fc2
+  path: product.feature.secure-key-authentication
+  spec_node_id: product.feature
+  type: feature
+  layer_id: product
+  name: Secure Key Authentication
+  description: Optional proxy key in header, bearer token, path prefix or query.
+  attributes:
+    priority: medium
+    status: delivered
+  metadata:
+    created_at: 2026-11-24T17:55:54.509Z
+    updated_at: 2026-11-24T17:55:54.509Z
+    version: 1
+product.feature.upstream-auth-passthrough:
+  id: e614a03e-61fa-4d4e-bfb5-c8ca3c8ea5d4
+  path: product.feature.upstream-auth-passthrough
+  spec_node_id: product.feature
+  type: feature
+  layer_id: product
+  name: Upstream Auth Passthrough
+  description: Client headers, including an upstream Authorization header, are
+    forwarded to the upstream (except Host, Connection and Content-Length).
+  attributes:
+    priority: medium
+    status: delivered
+  metadata:
+    created_at: 2026-11-24T17:55:54.509Z
+    updated_at: 2026-11-24T17:55:54.509Z
+    version: 1
+product.feature.admin-debug-endpoints:
+  id: 0878f00e-8a54-41d4-9123-dfa71c52e8d6
+  path: product.feature.admin-debug-endpoints
+  spec_node_id: product.feature
+  type: feature
+  layer_id: product
+  name: Admin Debug Endpoints
+  description: HTTP endpoints for health, sanitized config, status, domains, cache
+    and config validation.
+  attributes:
+    priority: medium
+    status: delivered
+  metadata:
+    created_at: 2026-11-24T17:55:54.509Z
+    updated_at: 2026-11-24T17:55:54.509Z
+    version: 1
+product.feature.monitoring-metrics:
+  id: 8e8618ff-be3f-4fda-8705-56033656f31e
+  path: product.feature.monitoring-metrics
+  spec_node_id: product.feature
+  type: feature
+  layer_id: product
+  name: Monitoring Metrics
+  description: MonitoringManager and get_metrics() report cache, upstream,
+    database, health and throttling statistics.
+  attributes:
+    priority: medium
+    status: delivered
+  metadata:
+    created_at: 2026-11-24T17:55:54.509Z
+    updated_at: 2026-11-24T17:55:54.509Z
+    version: 1

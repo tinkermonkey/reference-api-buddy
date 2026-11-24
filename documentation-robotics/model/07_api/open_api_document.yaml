@@ -1,0 +1,22 @@
+api.openapidocument.reference-api-buddy-http-api:
+  id: 43a19cfb-2bba-44b7-af71-ad38eaced7e2
+  path: api.openapidocument.reference-api-buddy-http-api
+  spec_node_id: api.openapidocument
+  type: openapidocument
+  layer_id: api
+  name: Reference API Buddy HTTP API
+  description: The proxy's HTTP surface as served by ProxyHTTPRequestHandler. Not
+    published as an OpenAPI file; modelled from the handler.
+  attributes:
+    openapi: 3.0.3
+    info: Reference API Buddy
+    paths: see paths
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: ProxyHTTPRequestHandler
+  metadata:
+    created_at: 2026-11-24T17:55:54.527Z
+    updated_at: 2026-11-24T17:55:54.527Z
+    version: 1

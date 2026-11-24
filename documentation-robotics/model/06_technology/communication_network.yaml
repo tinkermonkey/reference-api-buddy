@@ -1,0 +1,14 @@
+technology.communicationnetwork.internet:
+  id: aa5d887c-8697-443b-ae83-45857f4d21cb
+  path: technology.communicationnetwork.internet
+  spec_node_id: technology.communicationnetwork
+  type: communicationnetwork
+  layer_id: technology
+  name: Internet
+  description: Carries HTTPS requests from the proxy to upstream APIs.
+  attributes:
+    networkType: internet
+  metadata:
+    created_at: 2026-11-24T17:55:54.548Z
+    updated_at: 2026-11-24T17:55:54.548Z
+    version: 1

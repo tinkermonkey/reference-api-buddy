@@ -1,0 +1,13 @@
+business.businessservice.cached-reference-data-access:
+  id: e4881f30-569f-48fe-8ca5-f4322d822cb7
+  path: business.businessservice.cached-reference-data-access
+  spec_node_id: business.businessservice
+  type: businessservice
+  layer_id: business
+  name: Cached Reference Data Access
+  description: Access to external reference data that answers repeated questions
+    locally and paces the rest to the provider's limits.
+  metadata:
+    created_at: 2026-11-24T17:55:54.505Z
+    updated_at: 2026-11-24T17:55:54.505Z
+    version: 1

@@ -1,0 +1,17 @@
+api.components.reference-api-buddy-components:
+  id: 2c5d2ec7-55f6-430f-b5ce-1cc9736d594e
+  path: api.components.reference-api-buddy-components
+  spec_node_id: api.components
+  type: components
+  layer_id: api
+  name: Reference API Buddy Components
+  description: Shared security schemes and schemas.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: ProxyHTTPRequestHandler
+  metadata:
+    created_at: 2026-11-24T17:55:54.531Z
+    updated_at: 2026-11-24T17:55:54.531Z
+    version: 1
