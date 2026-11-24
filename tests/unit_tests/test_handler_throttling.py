@@ -97,8 +97,9 @@ class TestThrottlingIntegration:
         handler = TestHandler()
 
         # Need to patch the imports that might not be available in the handler context
-        with patch("reference_api_buddy.core.handler.time", time), patch(
-            "reference_api_buddy.core.handler.urlparse", urlparse
+        with (
+            patch("reference_api_buddy.core.handler.time", time),
+            patch("reference_api_buddy.core.handler.urlparse", urlparse),
         ):
             handler._handle_request("GET")
 
