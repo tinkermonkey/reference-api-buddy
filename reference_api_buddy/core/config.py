@@ -10,6 +10,7 @@ DEFAULT_CONFIG = {
     "cache": {
         "database_path": ":memory:",
         "max_cache_response_size": 10485760,  # 10MB
+        "max_cache_entries": 1000,  # least recently used entries are evicted past this
         "default_ttl_seconds": 86400,  # 1 day = 24 * 3600 seconds
     },
     "throttling": {"default_requests_per_hour": 1000, "progressive_max_delay": 300},
@@ -74,6 +75,12 @@ class ConfigurationValidator:
             errors.append("cache.database_path must be a string.")
         if not isinstance(cache.get("max_cache_response_size", None), int):
             errors.append("cache.max_cache_response_size must be an integer.")
+
+        max_entries = cache.get("max_cache_entries")
+        if max_entries is not None and (
+            isinstance(max_entries, bool) or not isinstance(max_entries, int) or max_entries <= 0
+        ):
+            errors.append("cache.max_cache_entries must be a positive integer.")
 
         # Validate cache TTL
         default_ttl = cache.get("default_ttl_seconds")

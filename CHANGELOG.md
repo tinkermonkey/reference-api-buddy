@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.5.1] - 2026-11-24
+
+### Fixed
+- **Upstream errors are no longer cached.** Responses with status 400 or above (and network errors) were cached for the full TTL, so one outage blanked a resource until the entry expired. They are now passed to the client and never stored.
+- **Upstream status codes are passed through.** An upstream 4xx/5xx now reaches the client with its own status, headers and body instead of a generic 502, so callers can tell a 404 from an outage. Network failures and misconfigured domains still answer 502.
+- **A request answered with 429 no longer stays in flight forever.** On a cache miss the in-flight entry was registered before the rate check but never completed when the proxy answered 429, so every later request for the same resource waited 60 seconds and failed with a 500, holding a server thread. The in-flight request is now always completed, including when the miss path raises, and requests waiting on a throttled request receive its 429.
+- **`cache.max_cache_entries` is read from configuration.** `CachingProxy` ignored it and always evicted past 1,000 entries. The default stays 1,000, and the config validator rejects a value that is not a positive integer.
+
 ## [0.5.0] - 2025-10-20
 
 ### Added
