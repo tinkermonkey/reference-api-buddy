@@ -201,6 +201,7 @@ def test_cache_and_upstream(http_server):
     conn.close()
 
 
+@pytest.mark.network
 @pytest.mark.skipif(os.environ.get("CI") == "true", reason="Skipping external network test in CI environment")
 def test_configured_upstream_caching():
     """Test caching with a properly configured upstream"""

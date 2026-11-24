@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Integration tests for CLI startup and termination."""
 
+import socket
 import subprocess
 import sys
 import time
@@ -10,6 +11,12 @@ import pytest
 
 PROJECT_ROOT = Path(__file__).parent.parent.absolute()
 sys.path.insert(0, str(PROJECT_ROOT))
+
+
+def _free_port():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(("127.0.0.1", 0))
+        return s.getsockname()[1]
 
 
 def test_cli_startup():
@@ -23,8 +30,9 @@ def test_cli_startup():
     }
 
     # Start CLI process
+    port = _free_port()
     process = subprocess.Popen(
-        [sys.executable, "-m", "reference_api_buddy.cli", "--host", "127.0.0.1", "--port", "8899"],
+        [sys.executable, "-m", "reference_api_buddy.cli", "--host", "127.0.0.1", "--port", str(port)],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
@@ -49,7 +57,7 @@ def test_cli_startup():
             stdout, stderr = process.communicate()
 
         # Check if we got the expected startup message
-        expected_msg = "Starting Reference API Buddy on 127.0.0.1:8899"
+        expected_msg = f"Starting Reference API Buddy on 127.0.0.1:{port}"
         combined_output = stdout + stderr
 
         assert expected_msg in combined_output, (
@@ -75,8 +83,9 @@ def test_cli_startup_with_different_port():
         "API_BUDDY_LOG_LEVEL": "INFO",
     }
 
+    port = _free_port()
     process = subprocess.Popen(
-        [sys.executable, "-m", "reference_api_buddy.cli", "--host", "127.0.0.1", "--port", "8901"],
+        [sys.executable, "-m", "reference_api_buddy.cli", "--host", "127.0.0.1", "--port", str(port)],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
@@ -91,7 +100,7 @@ def test_cli_startup_with_different_port():
         process.terminate()
         stdout, stderr = process.communicate(timeout=10)
 
-        expected_msg = "Starting Reference API Buddy on 127.0.0.1:8901"
+        expected_msg = f"Starting Reference API Buddy on 127.0.0.1:{port}"
         combined_output = stdout + stderr
         assert expected_msg in combined_output, f"Expected message not found in: {combined_output}"
 

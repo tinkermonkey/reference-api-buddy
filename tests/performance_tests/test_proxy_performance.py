@@ -12,6 +12,9 @@ import requests
 
 from reference_api_buddy.core.proxy import CachingProxy
 
+# These tests call jsonplaceholder.typicode.com live; run them with `pytest -m network`.
+pytestmark = pytest.mark.network
+
 
 @pytest.mark.skipif(
     platform.system() == "Windows" and os.environ.get("CI") == "true",
