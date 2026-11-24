@@ -12,6 +12,7 @@ from http.server import BaseHTTPRequestHandler
 from typing import Any, Dict
 from urllib.parse import parse_qs, urlparse
 
+from reference_api_buddy.database.models import CachedResponse
 from reference_api_buddy.utils.logger import get_logger
 
 
@@ -24,6 +25,138 @@ class RequestProcessingMixin:
         if hasattr(self, "proxy") and hasattr(self.proxy, "logger"):
             return self.proxy.logger
         return get_logger("core.handler")
+
+    def _normalize_upstream_response(self, response_data: bytes, response_headers: dict, real_url: str):
+        """Decompress an upstream body and fix its framing headers for the proxy response.
+
+        Returns:
+            Tuple of (response_data, response_headers)
+        """
+        # Handle compression - be more robust about gzip detection and decompression
+        encoding = response_headers.get("Content-Encoding", "").lower()
+        decompressed = False
+
+        # Check if data is gzipped using magic number (more comprehensive check)
+        if len(response_data) >= 2 and response_data[:2] == b"\x1f\x8b":
+            self.logger.debug(
+                f"Detected gzipped data by magic number for {real_url} " f"(first 10 bytes: {response_data[:10].hex()})"
+            )
+            try:
+                decompressed_data = gzip.decompress(response_data)
+                response_data = decompressed_data
+                decompressed = True
+                self.logger.debug(f"Successfully decompressed gzip data for " f"{real_url}")
+            except (gzip.BadGzipFile, zlib.error, OSError) as e:
+                self.logger.warning(f"Failed to decompress gzipped data for " f"{real_url}: {e}")
+                # Keep original data if decompression fails
+        elif encoding in ["gzip", "deflate"]:
+            self.logger.debug(f"Detected {encoding} encoding via header for " f"{real_url}")
+            try:
+                if encoding == "gzip":
+                    decompressed_data = gzip.decompress(response_data)
+                elif encoding == "deflate":
+                    decompressed_data = zlib.decompress(response_data)
+                response_data = decompressed_data
+                decompressed = True
+                self.logger.debug(f"Successfully decompressed {encoding} data for {real_url}")
+            except (gzip.BadGzipFile, zlib.error, OSError) as e:
+                self.logger.warning(f"Failed to decompress {encoding} data for {real_url}: {e}")
+                # Keep original data if decompression fails
+
+        # Fix headers after decompression
+        if decompressed:
+            # Remove compression-related headers (case-insensitive)
+            response_headers = {
+                k: v
+                for k, v in response_headers.items()
+                if k.lower() not in ["content-encoding", "transfer-encoding", "content-length"]
+            }
+            # Set correct content length for decompressed data
+            response_headers["Content-Length"] = str(len(response_data))
+            self.logger.debug(f"Updated headers after decompression: " f"Content-Length={len(response_data)}")
+        else:
+            # Even if not decompressed, ensure we have proper headers for the proxy response
+            # Remove chunked encoding as we'll send the full response at once
+            # Remove 'transfer-encoding: chunked' headers efficiently
+            response_headers = {
+                k: v
+                for k, v in response_headers.items()
+                if not (k.lower() == "transfer-encoding" and v.lower() == "chunked")
+            }
+            # Only set Content-Length if not already present (case-insensitive check)
+            has_content_length = any(key.lower() == "content-length" for key in response_headers.keys())
+            if not has_content_length:
+                response_headers["Content-Length"] = str(len(response_data))
+                self.logger.debug(f"Removed chunked encoding, set Content-Length={len(response_data)}")
+
+        return response_data, response_headers
+
+    @staticmethod
+    def _is_cacheable_status(status_code: int) -> bool:
+        """Return True if a response with this status may be cached.
+
+        Only 2xx responses are cached: an upstream error, a throttled request or a
+        304 replayed from the cache would otherwise be served for the full TTL.
+        """
+        return 200 <= status_code < 300
+
+    def _throttle_upstream_request(self, domain: str):
+        """Apply rate limiting before an upstream request.
+
+        Sleeps when a short delay keeps the domain within its limits, then records
+        the request. When the required delay exceeds max_delay, nothing is recorded.
+
+        Returns:
+            None if the request may proceed, or a (body, 429, headers) response tuple
+            if it must be rejected.
+        """
+        throttle_manager = getattr(self.proxy, "throttle_manager", None)
+        if throttle_manager is None:
+            return None
+
+        delay = throttle_manager.get_required_delay(domain)
+        if delay == -1.0:
+            limit = getattr(throttle_manager, "domain_limits", {}).get(
+                domain, getattr(throttle_manager, "default_limit", 1000)
+            )
+            state = throttle_manager.get_state(domain)
+            remaining = max(0, limit - len(state.request_timestamps))
+            reset = 1
+            if state.request_timestamps:
+                reset = int(throttle_manager.time_window - (time.time() - state.request_timestamps[0]))
+            max_delay = throttle_manager.max_delay
+            self.logger.info(
+                f"Throttling upstream request for domain {domain}: "
+                f"required delay exceeds max_delay ({max_delay}s), returning 429"
+            )
+            metrics_collector = getattr(self.proxy, "metrics_collector", None)
+            if metrics_collector:
+                metrics_collector.record_event(
+                    "throttle",
+                    {
+                        "domain": domain,
+                        "delay": max_delay,
+                        "limit": limit,
+                        "remaining": remaining,
+                        "reset": reset,
+                        "cache_miss": True,
+                    },
+                )
+            headers = {
+                "Retry-After": str(max_delay),
+                "X-RateLimit-Limit": str(limit),
+                "X-RateLimit-Remaining": str(remaining),
+                "X-RateLimit-Reset": str(reset),
+            }
+            return b"Too Many Requests\n", 429, headers
+
+        if delay > 0:
+            self.logger.info(f"Rate limiting: delaying request to domain {domain} by {delay:.3f}s")
+            time.sleep(delay)
+
+        # Record the request after delay (only for actual upstream requests)
+        throttle_manager.record_request(domain)
+        return None
 
     def _forward_request(self, method: str, target_url: str, body: bytes = None, headers: dict = None):
         """Forward request to upstream server and return response data,
@@ -108,63 +241,9 @@ class RequestProcessingMixin:
                 self.logger.debug(f"Received response from {real_url}: {status_code}")
                 self.logger.debug(f"Response headers: {response_headers}")
 
-                # Handle compression - be more robust about gzip detection and decompression
-                encoding = response_headers.get("Content-Encoding", "").lower()
-                decompressed = False
-
-                # Check if data is gzipped using magic number (more comprehensive check)
-                if len(response_data) >= 2 and response_data[:2] == b"\x1f\x8b":
-                    self.logger.debug(
-                        f"Detected gzipped data by magic number for {real_url} "
-                        f"(first 10 bytes: {response_data[:10].hex()})"
-                    )
-                    try:
-                        decompressed_data = gzip.decompress(response_data)
-                        response_data = decompressed_data
-                        decompressed = True
-                        self.logger.debug(f"Successfully decompressed gzip data for " f"{real_url}")
-                    except (gzip.BadGzipFile, zlib.error, OSError) as e:
-                        self.logger.warning(f"Failed to decompress gzipped data for " f"{real_url}: {e}")
-                        # Keep original data if decompression fails
-                elif encoding in ["gzip", "deflate"]:
-                    self.logger.debug(f"Detected {encoding} encoding via header for " f"{real_url}")
-                    try:
-                        if encoding == "gzip":
-                            decompressed_data = gzip.decompress(response_data)
-                        elif encoding == "deflate":
-                            decompressed_data = zlib.decompress(response_data)
-                        response_data = decompressed_data
-                        decompressed = True
-                        self.logger.debug(f"Successfully decompressed {encoding} data for {real_url}")
-                    except (gzip.BadGzipFile, zlib.error, OSError) as e:
-                        self.logger.warning(f"Failed to decompress {encoding} data for {real_url}: {e}")
-                        # Keep original data if decompression fails
-
-                        # Fix headers after decompression
-                if decompressed:
-                    # Remove compression-related headers (case-insensitive)
-                    response_headers = {
-                        k: v
-                        for k, v in response_headers.items()
-                        if k.lower() not in ["content-encoding", "transfer-encoding", "content-length"]
-                    }
-                    # Set correct content length for decompressed data
-                    response_headers["Content-Length"] = str(len(response_data))
-                    self.logger.debug(f"Updated headers after decompression: " f"Content-Length={len(response_data)}")
-                else:
-                    # Even if not decompressed, ensure we have proper headers for the proxy response
-                    # Remove chunked encoding as we'll send the full response at once
-                    # Remove 'transfer-encoding: chunked' headers efficiently
-                    response_headers = {
-                        k: v
-                        for k, v in response_headers.items()
-                        if not (k.lower() == "transfer-encoding" and v.lower() == "chunked")
-                    }
-                    # Only set Content-Length if not already present (case-insensitive check)
-                    has_content_length = any(key.lower() == "content-length" for key in response_headers.keys())
-                    if not has_content_length:
-                        response_headers["Content-Length"] = str(len(response_data))
-                        self.logger.debug(f"Removed chunked encoding, set Content-Length={len(response_data)}")
+                response_data, response_headers = self._normalize_upstream_response(
+                    response_data, response_headers, real_url
+                )
 
                 # Store upstream metrics for successful requests
                 if domain_key and hasattr(self.proxy, "db_manager"):
@@ -201,10 +280,18 @@ class RequestProcessingMixin:
                 except Exception as store_error:
                     self.logger.debug(f"Failed to store upstream error metrics: {store_error}")
 
-            # Handle HTTP errors (4xx, 5xx responses from upstream)
+            # Pass the upstream status, body and headers through so callers can tell
+            # a 404 from an outage. These responses are never cached (see _is_cacheable_status).
             self.logger.error(f"HTTP error from upstream {real_url}: {e.code} {e.reason}")
-            error_msg = f"Upstream HTTP error: {e.code} {e.reason}"
-            return error_msg.encode("utf-8"), 502, {"Content-Type": "text/plain"}
+            try:
+                error_body = e.read()
+                error_headers = dict(e.headers) if e.headers is not None else {}
+            except Exception as read_error:
+                self.logger.debug(f"Failed to read upstream error body: {read_error}")
+                error_body = f"Upstream HTTP error: {e.code} {e.reason}".encode("utf-8")
+                error_headers = {"Content-Type": "text/plain"}
+            error_body, error_headers = self._normalize_upstream_response(error_body, error_headers, real_url)
+            return error_body, e.code, error_headers
         except urllib.error.URLError as e:
             # Calculate response time for network errors
             response_time_ms = int((time.time() - start_time) * 1000)
@@ -353,16 +440,18 @@ class RequestProcessingMixin:
                     else:
                         self.logger.info(f"Cache miss for key: {cache_key}")
 
-                # Check if another thread is already fetching this resource (deduplication)
-                # Do this BEFORE rate limiting to avoid counting duplicate requests
-                if hasattr(self.proxy, "inflight_tracker") and self.proxy.inflight_tracker is not None:
-                    inflight_request = self.proxy.inflight_tracker.should_wait(cache_key)
+                # Deduplicate concurrent requests for the same resource. Only cacheable
+                # methods have a cache key; PUT/DELETE must never share an in-flight slot.
+                # Do this BEFORE rate limiting to avoid counting duplicate requests.
+                inflight_tracker = getattr(self.proxy, "inflight_tracker", None)
+                if cache_key is not None and inflight_tracker is not None:
+                    inflight_request = inflight_tracker.should_wait(cache_key)
 
                     if inflight_request is not None:
                         # Another thread is fetching this, wait for its result
                         # Deduplicated requests do NOT count against rate limits
                         self.logger.info(f"Request already in-flight for key: {cache_key}, waiting for result")
-                        result, error = self.proxy.inflight_tracker.wait_for_result(cache_key, inflight_request)
+                        result, error = inflight_tracker.wait_for_result(cache_key, inflight_request)
 
                         if error:
                             # The in-flight request failed
@@ -386,129 +475,34 @@ class RequestProcessingMixin:
                         response_data, status_code, headers = result
                         self.logger.info(f"Using deduplicated result for key: {cache_key}")
                     else:
-                        # We're the first thread for this resource
-                        # Apply rate limiting ONLY to the actual upstream request
-                        if hasattr(self.proxy, "throttle_manager") and self.proxy.throttle_manager is not None:
-                            # Use the matched domain key for throttling
-                            domain = matched_domain_key
-
-                            # Calculate required delay to stay within rate limits
-                            delay = self.proxy.throttle_manager.get_required_delay(domain)
-
-                            if delay == -1.0:
-                                # Delay exceeds max_delay, return 429
-                                limit = getattr(self.proxy.throttle_manager, "domain_limits", {}).get(
-                                    domain, getattr(self.proxy.throttle_manager, "default_limit", 1000)
-                                )
-                                state = self.proxy.throttle_manager.get_state(domain)
-                                remaining = max(0, limit - len(state.request_timestamps))
-                                reset = 1
-                                if state.request_timestamps:
-                                    reset = int(
-                                        self.proxy.throttle_manager.time_window
-                                        - (time.time() - state.request_timestamps[0])
-                                    )
-                                max_delay = self.proxy.throttle_manager.max_delay
-                                self.logger.info(
-                                    f"Throttling upstream request for domain {domain}: "
-                                    f"required delay exceeds max_delay ({max_delay}s), returning 429"
-                                )
-                                self.send_response(429)
-                                self.send_header("Retry-After", str(max_delay))
-                                self.send_header("X-RateLimit-Limit", str(limit))
-                                self.send_header("X-RateLimit-Remaining", str(remaining))
-                                self.send_header("X-RateLimit-Reset", str(reset))
-                                if hasattr(self.proxy, "metrics_collector") and self.proxy.metrics_collector:
-                                    self.proxy.metrics_collector.record_event(
-                                        "throttle",
-                                        {
-                                            "domain": domain,
-                                            "delay": max_delay,
-                                            "limit": limit,
-                                            "remaining": remaining,
-                                            "reset": reset,
-                                            "cache_miss": True,
-                                        },
-                                    )
-                                self.end_headers()
-                                self.wfile.write(b"Too Many Requests\n")
-                                return
-                            elif delay > 0:
-                                # Sleep to stay within rate limits
-                                self.logger.info(f"Rate limiting: delaying request to domain {domain} by {delay:.3f}s")
-                                time.sleep(delay)
-
-                            # Record the request after delay (only for actual upstream requests)
-                            self.proxy.throttle_manager.record_request(domain)
-
-                        # Make the actual upstream request
+                        # We're the first thread for this resource, so we own the in-flight
+                        # entry and must release it on every path, including a 429.
+                        outcome = None
+                        failure = None
                         try:
-                            response_data, status_code, headers = self._forward_request(
-                                method, target_url, body, self.headers
-                            )
-                            # Notify waiters of success
-                            self.proxy.inflight_tracker.complete_request(
-                                cache_key, result=(response_data, status_code, headers)
-                            )
+                            outcome = self._throttle_upstream_request(matched_domain_key)
+                            if outcome is None:
+                                outcome = self._forward_request(method, target_url, body, self.headers)
                         except Exception as e:
-                            # Notify waiters of failure
-                            self.proxy.inflight_tracker.complete_request(cache_key, error=e)
+                            failure = e
                             raise
+                        finally:
+                            inflight_tracker.complete_request(cache_key, result=outcome, error=failure)
+                        response_data, status_code, headers = outcome
                 else:
                     # No deduplication, apply rate limiting and make the request
-                    if hasattr(self.proxy, "throttle_manager") and self.proxy.throttle_manager is not None:
-                        domain = matched_domain_key
-                        delay = self.proxy.throttle_manager.get_required_delay(domain)
+                    outcome = self._throttle_upstream_request(matched_domain_key)
+                    if outcome is None:
+                        outcome = self._forward_request(method, target_url, body, self.headers)
+                    response_data, status_code, headers = outcome
 
-                        if delay == -1.0:
-                            # Return 429 if delay exceeds tolerance
-                            limit = getattr(self.proxy.throttle_manager, "domain_limits", {}).get(
-                                domain, getattr(self.proxy.throttle_manager, "default_limit", 1000)
-                            )
-                            state = self.proxy.throttle_manager.get_state(domain)
-                            remaining = max(0, limit - len(state.request_timestamps))
-                            reset = 1
-                            if state.request_timestamps:
-                                reset = int(
-                                    self.proxy.throttle_manager.time_window
-                                    - (time.time() - state.request_timestamps[0])
-                                )
-                            max_delay = self.proxy.throttle_manager.max_delay
-                            self.send_response(429)
-                            self.send_header("Retry-After", str(max_delay))
-                            self.send_header("X-RateLimit-Limit", str(limit))
-                            self.send_header("X-RateLimit-Remaining", str(remaining))
-                            self.send_header("X-RateLimit-Reset", str(reset))
-                            if hasattr(self.proxy, "metrics_collector") and self.proxy.metrics_collector:
-                                self.proxy.metrics_collector.record_event(
-                                    "throttle",
-                                    {
-                                        "domain": domain,
-                                        "delay": max_delay,
-                                        "limit": limit,
-                                        "remaining": remaining,
-                                        "reset": reset,
-                                        "cache_miss": True,
-                                    },
-                                )
-                            self.end_headers()
-                            self.wfile.write(b"Too Many Requests\n")
-                            return
-                        elif delay > 0:
-                            time.sleep(delay)
-
-                        self.proxy.throttle_manager.record_request(domain)
-
-                    response_data, status_code, headers = self._forward_request(method, target_url, body, self.headers)
-
-                # Cache the response (data is already decompressed by _forward_request)
+                # Cache successful responses only (data is already decompressed by _forward_request).
+                # Errors and throttled responses must not blank a resource for the whole TTL.
                 if (
-                    method in ("GET", "POST")
-                    and hasattr(self.proxy, "cache_engine")
-                    and self.proxy.cache_engine is not None
+                    cache_key is not None
+                    and self._is_cacheable_status(status_code)
+                    and getattr(self.proxy, "cache_engine", None) is not None
                 ):
-                    from reference_api_buddy.database.models import CachedResponse
-
                     # Create proper CachedResponse object with no explicit TTL (will be set by TTL manager)
                     resp_obj = CachedResponse(
                         data=response_data,

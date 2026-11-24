@@ -23,6 +23,12 @@ jobs:
             python-version: "3.11"
           - os: macos-latest
             python-version: "3.12"
+          # ubuntu-latest (26.04) has no Python 3.9 build in setup-python
+          - os: ubuntu-latest
+            python-version: "3.9"
+        include:
+          - os: ubuntu-24.04
+            python-version: "3.9"
 
     steps:
       - uses: actions/checkout@v4

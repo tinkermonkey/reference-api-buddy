@@ -8,6 +8,7 @@ PROJECT_ROOT = Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(PROJECT_ROOT))
 
 import json
+import time
 
 import pytest
 
@@ -72,7 +73,8 @@ def test_cache_expiry(cache_engine, sample_response, monkeypatch):
     sample_response.created_at = "2025-08-15 12:00:00"
     assert cache_engine.set(key, sample_response)
     # Patch time to simulate expiry
-    monkeypatch.setattr("time.time", lambda: 1765867200)  # Far future
+    far_future = time.time() + 10 * 365 * 24 * 3600
+    monkeypatch.setattr("time.time", lambda: far_future)
     cached = cache_engine.get(key)
     assert cached is None
     stats = cache_engine.get_stats()
