@@ -6,6 +6,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.5.1] - 2026-11-24
+
+### Fixed
+- **Upstream errors are no longer cached.** Only 2xx responses are stored, so an outage or a 4xx no longer
+  blanks a resource for the whole TTL. Throttled (429) responses are not cached either.
+- **Upstream HTTP error statuses are passed through.** A 404 or 503 from upstream now reaches the caller with its
+  real status, body and headers instead of a generic 502. Network errors and unmapped upstreams still return 502.
+- **A request answered with a 429 no longer stays in-flight forever.** The request that owns an in-flight entry now
+  releases it on every path, so later requests for the same resource get a prompt 429 instead of waiting 60s and
+  failing with a 500.
+- **PUT and DELETE requests no longer share an in-flight slot.** They have no cache key and previously all
+  deduplicated onto the same entry, so concurrent requests could receive each other's responses.
+- **`cache.max_cache_entries` is read from config.** The cache was capped at 1,000 entries whatever the config said.
+  The default stays 1,000; the value must be a positive integer.
+- `reference_api_buddy.__version__` now matches the package version.
+
+### Tests
+- Regression tests for all of the above against a local upstream server.
+- Expiry tests no longer use a hard-coded "far future" timestamp that has since passed.
+
 ## [0.5.0] - 2025-10-20
 
 ### Added

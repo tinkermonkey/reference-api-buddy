@@ -154,6 +154,7 @@ class CachingProxy:
             self.db_manager,
             config=self.config,
             max_response_size=self.config.get("cache", {}).get("max_cache_response_size", 10485760),
+            max_cache_entries=self.config.get("cache", {}).get("max_cache_entries", 1000),
         )
         self.throttle_manager = ThrottleManager(
             self.config.get("throttling", {}), domain_mappings=self.config.get("domain_mappings", {})
@@ -340,6 +341,7 @@ class CachingProxy:
             self.db_manager,
             config=self.config,
             max_response_size=self.config.get("cache", {}).get("max_cache_response_size", 10485760),
+            max_cache_entries=self.config.get("cache", {}).get("max_cache_entries", 1000),
         )
         self.throttle_manager = ThrottleManager(
             self.config.get("throttling", {}), domain_mappings=self.config.get("domain_mappings", {})
