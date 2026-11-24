@@ -72,7 +72,7 @@ def test_cache_expiry(cache_engine, sample_response, monkeypatch):
     sample_response.created_at = "2025-08-15 12:00:00"
     assert cache_engine.set(key, sample_response)
     # Patch time to simulate expiry
-    monkeypatch.setattr("time.time", lambda: 1765867200)  # Far future
+    monkeypatch.setattr("time.time", lambda: 4102444800)  # 2100-01-01, far in the future
     cached = cache_engine.get(key)
     assert cached is None
     stats = cache_engine.get_stats()

@@ -84,7 +84,7 @@ def test_cleanup_expired_entries(cache_engine, sample_response, monkeypatch):
     key = cache_engine.generate_cache_key("GET", "http://example.com/api/expire")
     cache_engine.set(key, sample_response)
     # Patch time to simulate expiry
-    monkeypatch.setattr("time.time", lambda: 1765867200)  # Far future
+    monkeypatch.setattr("time.time", lambda: 4102444800)  # 2100-01-01, far in the future
     cache_engine._cleanup_expired_entries()
     assert cache_engine.get(key) is None
     perf = cache_engine.get_cache_performance()
