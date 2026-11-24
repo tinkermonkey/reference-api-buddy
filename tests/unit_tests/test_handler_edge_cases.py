@@ -657,7 +657,6 @@ class TestHandlerEdgeCases:
         assert status == 404
         assert b"Domain not mapped" in response_data
 
-    @pytest.mark.skipif(os.environ.get("CI") == "true", reason="Skipping network timeout tests in CI environment")
     def test_timeout_scenarios(self, proxy_with_domain_mapping):
         """Test timeout handling."""
         handler = MockHandler(proxy=proxy_with_domain_mapping, path="/testdomain/test", headers={})

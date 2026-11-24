@@ -4,8 +4,6 @@ import json
 import os
 import sys
 import tempfile
-import threading
-import time
 import unittest
 from pathlib import Path
 from unittest.mock import Mock
@@ -16,6 +14,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 import requests
 
 from reference_api_buddy.core.proxy import CachingProxy
+from tests.helpers import free_port
 
 
 class TestAdminEndpointsIntegration(unittest.TestCase):
@@ -24,7 +23,7 @@ class TestAdminEndpointsIntegration(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up test fixtures for the class."""
-        cls.test_port = 18082
+        cls.test_port = free_port()
         cls.base_url = f"http://127.0.0.1:{cls.test_port}"
 
         # Create temporary database file
@@ -59,13 +58,8 @@ class TestAdminEndpointsIntegration(unittest.TestCase):
         # Create and start proxy
         self.proxy = CachingProxy(self.config)
 
-        # Start proxy in background thread
-        self.proxy_thread = threading.Thread(target=self.proxy.start, kwargs={"blocking": True})
-        self.proxy_thread.daemon = True
-        self.proxy_thread.start()
-
-        # Wait for server to start
-        time.sleep(0.5)
+        # start() binds the port before returning, so no startup wait is needed
+        self.proxy.start(blocking=False)
 
         # Store reference for cleanup
         self.__class__.proxy = self.proxy
@@ -74,7 +68,6 @@ class TestAdminEndpointsIntegration(unittest.TestCase):
         """Clean up after each test."""
         if hasattr(self, "proxy") and self.proxy:
             self.proxy.stop()
-            time.sleep(0.1)
 
     def test_admin_config_endpoint(self):
         """Test GET /admin/config endpoint."""
@@ -310,7 +303,7 @@ class TestAdminEndpointsWithSecurity(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up test fixtures for the class."""
-        cls.test_port = 18083
+        cls.test_port = free_port()
         cls.base_url = f"http://127.0.0.1:{cls.test_port}"
 
         cls.config = {
@@ -327,19 +320,13 @@ class TestAdminEndpointsWithSecurity(unittest.TestCase):
         self.proxy = CachingProxy(self.config)
         self.secure_key = self.proxy.get_secure_key()
 
-        # Start proxy in background thread
-        self.proxy_thread = threading.Thread(target=self.proxy.start, kwargs={"blocking": True})
-        self.proxy_thread.daemon = True
-        self.proxy_thread.start()
-
-        # Wait for server to start
-        time.sleep(0.5)
+        # start() binds the port before returning, so no startup wait is needed
+        self.proxy.start(blocking=False)
 
     def tearDown(self):
         """Clean up after each test."""
         if hasattr(self, "proxy") and self.proxy:
             self.proxy.stop()
-            time.sleep(0.1)
 
     def test_admin_endpoint_with_valid_key(self):
         """Test admin endpoint access with valid secure key."""
@@ -385,7 +372,7 @@ class TestAdminRateLimiting(unittest.TestCase):
 
     def setUp(self):
         """Set up each test."""
-        self.test_port = 18084
+        self.test_port = free_port()
         self.base_url = f"http://127.0.0.1:{self.test_port}"
 
         self.config = {
@@ -399,19 +386,13 @@ class TestAdminRateLimiting(unittest.TestCase):
         # Create and start proxy
         self.proxy = CachingProxy(self.config)
 
-        # Start proxy in background thread
-        self.proxy_thread = threading.Thread(target=self.proxy.start, kwargs={"blocking": True})
-        self.proxy_thread.daemon = True
-        self.proxy_thread.start()
-
-        # Wait for server to start
-        time.sleep(0.5)
+        # start() binds the port before returning, so no startup wait is needed
+        self.proxy.start(blocking=False)
 
     def tearDown(self):
         """Clean up after each test."""
         if hasattr(self, "proxy") and self.proxy:
             self.proxy.stop()
-            time.sleep(0.1)
 
     def test_rate_limiting_enforcement(self):
         """Test that rate limiting is enforced on admin endpoints."""

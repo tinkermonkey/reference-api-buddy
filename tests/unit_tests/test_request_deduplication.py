@@ -6,7 +6,6 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).parent.parent.parent.absolute()
 sys.path.insert(0, str(PROJECT_ROOT))
 import threading
-import time
 
 from reference_api_buddy.core.inflight_tracker import InFlightTracker
 
@@ -24,144 +23,76 @@ def test_first_request_proceeds_immediately():
     tracker.complete_request(cache_key, result=(b"data", 200, {}))
 
 
+def _wait_in_threads(tracker, cache_key, waiters, timeout=5.0):
+    """Call wait_for_result for each waiter in its own thread; return the threads and a results list.
+
+    Waiters are registered by the caller, so the leader/waiter order is fixed and no sleeps are needed.
+    """
+    results = []
+
+    def wait(request):
+        results.append(tracker.wait_for_result(cache_key, request, timeout=timeout))
+
+    threads = [threading.Thread(target=wait, args=(request,)) for request in waiters]
+    for t in threads:
+        t.start()
+    return threads, results
+
+
 def test_concurrent_requests_wait_for_first():
     """Test that concurrent requests for the same key wait for the first one."""
     tracker = InFlightTracker()
     cache_key = "test_key_2"
-    results = []
 
-    def first_request():
-        """Simulates the first request that fetches from upstream."""
-        inflight_request = tracker.should_wait(cache_key)
-        assert inflight_request is None  # First request doesn't wait
+    assert tracker.should_wait(cache_key) is None  # The first request proceeds
+    waiters = [tracker.should_wait(cache_key) for _ in range(2)]
+    assert all(w is not None for w in waiters)  # Later requests wait
 
-        # Simulate slow upstream request
-        time.sleep(0.5)
+    threads, results = _wait_in_threads(tracker, cache_key, waiters)
+    result = (b"fetched data", 200, {"Content-Type": "application/json"})
+    tracker.complete_request(cache_key, result=result)
+    for t in threads:
+        t.join(timeout=5)
 
-        # Complete with result
-        result = (b"fetched data", 200, {"Content-Type": "application/json"})
-        tracker.complete_request(cache_key, result=result)
-        results.append(("first", result))
-
-    def waiting_request(request_id):
-        """Simulates a request that arrives while another is in-flight."""
-        # Small delay to ensure first request starts first
-        time.sleep(0.1)
-
-        inflight_request = tracker.should_wait(cache_key)
-        assert inflight_request is not None  # Should wait
-
-        # Wait for the first request to complete
-        result, error = tracker.wait_for_result(cache_key, inflight_request, timeout=2.0)
-        assert error is None
-        assert result is not None
-        results.append((f"waiting_{request_id}", result))
-
-    # Start first request
-    t1 = threading.Thread(target=first_request)
-    t1.start()
-
-    # Start multiple waiting requests
-    t2 = threading.Thread(target=waiting_request, args=(2,))
-    t3 = threading.Thread(target=waiting_request, args=(3,))
-    t2.start()
-    t3.start()
-
-    t1.join()
-    t2.join()
-    t3.join()
-
-    # All requests should have the same result
-    assert len(results) == 3
-    first_result = results[0][1]
-    for _, result in results:
-        assert result == first_result
-
-    # Verify result content
-    data, status, _headers = first_result
-    assert data == b"fetched data"
-    assert status == 200
+    # Every waiter receives the first request's result
+    assert results == [(result, None), (result, None)]
 
 
 def test_error_propagation():
     """Test that errors from the first request are propagated to waiters."""
     tracker = InFlightTracker()
     cache_key = "test_key_error"
-    results = []
 
-    def failing_request():
-        """Simulates a request that fails."""
-        inflight_request = tracker.should_wait(cache_key)
-        assert inflight_request is None
+    assert tracker.should_wait(cache_key) is None
+    waiter = tracker.should_wait(cache_key)
+    assert waiter is not None
 
-        # Simulate upstream failure
-        time.sleep(0.2)
-        error = RuntimeError("Upstream API error")
-        tracker.complete_request(cache_key, error=error)
-        results.append(("first", None, error))
+    threads, results = _wait_in_threads(tracker, cache_key, [waiter])
+    error = RuntimeError("Upstream API error")
+    tracker.complete_request(cache_key, error=error)
+    for t in threads:
+        t.join(timeout=5)
 
-    def waiting_request():
-        """Simulates a waiting request."""
-        time.sleep(0.05)
-        inflight_request = tracker.should_wait(cache_key)
-        assert inflight_request is not None
-
-        result, error = tracker.wait_for_result(cache_key, inflight_request, timeout=2.0)
-        assert result is None
-        assert error is not None
-        assert isinstance(error, RuntimeError)
-        results.append(("waiting", result, error))
-
-    t1 = threading.Thread(target=failing_request)
-    t2 = threading.Thread(target=waiting_request)
-    t1.start()
-    t2.start()
-    t1.join()
-    t2.join()
-
-    assert len(results) == 2
-    # Both should have gotten the error
-    for _, result, error in results:
-        assert result is None
-        assert isinstance(error, RuntimeError)
+    assert results == [(None, error)]
 
 
 def test_timeout_waiting_for_inflight_request():
     """Test that waiters timeout if the first request takes too long."""
     tracker = InFlightTracker()
     cache_key = "test_key_timeout"
-    waiter_result = []
 
-    def slow_request():
-        """Simulates a very slow request."""
-        inflight_request = tracker.should_wait(cache_key)
-        assert inflight_request is None
-        # Don't complete, let it timeout
-        time.sleep(3.0)
+    assert tracker.should_wait(cache_key) is None
+    waiter = tracker.should_wait(cache_key)
+    assert waiter is not None
 
-    def waiting_request():
-        """Simulates a waiting request with short timeout."""
-        time.sleep(0.1)
-        inflight_request = tracker.should_wait(cache_key)
-        assert inflight_request is not None
-
-        result, error = tracker.wait_for_result(cache_key, inflight_request, timeout=0.5)
-        waiter_result.append((result, error))
-
-    t1 = threading.Thread(target=slow_request)
-    t2 = threading.Thread(target=waiting_request)
-    t1.start()
-    t2.start()
-    t2.join()  # Wait for the waiter to timeout
-
-    # Waiter should have timed out
-    assert len(waiter_result) == 1
-    result, error = waiter_result[0]
+    # The first request never completes within the waiter's timeout
+    result, error = tracker.wait_for_result(cache_key, waiter, timeout=0.2)
     assert result is None
     assert isinstance(error, TimeoutError)
 
-    # Clean up - let slow request finish
-    t1.join()
+    # The first request still owns the entry and can complete normally
+    tracker.complete_request(cache_key, result=(b"late", 200, {}))
+    assert tracker.get_stats()["in_flight_count"] == 0
 
 
 def test_sequential_requests_dont_interfere():
@@ -173,9 +104,6 @@ def test_sequential_requests_dont_interfere():
     inflight_request = tracker.should_wait(cache_key)
     assert inflight_request is None
     tracker.complete_request(cache_key, result=(b"first result", 200, {}))
-
-    # Wait a bit to ensure cleanup
-    time.sleep(0.1)
 
     # Second request (after first completed) - should NOT wait
     inflight_request = tracker.should_wait(cache_key)
@@ -206,41 +134,22 @@ def test_waiter_count_tracking():
     """Test that waiter counts are tracked correctly."""
     tracker = InFlightTracker()
     cache_key = "test_waiter_count"
-    waiter_results = []
 
-    def first_request():
-        inflight_request = tracker.should_wait(cache_key)
-        assert inflight_request is None
-        time.sleep(0.5)
-        tracker.complete_request(cache_key, result=(b"data", 200, {}))
+    assert tracker.should_wait(cache_key) is None
+    waiters = [tracker.should_wait(cache_key) for _ in range(3)]
 
-    def waiting_request(request_id):
-        time.sleep(0.1)
-        inflight_request = tracker.should_wait(cache_key)
-        assert inflight_request is not None
-
-        # Check stats before waiting completes
-        stats = tracker.get_stats()
-        assert cache_key in stats["cache_keys"]
-
-        result, error = tracker.wait_for_result(cache_key, inflight_request, timeout=2.0)
-        waiter_results.append((request_id, result, error))
-
-    # Start threads
-    threads = [threading.Thread(target=first_request)]
-    threads.extend([threading.Thread(target=waiting_request, args=(i,)) for i in range(3)])
-
-    for t in threads:
-        t.start()
-
-    time.sleep(0.2)
-    # Check stats while requests are in-flight
+    # The first requester plus three waiters
     stats = tracker.get_stats()
     assert stats["in_flight_count"] == 1
-    assert stats["total_waiters"] >= 1  # At least the first requester
+    assert stats["total_waiters"] == 4
+    assert cache_key in stats["cache_keys"]
 
+    threads, results = _wait_in_threads(tracker, cache_key, waiters)
+    tracker.complete_request(cache_key, result=(b"data", 200, {}))
     for t in threads:
-        t.join()
+        t.join(timeout=5)
+
+    assert results == [((b"data", 200, {}), None)] * 3
 
     # After completion, in-flight should be cleared
     stats = tracker.get_stats()
