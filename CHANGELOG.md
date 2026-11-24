@@ -6,6 +6,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.5.2] - 2026-11-24
+
+### Removed
+- **Runtime dependencies.** The package only uses the standard library, so `requests`, `urllib3`, `certifi`,
+  `charset-normalizer` and `idna` are no longer installed with it. `requests` moves to the `dev` extra for the tests.
+- **Python 3.8 and 3.9 support.** Both are end-of-life. `requires-python` is now `>=3.10`.
+
+### Changed
+- Tested on Python 3.10 through 3.15; classifiers updated to match.
+- Dev tooling raised to current releases that still support Python 3.10: pytest 9, pytest-cov 7, black 26,
+  isort 9, flake8 7.4+, mypy 2.4, pre-commit 4.6+, coverage 7.16+, twine 7, build 1.6, pip-audit 2.10.
+  Docs extra raised to Sphinx 8.1, sphinx-rtd-theme 3.1, myst-parser 4.0.
+- Pre-commit hooks updated (pre-commit-hooks 6.0.0, isort 9.0.2, flake8 7.5.0, mypy 2.4.1).
+- GitHub Actions updated to checkout v7, setup-python v7, upload-artifact v7, download-artifact v8 and
+  codecov-action v7 (`file` renamed to `files`). CI and release builds use Python 3.13.
+- Packaging uses an SPDX license expression (`license = "MIT"`) with setuptools 77+, replacing the deprecated
+  license table and license classifier.
+- Tests that call live external services are marked `network` and deselected by default; run them with
+  `pytest -m network` or `make test-performance`.
+- Timing-dependent tests are now deterministic: the cache-first throttling test checks behaviour instead of
+  wall-clock latency (and runs in CI again), the deduplication tests register threads in a fixed order instead of
+  sleeping, and integration tests use free ports and no startup sleeps.
+- Removed the `[tool.pytest.ini_options]` and `[tool.mypy]` sections from `pyproject.toml`. `pytest.ini` and
+  `mypy.ini` take precedence, so those sections were never read.
+- `make install` installs the package with its dev extra instead of reading a missing `requirements.txt`.
+
 ## [0.5.1] - 2026-11-24
 
 ### Fixed

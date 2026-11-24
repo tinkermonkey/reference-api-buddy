@@ -7,9 +7,8 @@ help: ## Show this help message
 	@echo 'Targets:'
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-install: ## Install dependencies
-	pip install -r requirements.txt
-	pip install -e .
+install: ## Install the package with development dependencies
+	pip install -e ".[dev]"
 
 setup-dev: ## Set up development environment
 	pip install pre-commit
@@ -39,8 +38,8 @@ test-unit: ## Run unit tests only
 test-integration: ## Run integration tests only
 	pytest tests/integration_tests/ -v
 
-test-performance: ## Run performance tests only
-	pytest tests/performance_tests/ -v
+test-performance: ## Run performance tests only (calls live external APIs)
+	pytest tests/performance_tests/ -m network -v
 
 clean: ## Clean up build artifacts and cache files
 	rm -rf build/

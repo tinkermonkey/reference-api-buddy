@@ -2,7 +2,7 @@
 """Integration tests for proxy startup and shutdown."""
 
 import sys
-import time
+import urllib.request
 from pathlib import Path
 
 import pytest
@@ -12,12 +12,19 @@ PROJECT_ROOT = Path(__file__).parent.parent.absolute()
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from reference_api_buddy.core.proxy import CachingProxy
+from tests.helpers import free_port
+
+
+def _assert_healthy(port):
+    """The proxy answers its health endpoint."""
+    with urllib.request.urlopen(f"http://127.0.0.1:{port}/admin/health", timeout=5) as resp:
+        assert resp.status == 200
 
 
 def test_proxy_startup():
     """Test basic proxy startup and shutdown."""
     config = {
-        "server": {"host": "127.0.0.1", "port": 8899},
+        "server": {"host": "127.0.0.1", "port": free_port()},
         "security": {"require_secure_key": False},
         "cache": {"database_path": ":memory:"},
         "domain_mappings": {},
@@ -29,15 +36,9 @@ def test_proxy_startup():
     assert proxy is not None, "Failed to create proxy instance"
 
     try:
-        # Test proxy startup
+        # Test proxy startup; start() binds before returning
         proxy.start(blocking=False)
-
-        # Let it run for a moment to ensure it's stable
-        time.sleep(2)
-
-        # Verify proxy is running (we can't easily check the server directly,
-        # but if start() didn't raise an exception, it should be running)
-        assert True, "Proxy started successfully"
+        _assert_healthy(config["server"]["port"])
 
     finally:
         # Always clean up
@@ -57,14 +58,15 @@ def test_proxy_startup_and_stop_multiple_times():
     for i in range(3):
         config = {
             **base_config,
-            "server": {"host": "127.0.0.1", "port": 8900 + i},  # Different port each time
+            "server": {"host": "127.0.0.1", "port": free_port()},
         }
         proxy = CachingProxy(config)
 
         proxy.start(blocking=False)
-        time.sleep(0.5)  # Brief pause to ensure startup
-        proxy.stop()
-        time.sleep(0.2)  # Brief pause to ensure cleanup
+        try:
+            _assert_healthy(config["server"]["port"])
+        finally:
+            proxy.stop()
 
 
 # Standalone script functionality

@@ -17,6 +17,8 @@ import pytest
 PROJECT_ROOT = Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(PROJECT_ROOT))
 
+from tests.helpers import free_port  # noqa: E402
+
 
 def run_cli_process_with_retry(args, max_retries=3, startup_timeout=5.0):
     """Run CLI process with retry logic for CI reliability."""
@@ -191,8 +193,9 @@ class TestCLIIntegration:
             test_db_path = PROJECT_ROOT / "test_data" / "test_cli_integration.db"
             database_path = str(test_db_path)
 
+        port = free_port()
         config_data = {
-            "server": {"host": "127.0.0.1", "port": 8081},
+            "server": {"host": "127.0.0.1", "port": port},
             "security": {"require_secure_key": False},
             "cache": {"database_path": database_path, "default_ttl_seconds": 3 * 24 * 60 * 60},
             "throttling": {"default_requests_per_hour": 500},
@@ -217,7 +220,7 @@ class TestCLIIntegration:
 
             # Combine stdout and stderr for checking
             combined_output = f"{stdout}\n{stderr}"
-            expected_message = "Starting Reference API Buddy on 127.0.0.1:8081"
+            expected_message = f"Starting Reference API Buddy on 127.0.0.1:{port}"
 
             # Debug output for CI
             if expected_message not in combined_output:
