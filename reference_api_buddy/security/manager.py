@@ -89,6 +89,13 @@ class SecurityManager:
     ) -> Tuple[Optional[str], str]:
         """Extract secure key from path, query, or headers.
 
+        Every place a key may appear is checked: the path prefix, the ``key`` query
+        parameter, the X-API-Buddy-Key header and an ``Authorization: Bearer`` header.
+        A candidate in the path or query is not always the proxy key (a long first path
+        segment may be a domain, and ``key=`` may be the upstream API's own key), so the
+        first candidate that matches the proxy key wins. If none matches, the first
+        candidate found is returned so the caller can reject it.
+
         Args:
             request_path: The HTTP request path
             headers: Dictionary of HTTP headers
@@ -96,22 +103,25 @@ class SecurityManager:
 
         Returns:
             Tuple of (extracted_key, sanitized_path) where extracted_key is None
-            if no key found, and sanitized_path is the request path with key removed
+            if no key found, and sanitized_path is the request path with that key removed
 
         Example:
             >>> manager = SecurityManager({})
             >>> key, path = manager.extract_secure_key("/abc123/api/test", {}, {})
             >>> print(f"Key: {key}, Path: {path}")
         """
-        key, new_path = self._extract_from_path(request_path)
-        if key:
-            return key, new_path
-        key, new_path = self._extract_from_query(request_path, query_params)
-        if key:
-            return key, new_path
-        key, _ = self._extract_from_header(request_path, headers)
-        if key:
-            return key, request_path
+        candidates = [
+            self._extract_from_path(request_path),
+            self._extract_from_query(request_path, query_params),
+            (headers.get(PROXY_KEY_HEADER), request_path),
+            (self._bearer_token(headers.get("Authorization")), request_path),
+        ]
+        candidates = [(key, path) for key, path in candidates if key]
+        for key, path in candidates:
+            if self.validate_secure_key(key):
+                return key, path
+        if candidates:
+            return candidates[0]
         return None, request_path
 
     def _extract_from_path(self, request_path: str) -> Tuple[Optional[str], str]:
@@ -180,13 +190,15 @@ class SecurityManager:
         Returns:
             Tuple of (key, request_path) where key is None if not found
         """
-        key = headers.get(PROXY_KEY_HEADER)
-        if key:
-            return key, request_path
-        auth = headers.get("Authorization")
-        if auth and auth.lower().startswith("bearer "):
-            return auth[7:].strip(), request_path
-        return None, request_path
+        key = headers.get(PROXY_KEY_HEADER) or self._bearer_token(headers.get("Authorization"))
+        return key, request_path
+
+    @staticmethod
+    def _bearer_token(authorization: Optional[str]) -> Optional[str]:
+        """Return the token from an ``Authorization: Bearer <token>`` value, or None."""
+        if authorization and authorization.lower().startswith("bearer "):
+            return authorization[7:].strip() or None
+        return None
 
     def is_proxy_authorization(self, authorization: Optional[str]) -> bool:
         """Tell whether an Authorization header carries this proxy's key as a Bearer token.
@@ -197,6 +209,4 @@ class SecurityManager:
         Returns:
             True only for ``Bearer <proxy key>``; any other credential belongs to the upstream API
         """
-        if not authorization or not authorization.lower().startswith("bearer "):
-            return False
-        return self.validate_secure_key(authorization[7:].strip())
+        return self.validate_secure_key(self._bearer_token(authorization))

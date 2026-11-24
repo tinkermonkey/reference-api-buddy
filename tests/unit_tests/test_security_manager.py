@@ -106,6 +106,40 @@ def test_extract_secure_key_priority():
     assert sanitized == "/domain.com/api"
 
 
+def test_extract_secure_key_prefers_the_proxy_key():
+    sm = SecurityManager({})
+    key = sm.secure_key
+    domain = "d" * 40  # a first path segment that looks like a path-prefix key
+    upstream_key = "AIza" + "u" * 35  # an upstream API's own ?key=
+    path = f"/{domain}/api?key={upstream_key}"
+    query_params = {"key": [upstream_key]}
+    # A valid header or Bearer key wins over non-matching path and query candidates
+    for headers in ({"X-API-Buddy-Key": key}, {"Authorization": f"Bearer {key}"}):
+        extracted, sanitized = sm.extract_secure_key(path, headers, query_params)
+        assert extracted == key
+        assert sanitized == path
+    # A valid query key wins over a non-matching path candidate and keeps the path segment
+    extracted, sanitized = sm.extract_secure_key(f"/{domain}/api?key={key}", {}, {"key": [key]})
+    assert extracted == key
+    assert sanitized == f"/{domain}/api"
+    # A valid Bearer key wins over a wrong X-API-Buddy-Key
+    headers = {"X-API-Buddy-Key": "wrong", "Authorization": f"Bearer {key}"}
+    extracted, sanitized = sm.extract_secure_key("/domain.com/api", headers, {})
+    assert extracted == key
+
+
+def test_extract_secure_key_falls_back_to_first_candidate():
+    sm = SecurityManager({})
+    domain = "d" * 40
+    headers = {"X-API-Buddy-Key": "wrong-header"}
+    extracted, sanitized = sm.extract_secure_key(f"/{domain}/api?key=wrong-query", headers, {"key": ["wrong-query"]})
+    assert extracted == domain
+    assert sanitized == "/api?key=wrong-query"
+    extracted, sanitized = sm.extract_secure_key("/domain.com/api?key=wrong-query", headers, {"key": ["wrong-query"]})
+    assert extracted == "wrong-query"
+    assert sanitized == "/domain.com/api"
+
+
 def test_extract_from_query_accepts_parse_qs_lists():
     sm = SecurityManager({})
     key = sm.secure_key
