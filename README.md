@@ -299,7 +299,7 @@ config = {
     "cache": {
         "database_path": "./cache.db",
         "max_cache_response_size": 10485760,  # 10MB
-        "max_cache_entries": 10000,
+        "max_cache_entries": 10000,  # Optional: LRU cap on cached entries (default 1000)
         "default_ttl_seconds": 86400  # 1 day default for all domains
     },
     "throttling": {
