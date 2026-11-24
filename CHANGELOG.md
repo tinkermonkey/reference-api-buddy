@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [0.5.2] - 2026-11-24
 
 ### Removed
 - **Runtime dependencies.** The package only uses the standard library, so `requests`, `urllib3`, `certifi`,
@@ -25,7 +25,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   license table and license classifier.
 - Tests that call live external services are marked `network` and deselected by default; run them with
   `pytest -m network` or `make test-performance`.
-- The CLI startup tests use free ports instead of fixed ports 8899 and 8901.
+- Timing-dependent tests are now deterministic: the cache-first throttling test checks behaviour instead of
+  wall-clock latency (and runs in CI again), the deduplication tests register threads in a fixed order instead of
+  sleeping, and integration tests use free ports and no startup sleeps.
 - Removed the `[tool.pytest.ini_options]` and `[tool.mypy]` sections from `pyproject.toml`. `pytest.ini` and
   `mypy.ini` take precedence, so those sections were never read.
 - `make install` installs the package with its dev extra instead of reading a missing `requirements.txt`.
