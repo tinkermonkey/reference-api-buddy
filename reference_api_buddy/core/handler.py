@@ -3,6 +3,7 @@
 import datetime
 import gzip
 import re
+import sys
 import time
 import traceback
 import urllib.error
@@ -1129,9 +1130,16 @@ class ProxyHTTPRequestHandler(RequestProcessingMixin, BaseHTTPRequestHandler):
         """Write the access or error log line to stderr with the proxy key redacted.
 
         BaseHTTPRequestHandler logs the raw request line, which carries a proxy key sent
-        as a path prefix or a ``key=`` parameter.
+        as a path prefix or a ``key=`` parameter. The line is written here, in the
+        standard library's plain format, rather than by super().log_message: from
+        Python 3.15 that rebuilds an access line from the raw request line and ignores
+        the message it is given.
         """
-        super().log_message("%s", self._redact_proxy_key(format % args))
+        message = self._redact_proxy_key(format % args)
+        control_chars = getattr(BaseHTTPRequestHandler, "_control_char_table", None)
+        if control_chars is not None:
+            message = message.translate(control_chars)
+        sys.stderr.write(f"{self.address_string()} - - [{self.log_date_time_string()}] {message}\n")
 
     def _redact_proxy_key(self, message: str) -> str:
         """Replace the proxy key, raw or percent-encoded, with [REDACTED]."""
