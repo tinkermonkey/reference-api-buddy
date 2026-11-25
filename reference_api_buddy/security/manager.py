@@ -119,7 +119,8 @@ class SecurityManager:
         candidates = [(key, path) for key, path in candidates if key]
         for key, path in candidates:
             if self.validate_secure_key(key):
-                return key, path
+                # The client may also have repeated the key as ?key=; that copy must not reach upstream either.
+                return key, self._remove_query_param(path, PROXY_KEY_QUERY_PARAM, key)
         if candidates:
             return candidates[0]
         return None, request_path
@@ -154,30 +155,44 @@ class SecurityManager:
 
         Returns:
             Tuple of (key, sanitized_path) where key is None if not found and
-            sanitized_path is the request path without the ``key`` parameter
+            sanitized_path is the request path without that ``key`` value. A request
+            may carry several ``key`` values (the upstream API's own and the proxy's):
+            the one that matches the proxy key is returned, else the first, and only
+            parameters with the returned value are removed.
         """
-        key = query_params.get(PROXY_KEY_QUERY_PARAM)
-        if isinstance(key, (list, tuple)):
-            key = key[0] if key else None
-        if not key:
+        values = query_params.get(PROXY_KEY_QUERY_PARAM)
+        if not isinstance(values, (list, tuple)):
+            values = [values]
+        values = [value for value in values if value]
+        if not values:
             return None, request_path
-        return key, self._remove_query_param(request_path, PROXY_KEY_QUERY_PARAM)
+        key = next((value for value in values if self.validate_secure_key(value)), values[0])
+        return key, self._remove_query_param(request_path, PROXY_KEY_QUERY_PARAM, key)
 
     @staticmethod
-    def _remove_query_param(request_path: str, name: str) -> str:
-        """Remove every occurrence of one query parameter, leaving the rest byte-for-byte.
+    def _remove_query_param(request_path: str, name: str, value: Optional[str] = None) -> str:
+        """Remove occurrences of one query parameter, leaving the rest byte-for-byte.
 
         Args:
             request_path: The request path, including its query string
             name: The parameter name to remove
+            value: Remove only the occurrences with this (decoded) value; every
+                occurrence when None
 
         Returns:
-            The request path without that parameter (and without a trailing ``?``)
+            The request path without those parameters (and without a trailing ``?``)
         """
         path, _, query = request_path.partition("?")
         if not query:
             return request_path
-        kept = [part for part in query.split("&") if part and unquote_plus(part.split("=", 1)[0]) != name]
+
+        def removed(part: str) -> bool:
+            part_name, _, part_value = part.partition("=")
+            if unquote_plus(part_name) != name:
+                return False
+            return value is None or unquote_plus(part_value) == value
+
+        kept = [part for part in query.split("&") if part and not removed(part)]
         return f"{path}?{'&'.join(kept)}" if kept else path
 
     def _extract_from_header(self, request_path: str, headers: Dict[str, str]) -> Tuple[Optional[str], str]:

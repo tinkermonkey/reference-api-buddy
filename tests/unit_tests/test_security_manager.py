@@ -166,6 +166,17 @@ def test_remove_query_param_keeps_other_parameters_verbatim():
     assert remove("/api?q=a%20b&key=abc&key=def&r=", "key") == "/api?q=a%20b&r="
     assert remove("/api?keys=1&monkey=2", "key") == "/api?keys=1&monkey=2"
     assert remove("/api", "key") == "/api"
+    assert remove("/api?key=up&key=mine&q=1", "key", "mine") == "/api?key=up&q=1"
+    assert remove("/api?key=a%2Bb", "key", "a+b") == "/api"
+
+
+def test_extract_from_query_prefers_the_proxy_key_among_several():
+    sm = SecurityManager({})
+    key = sm.secure_key
+    for path in (f"/api?key=upstream&key={key}", f"/api?key={key}&key=upstream"):
+        extracted, sanitized = sm._extract_from_query(path, {"key": ["upstream", key]})
+        assert extracted == key
+        assert sanitized == "/api?key=upstream"
 
 
 def test_is_proxy_authorization():

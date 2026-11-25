@@ -251,6 +251,27 @@ class TestProxyKeyWinsOverOtherCandidates:
         assert (status, body) == (200, b"ok /x")
         _assert_key_not_forwarded(key)
 
+    def test_proxy_query_key_after_upstream_query_key(self, make_proxy):
+        key, base = make_proxy()
+        status, body = _get(f"{base}/up/x?key={UPSTREAM_API_KEY}&key={key}")
+        assert (status, body) == (200, f"ok /x?key={UPSTREAM_API_KEY}".encode())
+        _assert_key_not_forwarded(key)
+
+    def test_proxy_query_key_before_upstream_query_key(self, make_proxy):
+        key, base = make_proxy()
+        status, body = _get(f"{base}/up/x?key={key}&key={UPSTREAM_API_KEY}")
+        assert (status, body) == (200, f"ok /x?key={UPSTREAM_API_KEY}".encode())
+        _assert_key_not_forwarded(key)
+
+    @pytest.mark.parametrize("auth", ["path", "header", "bearer"])
+    def test_key_repeated_in_query_is_not_forwarded(self, make_proxy, auth):
+        key, base = make_proxy()
+        url = f"{base}/{key}/up/x?key={key}" if auth == "path" else f"{base}/up/x?key={key}"
+        headers = {"path": {}, "header": {"X-API-Buddy-Key": key}, "bearer": {"Authorization": f"Bearer {key}"}}[auth]
+        status, body = _get(url, headers=headers)
+        assert (status, body) == (200, b"ok /x")
+        _assert_key_not_forwarded(key)
+
     def test_wrong_header_key_with_upstream_candidates_is_rejected(self, make_proxy):
         _, base = make_proxy()
         for url in [f"{base}/up/x?key={UPSTREAM_API_KEY}", f"{base}/{LONG_DOMAIN}/x"]:

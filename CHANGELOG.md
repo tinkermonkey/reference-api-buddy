@@ -25,6 +25,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   segment (such as a long domain key) or an upstream API's own `?key=`. Every candidate is now checked and the one
   that matches the proxy key wins; the others stay in the upstream request. A request with no matching key is still
   rejected.
+- **Repeated or mixed `key=` parameters are handled.** Every `key` value is checked, so `?key=<upstream>&key=<proxy>`
+  is accepted, and only the parameter holding the proxy key is removed: the upstream API's own `key=` reaches it, and
+  a proxy key sent both as a path prefix or header and as `?key=` is not forwarded upstream.
 
 ### Tests
 - Regression tests for all four key placements (header, Bearer, path prefix, query) through a running
