@@ -1,7 +1,10 @@
 """Request processing pipeline for ProxyHTTPRequestHandler."""
 
 import datetime
+import functools
 import gzip
+import re
+import sys
 import time
 import traceback
 import urllib.error
@@ -18,6 +21,26 @@ from reference_api_buddy.utils.logger import get_logger
 
 # Request headers never copied to the upstream request: hop-by-hop framing, and the proxy's own key.
 _UPSTREAM_EXCLUDED_HEADERS = {"host", "connection", "content-length", PROXY_KEY_HEADER.lower()}
+
+# What the proxy key is replaced with in the access log.
+_REDACTED = "[REDACTED]"
+
+
+@functools.lru_cache(maxsize=8)
+def _proxy_key_pattern(key: str) -> "re.Pattern[str]":
+    """Match the key as a client may send it: each character raw or percent-encoded.
+
+    A client may encode some characters and not others, in either hex case, and a space
+    may arrive as "+".
+    """
+    parts = []
+    for char in key:
+        forms = [re.escape(char)]
+        forms.append("(?i:" + re.escape("".join(f"%{byte:02x}" for byte in char.encode("utf-8"))) + ")")
+        if char == " ":
+            forms.append(re.escape("+"))
+        parts.append("(?:" + "|".join(forms) + ")")
+    return re.compile("".join(parts))
 
 
 class RequestProcessingMixin:
@@ -1120,3 +1143,26 @@ class ProxyHTTPRequestHandler(RequestProcessingMixin, BaseHTTPRequestHandler):
 
     def do_DELETE(self):
         self._handle_request("DELETE")
+
+    def log_message(self, format, *args):
+        """Write the access or error log line to stderr with the proxy key redacted.
+
+        BaseHTTPRequestHandler logs the raw request line, which carries a proxy key sent
+        as a path prefix or a ``key=`` parameter. The line is written here, in the
+        standard library's plain format, rather than by super().log_message: from
+        Python 3.15 that rebuilds an access line from the raw request line and ignores
+        the message it is given.
+        """
+        message = self._redact_proxy_key(format % args)
+        control_chars = getattr(BaseHTTPRequestHandler, "_control_char_table", None)
+        if control_chars is not None:
+            message = message.translate(control_chars)
+        sys.stderr.write(f"{self.address_string()} - - [{self.log_date_time_string()}] {message}\n")
+
+    def _redact_proxy_key(self, message: str) -> str:
+        """Replace the proxy key, raw or percent-encoded, with [REDACTED]."""
+        security_manager = getattr(getattr(self, "proxy", None), "security_manager", None)
+        key = getattr(security_manager, "secure_key", None)
+        if not isinstance(key, str) or not key:
+            return message
+        return _proxy_key_pattern(key).sub(_REDACTED, message)

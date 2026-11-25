@@ -13,6 +13,7 @@ import sys
 import tempfile
 import threading
 import urllib.error
+import urllib.parse
 import urllib.request
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -85,8 +86,8 @@ def make_proxy(upstream):
     proxies = []
     temp_dir = tempfile.TemporaryDirectory()
 
-    def _make(require_secure_key=True):
-        key = _make_key()
+    def _make(require_secure_key=True, key=None):
+        key = key or _make_key()
         port = _free_port()
         config = {
             "domain_mappings": {"up": {"upstream": upstream}, LONG_DOMAIN: {"upstream": upstream}},
@@ -278,3 +279,45 @@ class TestProxyKeyWinsOverOtherCandidates:
             status, _ = _get(url, headers={"X-API-Buddy-Key": _make_key()})
             assert status == 401, url
         assert _upstream_requests() == []
+
+
+class TestProxyKeyNotInAccessLog:
+    """The request line BaseHTTPRequestHandler logs to stderr must not carry the proxy key."""
+
+    def test_path_prefix_key_is_redacted(self, make_proxy, capfd):
+        key, base = make_proxy()
+        status, _ = _get(f"{base}/{key}/up/x")
+        assert status == 200
+        log = capfd.readouterr().err
+        assert "/[REDACTED]/up/x" in log
+        assert key not in log
+
+    def test_query_key_is_redacted(self, make_proxy, capfd):
+        key, base = make_proxy()
+        status, _ = _get(f"{base}/up/x?a=1&key={key}&b=2")
+        assert status == 200
+        log = capfd.readouterr().err
+        assert "/up/x?a=1&key=[REDACTED]&b=2" in log
+        assert key not in log
+
+    def test_repeated_key_is_redacted(self, make_proxy, capfd):
+        key, base = make_proxy()
+        status, _ = _get(f"{base}/up/x?key={key}", headers={"X-API-Buddy-Key": key})
+        assert status == 200
+        log = capfd.readouterr().err
+        assert "key=[REDACTED]" in log
+        assert key not in log
+
+    def test_percent_encoded_key_is_redacted(self, make_proxy, capfd):
+        key = "configured/proxy+key=" + secrets.token_hex(16)
+        _, base = make_proxy(key=key)
+        encoded = urllib.parse.quote(key, safe="")
+        # Fully encoded in lower case, then with "/" left raw (legal in a query) and the rest encoded
+        partly_encoded = urllib.parse.quote(key, safe="/")
+        for sent in (encoded.lower(), partly_encoded):
+            status, _ = _get(f"{base}/up/x?key={sent}")
+            assert status == 200, sent
+            log = capfd.readouterr().err
+            assert "key=[REDACTED]" in log
+            assert sent.lower() not in log.lower()
+            assert key.split("/")[1][:5] not in log
