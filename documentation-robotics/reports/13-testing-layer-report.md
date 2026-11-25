@@ -16,11 +16,11 @@ Test strategies, test cases, test data, and test coverage.
 
 | Metric                    | Count |
 | ------------------------- | ----- |
-| Elements                  | 417   |
+| Elements                  | 421   |
 | Intra-Layer Relationships | 0     |
-| Inter-Layer Relationships | 550   |
+| Inter-Layer Relationships | 558   |
 | Inbound Relationships     | 0     |
-| Outbound Relationships    | 550   |
+| Outbound Relationships    | 558   |
 
 **Cross-Layer References**:
 
@@ -365,6 +365,10 @@ Test strategies, test cases, test data, and test coverage.
 | `testing.testcasesketch.test-proxy-httprequest-handler-class-test-handler-initialization-with-proxy`                          | `testcasesketch` | 0             |
 | `testing.testcasesketch.test-proxy-httprequest-handler-class-test-handler-initialization-without-proxy`                       | `testcasesketch` | 0             |
 | `testing.testcasesketch.test-proxy-httprequest-handler-class-test-http-method-routing`                                        | `testcasesketch` | 0             |
+| `testing.testcasesketch.test-proxy-key-not-in-access-log-test-path-prefix-key-is-redacted`                                    | `testcasesketch` | 0             |
+| `testing.testcasesketch.test-proxy-key-not-in-access-log-test-percent-encoded-key-is-redacted`                                | `testcasesketch` | 0             |
+| `testing.testcasesketch.test-proxy-key-not-in-access-log-test-query-key-is-redacted`                                          | `testcasesketch` | 0             |
+| `testing.testcasesketch.test-proxy-key-not-in-access-log-test-repeated-key-is-redacted`                                       | `testcasesketch` | 0             |
 | `testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-header-key-with-long-domain`                           | `testcasesketch` | 0             |
 | `testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-header-key-with-long-domain-and-upstream-query-key`    | `testcasesketch` | 0             |
 | `testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-header-key-with-upstream-query-key`                    | `testcasesketch` | 0             |
@@ -895,6 +899,14 @@ flowchart TB
 | `testing.testcasesketch.tests.application.applicationcomponent` | `testing.testcasesketch.test-proxy-httprequest-handler-class-test-handler-initialization-with-proxy`                          | `application.applicationcomponent.proxy-http-request-handler`       | `application` | `tests`   | many-to-many | medium   |
 | `testing.testcasesketch.tests.application.applicationcomponent` | `testing.testcasesketch.test-proxy-httprequest-handler-class-test-handler-initialization-without-proxy`                       | `application.applicationcomponent.proxy-http-request-handler`       | `application` | `tests`   | many-to-many | medium   |
 | `testing.testcasesketch.tests.application.applicationcomponent` | `testing.testcasesketch.test-proxy-httprequest-handler-class-test-http-method-routing`                                        | `application.applicationcomponent.proxy-http-request-handler`       | `application` | `tests`   | many-to-many | medium   |
+| `testing.testcasesketch.tests.application.applicationfunction`  | `testing.testcasesketch.test-proxy-key-not-in-access-log-test-path-prefix-key-is-redacted`                                    | `application.applicationfunction.write-redacted-access-log`         | `application` | `tests`   | many-to-many | medium   |
+| `testing.testcasesketch.tests.security.countermeasure`          | `testing.testcasesketch.test-proxy-key-not-in-access-log-test-path-prefix-key-is-redacted`                                    | `security.countermeasure.proxy-key-redacted-from-access-log`        | `security`    | `tests`   | many-to-many | medium   |
+| `testing.testcasesketch.tests.application.applicationfunction`  | `testing.testcasesketch.test-proxy-key-not-in-access-log-test-percent-encoded-key-is-redacted`                                | `application.applicationfunction.write-redacted-access-log`         | `application` | `tests`   | many-to-many | medium   |
+| `testing.testcasesketch.tests.security.countermeasure`          | `testing.testcasesketch.test-proxy-key-not-in-access-log-test-percent-encoded-key-is-redacted`                                | `security.countermeasure.proxy-key-redacted-from-access-log`        | `security`    | `tests`   | many-to-many | medium   |
+| `testing.testcasesketch.tests.application.applicationfunction`  | `testing.testcasesketch.test-proxy-key-not-in-access-log-test-query-key-is-redacted`                                          | `application.applicationfunction.write-redacted-access-log`         | `application` | `tests`   | many-to-many | medium   |
+| `testing.testcasesketch.tests.security.countermeasure`          | `testing.testcasesketch.test-proxy-key-not-in-access-log-test-query-key-is-redacted`                                          | `security.countermeasure.proxy-key-redacted-from-access-log`        | `security`    | `tests`   | many-to-many | medium   |
+| `testing.testcasesketch.tests.application.applicationfunction`  | `testing.testcasesketch.test-proxy-key-not-in-access-log-test-repeated-key-is-redacted`                                       | `application.applicationfunction.write-redacted-access-log`         | `application` | `tests`   | many-to-many | medium   |
+| `testing.testcasesketch.tests.security.countermeasure`          | `testing.testcasesketch.test-proxy-key-not-in-access-log-test-repeated-key-is-redacted`                                       | `security.countermeasure.proxy-key-redacted-from-access-log`        | `security`    | `tests`   | many-to-many | medium   |
 | `testing.testcasesketch.tests.application.applicationfunction`  | `testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-header-key-with-long-domain-and-upstream-query-key`    | `application.applicationfunction.extract-secure-key`                | `application` | `tests`   | many-to-many | medium   |
 | `testing.testcasesketch.tests.product.feature`                  | `testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-header-key-with-long-domain-and-upstream-query-key`    | `product.feature.upstream-auth-passthrough`                         | `product`     | `tests`   | many-to-many | medium   |
 | `testing.testcasesketch.tests.application.applicationfunction`  | `testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-header-key-with-long-domain`                           | `application.applicationfunction.extract-secure-key`                | `application` | `tests`   | many-to-many | medium   |
@@ -7677,6 +7689,94 @@ Test that HTTP method handlers call _handle_request correctly.
 | ----------- | ------------------------------------------------------------- | --------- | --------- |
 | inter-layer | `application.applicationcomponent.proxy-http-request-handler` | `tests`   | outbound  |
 
+### TestProxyKeyNotInAccessLog.test_path_prefix_key_is_redacted {#testproxykeynotinaccesslog-test-path-prefix-key-is-redacted}
+
+**ID**: `testing.testcasesketch.test-proxy-key-not-in-access-log-test-path-prefix-key-is-redacted`
+
+**Type**: `testcasesketch`
+
+A request with the proxy key as a path prefix: the stderr access log line shows \[REDACTED\] and never the key.
+
+#### Attributes
+
+| Name                 | Value     |
+| -------------------- | --------- |
+| implementationFormat | automated |
+| status               | automated |
+
+#### Relationships
+
+| Type        | Related Element                                              | Predicate | Direction |
+| ----------- | ------------------------------------------------------------ | --------- | --------- |
+| inter-layer | `application.applicationfunction.write-redacted-access-log`  | `tests`   | outbound  |
+| inter-layer | `security.countermeasure.proxy-key-redacted-from-access-log` | `tests`   | outbound  |
+
+### TestProxyKeyNotInAccessLog.test_percent_encoded_key_is_redacted {#testproxykeynotinaccesslog-test-percent-encoded-key-is-redacted}
+
+**ID**: `testing.testcasesketch.test-proxy-key-not-in-access-log-test-percent-encoded-key-is-redacted`
+
+**Type**: `testcasesketch`
+
+A configured key with /, + and = sent as a ?key= value percent-encoded in lower case: the access log line shows key=\[REDACTED\] and never the encoded key.
+
+#### Attributes
+
+| Name                 | Value     |
+| -------------------- | --------- |
+| implementationFormat | automated |
+| status               | automated |
+
+#### Relationships
+
+| Type        | Related Element                                              | Predicate | Direction |
+| ----------- | ------------------------------------------------------------ | --------- | --------- |
+| inter-layer | `application.applicationfunction.write-redacted-access-log`  | `tests`   | outbound  |
+| inter-layer | `security.countermeasure.proxy-key-redacted-from-access-log` | `tests`   | outbound  |
+
+### TestProxyKeyNotInAccessLog.test_query_key_is_redacted {#testproxykeynotinaccesslog-test-query-key-is-redacted}
+
+**ID**: `testing.testcasesketch.test-proxy-key-not-in-access-log-test-query-key-is-redacted`
+
+**Type**: `testcasesketch`
+
+A request with ?key=&lt;proxy key&gt; next to other parameters: the access log line shows key=\[REDACTED\], keeps the other parameters, and never contains the key.
+
+#### Attributes
+
+| Name                 | Value     |
+| -------------------- | --------- |
+| implementationFormat | automated |
+| status               | automated |
+
+#### Relationships
+
+| Type        | Related Element                                              | Predicate | Direction |
+| ----------- | ------------------------------------------------------------ | --------- | --------- |
+| inter-layer | `application.applicationfunction.write-redacted-access-log`  | `tests`   | outbound  |
+| inter-layer | `security.countermeasure.proxy-key-redacted-from-access-log` | `tests`   | outbound  |
+
+### TestProxyKeyNotInAccessLog.test_repeated_key_is_redacted {#testproxykeynotinaccesslog-test-repeated-key-is-redacted}
+
+**ID**: `testing.testcasesketch.test-proxy-key-not-in-access-log-test-repeated-key-is-redacted`
+
+**Type**: `testcasesketch`
+
+The proxy key sent in the X-API-Buddy-Key header and again as ?key=: the access log line never contains the key.
+
+#### Attributes
+
+| Name                 | Value     |
+| -------------------- | --------- |
+| implementationFormat | automated |
+| status               | automated |
+
+#### Relationships
+
+| Type        | Related Element                                              | Predicate | Direction |
+| ----------- | ------------------------------------------------------------ | --------- | --------- |
+| inter-layer | `application.applicationfunction.write-redacted-access-log`  | `tests`   | outbound  |
+| inter-layer | `security.countermeasure.proxy-key-redacted-from-access-log` | `tests`   | outbound  |
+
 ### TestProxyKeyWinsOverOtherCandidates.test_header_key_with_long_domain {#testproxykeywinsoverothercandidates-test-header-key-with-long-domain}
 
 **ID**: `testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-header-key-with-long-domain`
@@ -9313,4 +9413,4 @@ Test concurrent SPARQL requests to identify threading issues.
 
 ---
 
-Generated: 2026-11-25T10:54:35.596Z | Model Version: 0.1.0
+Generated: 2026-11-25T16:28:13.357Z | Model Version: 0.1.0

@@ -984,3 +984,28 @@ application.applicationfunction.detect-proxy-bearer-token:
     created_at: 2026-11-25T10:12:39.315Z
     updated_at: 2026-11-25T10:12:39.315Z
     version: 1
+application.applicationfunction.write-redacted-access-log:
+  id: 5a5102cb-4d03-48ba-83e3-00572b01d9b5
+  path: application.applicationfunction.write-redacted-access-log
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Write Redacted Access Log
+  description: Format BaseHTTPRequestHandler's access and error log line, replace the proxy key (raw and percent-encoded) with [REDACTED], and write it to stderr as before.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: ProxyHTTPRequestHandler.log_message
+  accepted_gaps:
+    - direction: incoming
+      predicate: realizes
+      other_spec_node_id: api.operation
+      reason: Logging runs for every request the handler writes a line for, admin and proxied alike; no single API operation realizes it.
+      decided_by: agent
+      decided_at: 2026-11-25T14:17:03.878Z
+      changeset: changeset-1795616189310-je4wjql2i
+  metadata:
+    created_at: 2026-11-25T14:16:53.326Z
+    updated_at: 2026-11-25T14:16:53.326Z
+    version: 1

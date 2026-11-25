@@ -145,3 +145,24 @@ security.countermeasure.proxy-key-stripped-before-forwarding:
     created_at: 2026-11-25T10:12:39.315Z
     updated_at: 2026-11-25T10:12:39.315Z
     version: 1
+security.countermeasure.proxy-key-redacted-from-access-log:
+  id: bc7bf0dd-a7e8-4541-8311-3b123d005471
+  path: security.countermeasure.proxy-key-redacted-from-access-log
+  spec_node_id: security.countermeasure
+  type: countermeasure
+  layer_id: security
+  name: Proxy Key Redacted From Access Log
+  description: ProxyHTTPRequestHandler overrides log_message, so every line BaseHTTPRequestHandler's access and error logging writes to stderr has the proxy key, raw or percent-encoded, replaced with [REDACTED]. It matches the key's value, not its placement, so a path-prefix key, a key= parameter and a repeated key are all covered.
+  attributes:
+    type: technical
+    effectiveness: high
+    implemented: true
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: ProxyHTTPRequestHandler.log_message
+  metadata:
+    created_at: 2026-11-25T14:16:53.325Z
+    updated_at: 2026-11-25T14:16:53.325Z
+    version: 1
