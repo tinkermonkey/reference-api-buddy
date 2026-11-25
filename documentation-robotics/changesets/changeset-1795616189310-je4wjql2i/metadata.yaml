@@ -2,8 +2,8 @@ id: changeset-1795616189310-je4wjql2i
 name: redact-proxy-key-from-access-log
 description: Stop the proxy key reaching the access log (0.5.3). ProxyHTTPRequestHandler overrides log_message so the line BaseHTTPRequestHandler writes to stderr has the proxy key, raw or percent-encoded, replaced with [REDACTED] in every placement. It adds a countermeasure that mitigates security.threat.proxy-key-written-to-access-log, reopens that threat's accepted "no countermeasure" gap, updates the threat and the Secure Key Placement Gaps assessment, and adds the regression tests. Done when no access-log line contains the key for path-prefix, key= and repeated-key requests, and the model validates clean.
 created: 2026-11-25T14:16:29.328Z
-modified: 2026-11-25T14:21:48.523Z
-status: staged
+modified: 2026-11-25T16:28:13.351Z
+status: committed
 baseSnapshot: v2:sha256:0290241ebb2089370b076bd0549bb3a1f37623b00f622708e0fb8c3c726addd5
 origin:
   kind: plan

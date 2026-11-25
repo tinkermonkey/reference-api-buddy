@@ -1,6 +1,6 @@
 # Intra-layer relationships
 # Format: source_id -> predicate -> target_id
-# Last updated: 2026-11-25T10:54:35.287Z
+# Last updated: 2026-11-25T16:28:13.328Z
 
 - source: data-model.objectschema.cached-response
   target: data-model.schemaproperty.cached-response-data
@@ -7165,4 +7165,90 @@
   predicate: satisfies
   layer: security
   targetLayer: motivation
+  category: structural
+- source: security.countermeasure.proxy-key-redacted-from-access-log
+  target: security.threat.proxy-key-written-to-access-log
+  predicate: mitigates
+  layer: security
+  category: structural
+- source: security.countermeasure.proxy-key-redacted-from-access-log
+  target: security.secureresource.proxy-endpoint-resource
+  predicate: protects
+  layer: security
+  category: structural
+- source: security.countermeasure.proxy-key-redacted-from-access-log
+  target: motivation.requirement.optional-secure-key-access-control
+  predicate: satisfies
+  layer: security
+  targetLayer: motivation
+  category: structural
+- source: application.applicationcomponent.proxy-http-request-handler
+  target: security.countermeasure.proxy-key-redacted-from-access-log
+  predicate: realizes
+  layer: application
+  targetLayer: security
+  category: structural
+- source: application.applicationcomponent.proxy-http-request-handler
+  target: application.applicationfunction.write-redacted-access-log
+  predicate: assigned-to
+  layer: application
+  category: structural
+- source: testing.testcasesketch.test-proxy-key-not-in-access-log-test-path-prefix-key-is-redacted
+  target: security.countermeasure.proxy-key-redacted-from-access-log
+  predicate: tests
+  layer: testing
+  targetLayer: security
+  category: structural
+- source: testing.testcasesketch.test-proxy-key-not-in-access-log-test-path-prefix-key-is-redacted
+  target: application.applicationfunction.write-redacted-access-log
+  predicate: tests
+  layer: testing
+  targetLayer: application
+  category: structural
+- source: testing.testcasesketch.test-proxy-key-not-in-access-log-test-query-key-is-redacted
+  target: security.countermeasure.proxy-key-redacted-from-access-log
+  predicate: tests
+  layer: testing
+  targetLayer: security
+  category: structural
+- source: testing.testcasesketch.test-proxy-key-not-in-access-log-test-query-key-is-redacted
+  target: application.applicationfunction.write-redacted-access-log
+  predicate: tests
+  layer: testing
+  targetLayer: application
+  category: structural
+- source: testing.testcasesketch.test-proxy-key-not-in-access-log-test-repeated-key-is-redacted
+  target: security.countermeasure.proxy-key-redacted-from-access-log
+  predicate: tests
+  layer: testing
+  targetLayer: security
+  category: structural
+- source: testing.testcasesketch.test-proxy-key-not-in-access-log-test-repeated-key-is-redacted
+  target: application.applicationfunction.write-redacted-access-log
+  predicate: tests
+  layer: testing
+  targetLayer: application
+  category: structural
+- source: application.applicationfunction.write-redacted-access-log
+  target: motivation.requirement.optional-secure-key-access-control
+  predicate: satisfies
+  layer: application
+  targetLayer: motivation
+  category: structural
+- source: application.applicationprocess.proxy-request-pipeline
+  target: application.applicationfunction.write-redacted-access-log
+  predicate: depends-on
+  layer: application
+  category: structural
+- source: testing.testcasesketch.test-proxy-key-not-in-access-log-test-percent-encoded-key-is-redacted
+  target: security.countermeasure.proxy-key-redacted-from-access-log
+  predicate: tests
+  layer: testing
+  targetLayer: security
+  category: structural
+- source: testing.testcasesketch.test-proxy-key-not-in-access-log-test-percent-encoded-key-is-redacted
+  target: application.applicationfunction.write-redacted-access-log
+  predicate: tests
+  layer: testing
+  targetLayer: application
   category: structural

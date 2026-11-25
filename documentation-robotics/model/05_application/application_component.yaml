@@ -24,7 +24,7 @@ application.applicationcomponent.proxy-http-request-handler:
   type: applicationcomponent
   layer_id: application
   name: Proxy HTTP Request Handler
-  description: http.server request handler (with RequestProcessingMixin) that runs the request pipeline for GET, POST, PUT and DELETE and serves the admin endpoints.
+  description: http.server request handler (with RequestProcessingMixin) that runs the request pipeline for GET, POST, PUT and DELETE, serves the admin endpoints, and writes its access log with the proxy key redacted.
   attributes:
     type: internal
   source_reference:

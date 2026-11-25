@@ -16,11 +16,11 @@ Application components, services, and interactions.
 
 | Metric                    | Count |
 | ------------------------- | ----- |
-| Elements                  | 84    |
-| Intra-Layer Relationships | 165   |
-| Inter-Layer Relationships | 624   |
-| Inbound Relationships     | 572   |
-| Outbound Relationships    | 52    |
+| Elements                  | 85    |
+| Intra-Layer Relationships | 167   |
+| Inter-Layer Relationships | 630   |
+| Inbound Relationships     | 576   |
+| Outbound Relationships    | 54    |
 
 **Cross-Layer References**:
 
@@ -43,7 +43,7 @@ Application components, services, and interactions.
 | `application.applicationcomponent.logger-manager`                   | `applicationcomponent` | 5             |
 | `application.applicationcomponent.metrics-collector`                | `applicationcomponent` | 2             |
 | `application.applicationcomponent.monitoring-manager`               | `applicationcomponent` | 9             |
-| `application.applicationcomponent.proxy-http-request-handler`       | `applicationcomponent` | 19            |
+| `application.applicationcomponent.proxy-http-request-handler`       | `applicationcomponent` | 20            |
 | `application.applicationcomponent.security-manager`                 | `applicationcomponent` | 7             |
 | `application.applicationcomponent.threaded-http-server`             | `applicationcomponent` | 2             |
 | `application.applicationcomponent.throttle-manager`                 | `applicationcomponent` | 9             |
@@ -107,9 +107,10 @@ Application components, services, and interactions.
 | `application.applicationfunction.validate-request-key`              | `applicationfunction`  | 6             |
 | `application.applicationfunction.validate-secure-key`               | `applicationfunction`  | 4             |
 | `application.applicationfunction.wait-for-in-flight-result`         | `applicationfunction`  | 3             |
+| `application.applicationfunction.write-redacted-access-log`         | `applicationfunction`  | 2             |
 | `application.applicationinterface.admin-http-endpoint`              | `applicationinterface` | 2             |
 | `application.applicationinterface.proxy-http-endpoint`              | `applicationinterface` | 2             |
-| `application.applicationprocess.proxy-request-pipeline`             | `applicationprocess`   | 15            |
+| `application.applicationprocess.proxy-request-pipeline`             | `applicationprocess`   | 16            |
 | `application.applicationservice.admin-diagnostics`                  | `applicationservice`   | 2             |
 | `application.applicationservice.cached-reference-proxying`          | `applicationservice`   | 3             |
 | `application.applicationservice.embedded-proxy-control`             | `applicationservice`   | 8             |
@@ -191,6 +192,7 @@ flowchart TB
 | `application.applicationcomponent.accesses.data-model.objectschema`    | `application.applicationcomponent.caching-proxy`                                                                           | `data-model.objectschema.proxy-configuration`                       | `data-model`  | `accesses`   | many-to-many | medium   |
 | `application.applicationcomponent.accesses.data-store.database`        | `application.applicationcomponent.database-manager`                                                                        | `data-store.database.api-buddy-cache-database`                      | `data-store`  | `accesses`   | many-to-many | medium   |
 | `application.applicationcomponent.accesses.data-model.objectschema`    | `application.applicationcomponent.logger-manager`                                                                          | `data-model.objectschema.logging-config`                            | `data-model`  | `accesses`   | many-to-many | medium   |
+| `application.applicationcomponent.realizes.security.countermeasure`    | `application.applicationcomponent.proxy-http-request-handler`                                                              | `security.countermeasure.proxy-key-redacted-from-access-log`        | `security`    | `realizes`   | many-to-many | medium   |
 | `application.applicationcomponent.accesses.data-model.objectschema`    | `application.applicationcomponent.security-manager`                                                                        | `data-model.objectschema.security-config`                           | `data-model`  | `accesses`   | many-to-many | medium   |
 | `application.applicationcomponent.accesses.data-model.objectschema`    | `application.applicationcomponent.throttle-manager`                                                                        | `data-model.objectschema.domain-mapping`                            | `data-model`  | `accesses`   | many-to-many | medium   |
 | `application.applicationcomponent.accesses.data-model.objectschema`    | `application.applicationcomponent.ttl-manager`                                                                             | `data-model.objectschema.domain-mapping`                            | `data-model`  | `accesses`   | many-to-many | medium   |
@@ -217,6 +219,7 @@ flowchart TB
 | `application.applicationfunction.accesses.data-model.objectschema`     | `application.applicationfunction.update-configuration-value`                                                               | `data-model.objectschema.proxy-configuration`                       | `data-model`  | `accesses`   | many-to-many | medium   |
 | `application.applicationfunction.accesses.data-model.objectschema`     | `application.applicationfunction.validate-configuration`                                                                   | `data-model.objectschema.proxy-configuration`                       | `data-model`  | `accesses`   | many-to-many | medium   |
 | `application.applicationfunction.accesses.security.secureresource`     | `application.applicationfunction.validate-secure-key`                                                                      | `security.secureresource.proxy-endpoint-resource`                   | `security`    | `accesses`   | many-to-many | medium   |
+| `application.applicationfunction.satisfies.motivation.requirement`     | `application.applicationfunction.write-redacted-access-log`                                                                | `motivation.requirement.optional-secure-key-access-control`         | `motivation`  | `satisfies`  | many-to-many | medium   |
 | `application.applicationprocess.accesses.data-model.objectschema`      | `application.applicationprocess.proxy-request-pipeline`                                                                    | `data-model.objectschema.cached-response`                           | `data-model`  | `accesses`   | many-to-many | medium   |
 | `application.applicationservice.realizes.product.feature`              | `application.applicationservice.admin-diagnostics`                                                                         | `product.feature.admin-debug-endpoints`                             | `product`     | `realizes`   | many-to-many | medium   |
 | `application.applicationservice.realizes.product.softwarecapability`   | `application.applicationservice.admin-diagnostics`                                                                         | `product.softwarecapability.operational-visibility`                 | `product`     | `realizes`   | many-to-many | medium   |
@@ -662,6 +665,10 @@ flowchart TB
 | `testing.testcasesketch.tests.application.applicationcomponent`        | `testing.testcasesketch.test-proxy-httprequest-handler-class-test-handler-initialization-with-proxy`                       | `application.applicationcomponent.proxy-http-request-handler`       | `application` | `tests`      | many-to-many | medium   |
 | `testing.testcasesketch.tests.application.applicationcomponent`        | `testing.testcasesketch.test-proxy-httprequest-handler-class-test-handler-initialization-without-proxy`                    | `application.applicationcomponent.proxy-http-request-handler`       | `application` | `tests`      | many-to-many | medium   |
 | `testing.testcasesketch.tests.application.applicationcomponent`        | `testing.testcasesketch.test-proxy-httprequest-handler-class-test-http-method-routing`                                     | `application.applicationcomponent.proxy-http-request-handler`       | `application` | `tests`      | many-to-many | medium   |
+| `testing.testcasesketch.tests.application.applicationfunction`         | `testing.testcasesketch.test-proxy-key-not-in-access-log-test-path-prefix-key-is-redacted`                                 | `application.applicationfunction.write-redacted-access-log`         | `application` | `tests`      | many-to-many | medium   |
+| `testing.testcasesketch.tests.application.applicationfunction`         | `testing.testcasesketch.test-proxy-key-not-in-access-log-test-percent-encoded-key-is-redacted`                             | `application.applicationfunction.write-redacted-access-log`         | `application` | `tests`      | many-to-many | medium   |
+| `testing.testcasesketch.tests.application.applicationfunction`         | `testing.testcasesketch.test-proxy-key-not-in-access-log-test-query-key-is-redacted`                                       | `application.applicationfunction.write-redacted-access-log`         | `application` | `tests`      | many-to-many | medium   |
+| `testing.testcasesketch.tests.application.applicationfunction`         | `testing.testcasesketch.test-proxy-key-not-in-access-log-test-repeated-key-is-redacted`                                    | `application.applicationfunction.write-redacted-access-log`         | `application` | `tests`      | many-to-many | medium   |
 | `testing.testcasesketch.tests.application.applicationfunction`         | `testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-header-key-with-long-domain-and-upstream-query-key` | `application.applicationfunction.extract-secure-key`                | `application` | `tests`      | many-to-many | medium   |
 | `testing.testcasesketch.tests.application.applicationfunction`         | `testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-header-key-with-long-domain`                        | `application.applicationfunction.extract-secure-key`                | `application` | `tests`      | many-to-many | medium   |
 | `testing.testcasesketch.tests.application.applicationfunction`         | `testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-header-key-with-upstream-query-key`                 | `application.applicationfunction.extract-secure-key`                | `application` | `tests`      | many-to-many | medium   |
@@ -1244,7 +1251,7 @@ Read-only view over the cache engine, database manager and throttle manager that
 
 **Type**: `applicationcomponent`
 
-http.server request handler (with RequestProcessingMixin) that runs the request pipeline for GET, POST, PUT and DELETE and serves the admin endpoints.
+http.server request handler (with RequestProcessingMixin) that runs the request pipeline for GET, POST, PUT and DELETE, serves the admin endpoints, and writes its access log with the proxy key redacted.
 
 #### Attributes
 
@@ -1257,6 +1264,7 @@ http.server request handler (with RequestProcessingMixin) that runs the request 
 | Type        | Related Element                                                                                         | Predicate     | Direction |
 | ----------- | ------------------------------------------------------------------------------------------------------- | ------------- | --------- |
 | inter-layer | `apm.metricinstrument.proxy-errors`                                                                     | `monitors`    | inbound   |
+| inter-layer | `security.countermeasure.proxy-key-redacted-from-access-log`                                            | `realizes`    | outbound  |
 | inter-layer | `technology.systemsoftware.python-http-server`                                                          | `serves`      | inbound   |
 | inter-layer | `technology.systemsoftware.python-urllib`                                                               | `serves`      | inbound   |
 | inter-layer | `testing.testcasesketch.test-handler-edge-cases-test-admin-health-endpoint`                             | `tests`       | inbound   |
@@ -1297,6 +1305,7 @@ http.server request handler (with RequestProcessingMixin) that runs the request 
 | intra-layer | `application.applicationfunction.sanitize-configuration`                                                | `assigned-to` | outbound  |
 | intra-layer | `application.applicationfunction.throttle-upstream-request`                                             | `assigned-to` | outbound  |
 | intra-layer | `application.applicationfunction.validate-posted-configuration`                                         | `assigned-to` | outbound  |
+| intra-layer | `application.applicationfunction.write-redacted-access-log`                                             | `assigned-to` | outbound  |
 | intra-layer | `application.applicationprocess.proxy-request-pipeline`                                                 | `assigned-to` | outbound  |
 | intra-layer | `application.applicationinterface.admin-http-endpoint`                                                  | `provides`    | outbound  |
 | intra-layer | `application.applicationinterface.proxy-http-endpoint`                                                  | `provides`    | outbound  |
@@ -2680,6 +2689,26 @@ Block until the owner completes (60 s timeout) and return its result or error.
 | intra-layer | `application.dataobject.in-flight-request`                         | `accesses`    | outbound  |
 | intra-layer | `application.applicationprocess.proxy-request-pipeline`            | `depends-on`  | inbound   |
 
+### Write Redacted Access Log {#write-redacted-access-log}
+
+**ID**: `application.applicationfunction.write-redacted-access-log`
+
+**Type**: `applicationfunction`
+
+Format BaseHTTPRequestHandler's access and error log line, replace the proxy key (raw and percent-encoded) with \[REDACTED\], and write it to stderr as before.
+
+#### Relationships
+
+| Type        | Related Element                                                                                | Predicate     | Direction |
+| ----------- | ---------------------------------------------------------------------------------------------- | ------------- | --------- |
+| inter-layer | `motivation.requirement.optional-secure-key-access-control`                                    | `satisfies`   | outbound  |
+| inter-layer | `testing.testcasesketch.test-proxy-key-not-in-access-log-test-path-prefix-key-is-redacted`     | `tests`       | inbound   |
+| inter-layer | `testing.testcasesketch.test-proxy-key-not-in-access-log-test-percent-encoded-key-is-redacted` | `tests`       | inbound   |
+| inter-layer | `testing.testcasesketch.test-proxy-key-not-in-access-log-test-query-key-is-redacted`           | `tests`       | inbound   |
+| inter-layer | `testing.testcasesketch.test-proxy-key-not-in-access-log-test-repeated-key-is-redacted`        | `tests`       | inbound   |
+| intra-layer | `application.applicationcomponent.proxy-http-request-handler`                                  | `assigned-to` | inbound   |
+| intra-layer | `application.applicationprocess.proxy-request-pipeline`                                        | `depends-on`  | inbound   |
+
 ### Admin HTTP Endpoint {#admin-http-endpoint}
 
 **ID**: `application.applicationinterface.admin-http-endpoint`
@@ -2774,6 +2803,7 @@ Per request: extract and check the secure key (401), and when the key is the pro
 | intra-layer | `application.applicationfunction.throttle-upstream-request`                                                       | `depends-on`  | outbound  |
 | intra-layer | `application.applicationfunction.validate-secure-key`                                                             | `depends-on`  | outbound  |
 | intra-layer | `application.applicationfunction.wait-for-in-flight-result`                                                       | `depends-on`  | outbound  |
+| intra-layer | `application.applicationfunction.write-redacted-access-log`                                                       | `depends-on`  | outbound  |
 | intra-layer | `application.applicationservice.cached-reference-proxying`                                                        | `realizes`    | outbound  |
 
 ### Admin Diagnostics {#admin-diagnostics}
@@ -2962,4 +2992,4 @@ Dictionary returned by get_metrics(): counters, uptime and the recorded events.
 
 ---
 
-Generated: 2026-11-25T10:54:35.596Z | Model Version: 0.1.0
+Generated: 2026-11-25T16:28:13.357Z | Model Version: 0.1.0

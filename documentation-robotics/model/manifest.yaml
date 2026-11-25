@@ -3,7 +3,7 @@ schema: documentation-robotics-v1
 cli_version: 0.8.0
 spec_version: 0.15.0
 created: 2026-11-24T17:47:26.015Z
-updated: 2026-11-25T11:08:13.722Z
+updated: 2026-11-25T16:28:13.355Z
 project:
   name: reference-api-buddy
   description: "Embeddable HTTP-to-HTTPS caching proxy Python module (and api-buddy CLI) for reference APIs: SQLite-backed caching with TTL, request deduplication, per-domain rate limiting with progressive throttling, optional secure-key access control, admin endpoints and monitoring metrics."
@@ -52,7 +52,7 @@ layers:
     path: documentation-robotics/model/04_security/
     enabled: true
     elements:
-      countermeasure: 7
+      countermeasure: 8
       dataclassification: 1
       secureresource: 3
       threat: 6
@@ -63,7 +63,7 @@ layers:
     enabled: true
     elements:
       applicationcomponent: 16
-      applicationfunction: 58
+      applicationfunction: 59
       applicationinterface: 2
       applicationprocess: 1
       applicationservice: 4
@@ -150,13 +150,16 @@ layers:
     path: documentation-robotics/model/13_testing/
     enabled: true
     elements:
-      testcasesketch: 417
+      testcasesketch: 421
 changeset_history:
   - name: bootstrap-0-5-2
     committed_at: 2026-11-24T18:04:53.600Z
     action: committed
   - name: secure-key-fixes
     committed_at: 2026-11-25T10:54:35.380Z
+    action: committed
+  - name: redact-proxy-key-from-access-log
+    committed_at: 2026-11-25T16:28:13.354Z
     action: committed
 reconciled:
   changeset: secure-key-fixes
