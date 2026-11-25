@@ -106,6 +106,40 @@ def test_extract_secure_key_priority():
     assert sanitized == "/domain.com/api"
 
 
+def test_extract_secure_key_prefers_the_proxy_key():
+    sm = SecurityManager({})
+    key = sm.secure_key
+    domain = "d" * 40  # a first path segment that looks like a path-prefix key
+    upstream_key = "AIza" + "u" * 35  # an upstream API's own ?key=
+    path = f"/{domain}/api?key={upstream_key}"
+    query_params = {"key": [upstream_key]}
+    # A valid header or Bearer key wins over non-matching path and query candidates
+    for headers in ({"X-API-Buddy-Key": key}, {"Authorization": f"Bearer {key}"}):
+        extracted, sanitized = sm.extract_secure_key(path, headers, query_params)
+        assert extracted == key
+        assert sanitized == path
+    # A valid query key wins over a non-matching path candidate and keeps the path segment
+    extracted, sanitized = sm.extract_secure_key(f"/{domain}/api?key={key}", {}, {"key": [key]})
+    assert extracted == key
+    assert sanitized == f"/{domain}/api"
+    # A valid Bearer key wins over a wrong X-API-Buddy-Key
+    headers = {"X-API-Buddy-Key": "wrong", "Authorization": f"Bearer {key}"}
+    extracted, sanitized = sm.extract_secure_key("/domain.com/api", headers, {})
+    assert extracted == key
+
+
+def test_extract_secure_key_falls_back_to_first_candidate():
+    sm = SecurityManager({})
+    domain = "d" * 40
+    headers = {"X-API-Buddy-Key": "wrong-header"}
+    extracted, sanitized = sm.extract_secure_key(f"/{domain}/api?key=wrong-query", headers, {"key": ["wrong-query"]})
+    assert extracted == domain
+    assert sanitized == "/api?key=wrong-query"
+    extracted, sanitized = sm.extract_secure_key("/domain.com/api?key=wrong-query", headers, {"key": ["wrong-query"]})
+    assert extracted == "wrong-query"
+    assert sanitized == "/domain.com/api"
+
+
 def test_extract_from_query_accepts_parse_qs_lists():
     sm = SecurityManager({})
     key = sm.secure_key
@@ -132,6 +166,17 @@ def test_remove_query_param_keeps_other_parameters_verbatim():
     assert remove("/api?q=a%20b&key=abc&key=def&r=", "key") == "/api?q=a%20b&r="
     assert remove("/api?keys=1&monkey=2", "key") == "/api?keys=1&monkey=2"
     assert remove("/api", "key") == "/api"
+    assert remove("/api?key=up&key=mine&q=1", "key", "mine") == "/api?key=up&q=1"
+    assert remove("/api?key=a%2Bb", "key", "a+b") == "/api"
+
+
+def test_extract_from_query_prefers_the_proxy_key_among_several():
+    sm = SecurityManager({})
+    key = sm.secure_key
+    for path in (f"/api?key=upstream&key={key}", f"/api?key={key}&key=upstream"):
+        extracted, sanitized = sm._extract_from_query(path, {"key": ["upstream", key]})
+        assert extracted == key
+        assert sanitized == "/api?key=upstream"
 
 
 def test_is_proxy_authorization():

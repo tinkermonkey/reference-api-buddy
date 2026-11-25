@@ -89,6 +89,13 @@ class SecurityManager:
     ) -> Tuple[Optional[str], str]:
         """Extract secure key from path, query, or headers.
 
+        Every place a key may appear is checked: the path prefix, the ``key`` query
+        parameter, the X-API-Buddy-Key header and an ``Authorization: Bearer`` header.
+        A candidate in the path or query is not always the proxy key (a long first path
+        segment may be a domain, and ``key=`` may be the upstream API's own key), so the
+        first candidate that matches the proxy key wins. If none matches, the first
+        candidate found is returned so the caller can reject it.
+
         Args:
             request_path: The HTTP request path
             headers: Dictionary of HTTP headers
@@ -96,22 +103,26 @@ class SecurityManager:
 
         Returns:
             Tuple of (extracted_key, sanitized_path) where extracted_key is None
-            if no key found, and sanitized_path is the request path with key removed
+            if no key found, and sanitized_path is the request path with that key removed
 
         Example:
             >>> manager = SecurityManager({})
             >>> key, path = manager.extract_secure_key("/abc123/api/test", {}, {})
             >>> print(f"Key: {key}, Path: {path}")
         """
-        key, new_path = self._extract_from_path(request_path)
-        if key:
-            return key, new_path
-        key, new_path = self._extract_from_query(request_path, query_params)
-        if key:
-            return key, new_path
-        key, _ = self._extract_from_header(request_path, headers)
-        if key:
-            return key, request_path
+        candidates = [
+            self._extract_from_path(request_path),
+            self._extract_from_query(request_path, query_params),
+            (headers.get(PROXY_KEY_HEADER), request_path),
+            (self._bearer_token(headers.get("Authorization")), request_path),
+        ]
+        candidates = [(key, path) for key, path in candidates if key]
+        for key, path in candidates:
+            if self.validate_secure_key(key):
+                # The client may also have repeated the key as ?key=; that copy must not reach upstream either.
+                return key, self._remove_query_param(path, PROXY_KEY_QUERY_PARAM, key)
+        if candidates:
+            return candidates[0]
         return None, request_path
 
     def _extract_from_path(self, request_path: str) -> Tuple[Optional[str], str]:
@@ -144,30 +155,44 @@ class SecurityManager:
 
         Returns:
             Tuple of (key, sanitized_path) where key is None if not found and
-            sanitized_path is the request path without the ``key`` parameter
+            sanitized_path is the request path without that ``key`` value. A request
+            may carry several ``key`` values (the upstream API's own and the proxy's):
+            the one that matches the proxy key is returned, else the first, and only
+            parameters with the returned value are removed.
         """
-        key = query_params.get(PROXY_KEY_QUERY_PARAM)
-        if isinstance(key, (list, tuple)):
-            key = key[0] if key else None
-        if not key:
+        values = query_params.get(PROXY_KEY_QUERY_PARAM)
+        if not isinstance(values, (list, tuple)):
+            values = [values]
+        values = [value for value in values if value]
+        if not values:
             return None, request_path
-        return key, self._remove_query_param(request_path, PROXY_KEY_QUERY_PARAM)
+        key = next((value for value in values if self.validate_secure_key(value)), values[0])
+        return key, self._remove_query_param(request_path, PROXY_KEY_QUERY_PARAM, key)
 
     @staticmethod
-    def _remove_query_param(request_path: str, name: str) -> str:
-        """Remove every occurrence of one query parameter, leaving the rest byte-for-byte.
+    def _remove_query_param(request_path: str, name: str, value: Optional[str] = None) -> str:
+        """Remove occurrences of one query parameter, leaving the rest byte-for-byte.
 
         Args:
             request_path: The request path, including its query string
             name: The parameter name to remove
+            value: Remove only the occurrences with this (decoded) value; every
+                occurrence when None
 
         Returns:
-            The request path without that parameter (and without a trailing ``?``)
+            The request path without those parameters (and without a trailing ``?``)
         """
         path, _, query = request_path.partition("?")
         if not query:
             return request_path
-        kept = [part for part in query.split("&") if part and unquote_plus(part.split("=", 1)[0]) != name]
+
+        def removed(part: str) -> bool:
+            part_name, _, part_value = part.partition("=")
+            if unquote_plus(part_name) != name:
+                return False
+            return value is None or unquote_plus(part_value) == value
+
+        kept = [part for part in query.split("&") if part and not removed(part)]
         return f"{path}?{'&'.join(kept)}" if kept else path
 
     def _extract_from_header(self, request_path: str, headers: Dict[str, str]) -> Tuple[Optional[str], str]:
@@ -180,13 +205,15 @@ class SecurityManager:
         Returns:
             Tuple of (key, request_path) where key is None if not found
         """
-        key = headers.get(PROXY_KEY_HEADER)
-        if key:
-            return key, request_path
-        auth = headers.get("Authorization")
-        if auth and auth.lower().startswith("bearer "):
-            return auth[7:].strip(), request_path
-        return None, request_path
+        key = headers.get(PROXY_KEY_HEADER) or self._bearer_token(headers.get("Authorization"))
+        return key, request_path
+
+    @staticmethod
+    def _bearer_token(authorization: Optional[str]) -> Optional[str]:
+        """Return the token from an ``Authorization: Bearer <token>`` value, or None."""
+        if authorization and authorization.lower().startswith("bearer "):
+            return authorization[7:].strip() or None
+        return None
 
     def is_proxy_authorization(self, authorization: Optional[str]) -> bool:
         """Tell whether an Authorization header carries this proxy's key as a Bearer token.
@@ -197,6 +224,4 @@ class SecurityManager:
         Returns:
             True only for ``Bearer <proxy key>``; any other credential belongs to the upstream API
         """
-        if not authorization or not authorization.lower().startswith("bearer "):
-            return False
-        return self.validate_secure_key(authorization[7:].strip())
+        return self.validate_secure_key(self._bearer_token(authorization))
