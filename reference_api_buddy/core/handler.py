@@ -2,6 +2,7 @@
 
 import datetime
 import gzip
+import re
 import time
 import traceback
 import urllib.error
@@ -18,6 +19,9 @@ from reference_api_buddy.utils.logger import get_logger
 
 # Request headers never copied to the upstream request: hop-by-hop framing, and the proxy's own key.
 _UPSTREAM_EXCLUDED_HEADERS = {"host", "connection", "content-length", PROXY_KEY_HEADER.lower()}
+
+# What the proxy key is replaced with in the access log.
+_REDACTED = "[REDACTED]"
 
 
 class RequestProcessingMixin:
@@ -1120,3 +1124,23 @@ class ProxyHTTPRequestHandler(RequestProcessingMixin, BaseHTTPRequestHandler):
 
     def do_DELETE(self):
         self._handle_request("DELETE")
+
+    def log_message(self, format, *args):
+        """Write the access or error log line to stderr with the proxy key redacted.
+
+        BaseHTTPRequestHandler logs the raw request line, which carries a proxy key sent
+        as a path prefix or a ``key=`` parameter.
+        """
+        super().log_message("%s", self._redact_proxy_key(format % args))
+
+    def _redact_proxy_key(self, message: str) -> str:
+        """Replace the proxy key, raw or percent-encoded, with [REDACTED]."""
+        security_manager = getattr(self.proxy, "security_manager", None)
+        key = getattr(security_manager, "secure_key", None)
+        if not key:
+            return message
+        message = message.replace(key, _REDACTED)
+        # Percent-encoding may use either case for its hex digits.
+        for encoded in {urllib.parse.quote(key, safe=""), urllib.parse.quote_plus(key)} - {key}:
+            message = re.sub(re.escape(encoded), _REDACTED, message, flags=re.IGNORECASE)
+        return message
