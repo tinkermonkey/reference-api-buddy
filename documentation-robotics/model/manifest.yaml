@@ -1,9 +1,9 @@
 version: 0.1.0
 schema: documentation-robotics-v1
 cli_version: 0.8.0
-spec_version: 0.14.0
+spec_version: 0.15.0
 created: 2026-11-24T17:47:26.015Z
-updated: 2026-11-25T10:54:35.512Z
+updated: 2026-11-25T11:08:13.722Z
 project:
   name: reference-api-buddy
   description: "Embeddable HTTP-to-HTTPS caching proxy Python module (and api-buddy CLI) for reference APIs: SQLite-backed caching with TTL, request deduplication, per-domain rate limiting with progressive throttling, optional secure-key access control, admin endpoints and monitoring metrics."
