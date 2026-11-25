@@ -12,12 +12,17 @@
     attributes:
       type: technical
       effectiveness: high
-      implemented: false
+      implemented: true
     metadata:
       created_at: 2026-11-25T14:16:53.325Z
       updated_at: 2026-11-25T14:16:53.325Z
       version: 1
-  timestamp: 2026-11-25T14:16:53.344Z
+    source_reference:
+      provenance: manual
+      locations:
+        - file: reference_api_buddy/core/handler.py
+          symbol: ProxyHTTPRequestHandler.log_message
+  timestamp: 2026-11-25T14:21:48.375Z
   sequenceNumber: 0
 - type: add
   elementId: application.applicationfunction.write-redacted-access-log
@@ -42,7 +47,12 @@
         decided_by: agent
         decided_at: 2026-11-25T14:17:03.878Z
         changeset: changeset-1795616189310-je4wjql2i
-  timestamp: 2026-11-25T14:17:03.880Z
+    source_reference:
+      provenance: manual
+      locations:
+        - file: reference_api_buddy/core/handler.py
+          symbol: ProxyHTTPRequestHandler.log_message
+  timestamp: 2026-11-25T14:21:48.208Z
   sequenceNumber: 1
 - type: add
   elementId: testing.testcasesketch.test-proxy-key-not-in-access-log-test-path-prefix-key-is-redacted
@@ -56,13 +66,18 @@
     name: TestProxyKeyNotInAccessLog.test_path_prefix_key_is_redacted
     description: "A request with the proxy key as a path prefix: the stderr access log line shows [REDACTED] and never the key."
     attributes:
-      status: draft
+      status: automated
       implementationFormat: automated
     metadata:
       created_at: 2026-11-25T14:16:53.326Z
       updated_at: 2026-11-25T14:16:53.326Z
       version: 1
-  timestamp: 2026-11-25T14:16:53.344Z
+    source_reference:
+      provenance: extracted
+      locations:
+        - file: tests/integration_tests/test_secure_key_placement.py
+          symbol: TestProxyKeyNotInAccessLog.test_path_prefix_key_is_redacted
+  timestamp: 2026-11-25T14:21:48.439Z
   sequenceNumber: 2
 - type: add
   elementId: testing.testcasesketch.test-proxy-key-not-in-access-log-test-query-key-is-redacted
@@ -76,13 +91,18 @@
     name: TestProxyKeyNotInAccessLog.test_query_key_is_redacted
     description: "A request with ?key=<proxy key> next to other parameters: the access log line shows key=[REDACTED], keeps the other parameters, and never contains the key."
     attributes:
-      status: draft
+      status: automated
       implementationFormat: automated
     metadata:
       created_at: 2026-11-25T14:16:53.327Z
       updated_at: 2026-11-25T14:16:53.327Z
       version: 1
-  timestamp: 2026-11-25T14:16:53.344Z
+    source_reference:
+      provenance: extracted
+      locations:
+        - file: tests/integration_tests/test_secure_key_placement.py
+          symbol: TestProxyKeyNotInAccessLog.test_query_key_is_redacted
+  timestamp: 2026-11-25T14:21:48.462Z
   sequenceNumber: 3
 - type: add
   elementId: testing.testcasesketch.test-proxy-key-not-in-access-log-test-repeated-key-is-redacted
@@ -96,13 +116,18 @@
     name: TestProxyKeyNotInAccessLog.test_repeated_key_is_redacted
     description: "The proxy key sent in the X-API-Buddy-Key header and again as ?key=: the access log line never contains the key."
     attributes:
-      status: draft
+      status: automated
       implementationFormat: automated
     metadata:
       created_at: 2026-11-25T14:16:53.328Z
       updated_at: 2026-11-25T14:16:53.328Z
       version: 1
-  timestamp: 2026-11-25T14:16:53.344Z
+    source_reference:
+      provenance: extracted
+      locations:
+        - file: tests/integration_tests/test_secure_key_placement.py
+          symbol: TestProxyKeyNotInAccessLog.test_repeated_key_is_redacted
+  timestamp: 2026-11-25T14:21:48.491Z
   sequenceNumber: 4
 - type: relationship-add
   elementId: security.countermeasure.proxy-key-redacted-from-access-log::mitigates::security.threat.proxy-key-written-to-access-log
@@ -419,13 +444,18 @@
     name: TestProxyKeyNotInAccessLog.test_percent_encoded_key_is_redacted
     description: "A configured key with /, + and = sent as a ?key= value percent-encoded in lower case: the access log line shows key=[REDACTED] and never the encoded key."
     attributes:
-      status: draft
+      status: automated
       implementationFormat: automated
     metadata:
       created_at: 2026-11-25T14:20:45.901Z
       updated_at: 2026-11-25T14:20:45.901Z
       version: 1
-  timestamp: 2026-11-25T14:20:45.922Z
+    source_reference:
+      provenance: extracted
+      locations:
+        - file: tests/integration_tests/test_secure_key_placement.py
+          symbol: TestProxyKeyNotInAccessLog.test_percent_encoded_key_is_redacted
+  timestamp: 2026-11-25T14:21:48.514Z
   sequenceNumber: 23
 - type: relationship-add
   elementId: testing.testcasesketch.test-proxy-key-not-in-access-log-test-percent-encoded-key-is-redacted::tests::security.countermeasure.proxy-key-redacted-from-access-log

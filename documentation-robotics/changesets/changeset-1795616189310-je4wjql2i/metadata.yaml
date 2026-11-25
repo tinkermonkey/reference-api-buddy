@@ -2,7 +2,7 @@ id: changeset-1795616189310-je4wjql2i
 name: redact-proxy-key-from-access-log
 description: Stop the proxy key reaching the access log (0.5.3). ProxyHTTPRequestHandler overrides log_message so the line BaseHTTPRequestHandler writes to stderr has the proxy key, raw or percent-encoded, replaced with [REDACTED] in every placement. It adds a countermeasure that mitigates security.threat.proxy-key-written-to-access-log, reopens that threat's accepted "no countermeasure" gap, updates the threat and the Secure Key Placement Gaps assessment, and adds the regression tests. Done when no access-log line contains the key for path-prefix, key= and repeated-key requests, and the model validates clean.
 created: 2026-11-25T14:16:29.328Z
-modified: 2026-11-25T14:20:45.946Z
+modified: 2026-11-25T14:21:48.523Z
 status: staged
 baseSnapshot: v2:sha256:0290241ebb2089370b076bd0549bb3a1f37623b00f622708e0fb8c3c726addd5
 origin:
@@ -12,7 +12,7 @@ stats:
   additions: 21
   modifications: 4
   deletions: 0
-lastSequence: 25
+lastSequence: 36
 unstaged:
   - sequence: 1
     removedAt: 20
@@ -33,4 +33,289 @@ unstaged:
           updated_at: 2026-11-25T14:16:53.326Z
           version: 1
       timestamp: 2026-11-25T14:16:53.344Z
+    rewritten: true
+  - sequence: 2
+    removedAt: 26
+    change:
+      type: add
+      elementId: testing.testcasesketch.test-proxy-key-not-in-access-log-test-path-prefix-key-is-redacted
+      layerName: testing
+      after:
+        id: 5a921620-59c8-4b37-8afd-e2484c6bb5e6
+        path: testing.testcasesketch.test-proxy-key-not-in-access-log-test-path-prefix-key-is-redacted
+        spec_node_id: testing.testcasesketch
+        type: testcasesketch
+        layer_id: testing
+        name: TestProxyKeyNotInAccessLog.test_path_prefix_key_is_redacted
+        description: "A request with the proxy key as a path prefix: the stderr access log line shows [REDACTED] and never the key."
+        attributes:
+          status: draft
+          implementationFormat: automated
+        metadata:
+          created_at: 2026-11-25T14:16:53.326Z
+          updated_at: 2026-11-25T14:16:53.326Z
+          version: 1
+      timestamp: 2026-11-25T14:16:53.344Z
+    rewritten: true
+  - sequence: 23
+    removedAt: 27
+    change:
+      type: add
+      elementId: testing.testcasesketch.test-proxy-key-not-in-access-log-test-percent-encoded-key-is-redacted
+      layerName: testing
+      after:
+        id: 18cbda0d-a8a8-47ef-bd3b-f40a89a27649
+        path: testing.testcasesketch.test-proxy-key-not-in-access-log-test-percent-encoded-key-is-redacted
+        spec_node_id: testing.testcasesketch
+        type: testcasesketch
+        layer_id: testing
+        name: TestProxyKeyNotInAccessLog.test_percent_encoded_key_is_redacted
+        description: "A configured key with /, + and = sent as a ?key= value percent-encoded in lower case: the access log line shows key=[REDACTED] and never the encoded key."
+        attributes:
+          status: draft
+          implementationFormat: automated
+        metadata:
+          created_at: 2026-11-25T14:20:45.901Z
+          updated_at: 2026-11-25T14:20:45.901Z
+          version: 1
+      timestamp: 2026-11-25T14:20:45.922Z
+    rewritten: true
+  - sequence: 3
+    removedAt: 28
+    change:
+      type: add
+      elementId: testing.testcasesketch.test-proxy-key-not-in-access-log-test-query-key-is-redacted
+      layerName: testing
+      after:
+        id: ae63fc3e-687b-4ff5-8ca3-89e8889213a7
+        path: testing.testcasesketch.test-proxy-key-not-in-access-log-test-query-key-is-redacted
+        spec_node_id: testing.testcasesketch
+        type: testcasesketch
+        layer_id: testing
+        name: TestProxyKeyNotInAccessLog.test_query_key_is_redacted
+        description: "A request with ?key=<proxy key> next to other parameters: the access log line shows key=[REDACTED], keeps the other parameters, and never contains the key."
+        attributes:
+          status: draft
+          implementationFormat: automated
+        metadata:
+          created_at: 2026-11-25T14:16:53.327Z
+          updated_at: 2026-11-25T14:16:53.327Z
+          version: 1
+      timestamp: 2026-11-25T14:16:53.344Z
+    rewritten: true
+  - sequence: 4
+    removedAt: 29
+    change:
+      type: add
+      elementId: testing.testcasesketch.test-proxy-key-not-in-access-log-test-repeated-key-is-redacted
+      layerName: testing
+      after:
+        id: eae03bc4-0083-47c3-972a-b3776172fb6a
+        path: testing.testcasesketch.test-proxy-key-not-in-access-log-test-repeated-key-is-redacted
+        spec_node_id: testing.testcasesketch
+        type: testcasesketch
+        layer_id: testing
+        name: TestProxyKeyNotInAccessLog.test_repeated_key_is_redacted
+        description: "The proxy key sent in the X-API-Buddy-Key header and again as ?key=: the access log line never contains the key."
+        attributes:
+          status: draft
+          implementationFormat: automated
+        metadata:
+          created_at: 2026-11-25T14:16:53.328Z
+          updated_at: 2026-11-25T14:16:53.328Z
+          version: 1
+      timestamp: 2026-11-25T14:16:53.344Z
+    rewritten: true
+  - sequence: 1
+    removedAt: 30
+    change:
+      type: add
+      elementId: application.applicationfunction.write-redacted-access-log
+      layerName: application
+      after:
+        id: 5a5102cb-4d03-48ba-83e3-00572b01d9b5
+        path: application.applicationfunction.write-redacted-access-log
+        spec_node_id: application.applicationfunction
+        type: applicationfunction
+        layer_id: application
+        name: Write Redacted Access Log
+        description: Format BaseHTTPRequestHandler's access and error log line, replace the proxy key (raw and percent-encoded) with [REDACTED], and write it to stderr as before.
+        metadata:
+          created_at: 2026-11-25T14:16:53.326Z
+          updated_at: 2026-11-25T14:16:53.326Z
+          version: 1
+        accepted_gaps:
+          - direction: incoming
+            predicate: realizes
+            other_spec_node_id: api.operation
+            reason: Logging runs for every request the handler writes a line for, admin and proxied alike; no single API operation realizes it.
+            decided_by: agent
+            decided_at: 2026-11-25T14:17:03.878Z
+            changeset: changeset-1795616189310-je4wjql2i
+      timestamp: 2026-11-25T14:17:03.880Z
+    rewritten: true
+  - sequence: 0
+    removedAt: 31
+    change:
+      type: add
+      elementId: security.countermeasure.proxy-key-redacted-from-access-log
+      layerName: security
+      after:
+        id: bc7bf0dd-a7e8-4541-8311-3b123d005471
+        path: security.countermeasure.proxy-key-redacted-from-access-log
+        spec_node_id: security.countermeasure
+        type: countermeasure
+        layer_id: security
+        name: Proxy Key Redacted From Access Log
+        description: ProxyHTTPRequestHandler overrides log_message, so every line BaseHTTPRequestHandler's access and error logging writes to stderr has the proxy key, raw or percent-encoded, replaced with [REDACTED]. It matches the key's value, not its placement, so a path-prefix key, a key= parameter and a repeated key are all covered.
+        attributes:
+          type: technical
+          effectiveness: high
+          implemented: false
+        metadata:
+          created_at: 2026-11-25T14:16:53.325Z
+          updated_at: 2026-11-25T14:16:53.325Z
+          version: 1
+      timestamp: 2026-11-25T14:16:53.344Z
+    rewritten: true
+  - sequence: 0
+    removedAt: 32
+    change:
+      type: add
+      elementId: security.countermeasure.proxy-key-redacted-from-access-log
+      layerName: security
+      after:
+        id: bc7bf0dd-a7e8-4541-8311-3b123d005471
+        path: security.countermeasure.proxy-key-redacted-from-access-log
+        spec_node_id: security.countermeasure
+        type: countermeasure
+        layer_id: security
+        name: Proxy Key Redacted From Access Log
+        description: ProxyHTTPRequestHandler overrides log_message, so every line BaseHTTPRequestHandler's access and error logging writes to stderr has the proxy key, raw or percent-encoded, replaced with [REDACTED]. It matches the key's value, not its placement, so a path-prefix key, a key= parameter and a repeated key are all covered.
+        attributes:
+          type: technical
+          effectiveness: high
+          implemented: false
+        metadata:
+          created_at: 2026-11-25T14:16:53.325Z
+          updated_at: 2026-11-25T14:16:53.325Z
+          version: 1
+        source_reference:
+          provenance: manual
+          locations:
+            - file: reference_api_buddy/core/handler.py
+              symbol: ProxyHTTPRequestHandler.log_message
+      timestamp: 2026-11-25T14:21:48.208Z
+    rewritten: true
+  - sequence: 2
+    removedAt: 33
+    change:
+      type: add
+      elementId: testing.testcasesketch.test-proxy-key-not-in-access-log-test-path-prefix-key-is-redacted
+      layerName: testing
+      after:
+        id: 5a921620-59c8-4b37-8afd-e2484c6bb5e6
+        path: testing.testcasesketch.test-proxy-key-not-in-access-log-test-path-prefix-key-is-redacted
+        spec_node_id: testing.testcasesketch
+        type: testcasesketch
+        layer_id: testing
+        name: TestProxyKeyNotInAccessLog.test_path_prefix_key_is_redacted
+        description: "A request with the proxy key as a path prefix: the stderr access log line shows [REDACTED] and never the key."
+        attributes:
+          status: draft
+          implementationFormat: automated
+        metadata:
+          created_at: 2026-11-25T14:16:53.326Z
+          updated_at: 2026-11-25T14:16:53.326Z
+          version: 1
+        source_reference:
+          provenance: extracted
+          locations:
+            - file: tests/integration_tests/test_secure_key_placement.py
+              symbol: TestProxyKeyNotInAccessLog.test_path_prefix_key_is_redacted
+      timestamp: 2026-11-25T14:21:48.194Z
+    rewritten: true
+  - sequence: 3
+    removedAt: 34
+    change:
+      type: add
+      elementId: testing.testcasesketch.test-proxy-key-not-in-access-log-test-query-key-is-redacted
+      layerName: testing
+      after:
+        id: ae63fc3e-687b-4ff5-8ca3-89e8889213a7
+        path: testing.testcasesketch.test-proxy-key-not-in-access-log-test-query-key-is-redacted
+        spec_node_id: testing.testcasesketch
+        type: testcasesketch
+        layer_id: testing
+        name: TestProxyKeyNotInAccessLog.test_query_key_is_redacted
+        description: "A request with ?key=<proxy key> next to other parameters: the access log line shows key=[REDACTED], keeps the other parameters, and never contains the key."
+        attributes:
+          status: draft
+          implementationFormat: automated
+        metadata:
+          created_at: 2026-11-25T14:16:53.327Z
+          updated_at: 2026-11-25T14:16:53.327Z
+          version: 1
+        source_reference:
+          provenance: extracted
+          locations:
+            - file: tests/integration_tests/test_secure_key_placement.py
+              symbol: TestProxyKeyNotInAccessLog.test_query_key_is_redacted
+      timestamp: 2026-11-25T14:21:48.194Z
+    rewritten: true
+  - sequence: 4
+    removedAt: 35
+    change:
+      type: add
+      elementId: testing.testcasesketch.test-proxy-key-not-in-access-log-test-repeated-key-is-redacted
+      layerName: testing
+      after:
+        id: eae03bc4-0083-47c3-972a-b3776172fb6a
+        path: testing.testcasesketch.test-proxy-key-not-in-access-log-test-repeated-key-is-redacted
+        spec_node_id: testing.testcasesketch
+        type: testcasesketch
+        layer_id: testing
+        name: TestProxyKeyNotInAccessLog.test_repeated_key_is_redacted
+        description: "The proxy key sent in the X-API-Buddy-Key header and again as ?key=: the access log line never contains the key."
+        attributes:
+          status: draft
+          implementationFormat: automated
+        metadata:
+          created_at: 2026-11-25T14:16:53.328Z
+          updated_at: 2026-11-25T14:16:53.328Z
+          version: 1
+        source_reference:
+          provenance: extracted
+          locations:
+            - file: tests/integration_tests/test_secure_key_placement.py
+              symbol: TestProxyKeyNotInAccessLog.test_repeated_key_is_redacted
+      timestamp: 2026-11-25T14:21:48.194Z
+    rewritten: true
+  - sequence: 23
+    removedAt: 36
+    change:
+      type: add
+      elementId: testing.testcasesketch.test-proxy-key-not-in-access-log-test-percent-encoded-key-is-redacted
+      layerName: testing
+      after:
+        id: 18cbda0d-a8a8-47ef-bd3b-f40a89a27649
+        path: testing.testcasesketch.test-proxy-key-not-in-access-log-test-percent-encoded-key-is-redacted
+        spec_node_id: testing.testcasesketch
+        type: testcasesketch
+        layer_id: testing
+        name: TestProxyKeyNotInAccessLog.test_percent_encoded_key_is_redacted
+        description: "A configured key with /, + and = sent as a ?key= value percent-encoded in lower case: the access log line shows key=[REDACTED] and never the encoded key."
+        attributes:
+          status: draft
+          implementationFormat: automated
+        metadata:
+          created_at: 2026-11-25T14:20:45.901Z
+          updated_at: 2026-11-25T14:20:45.901Z
+          version: 1
+        source_reference:
+          provenance: extracted
+          locations:
+            - file: tests/integration_tests/test_secure_key_placement.py
+              symbol: TestProxyKeyNotInAccessLog.test_percent_encoded_key_is_redacted
+      timestamp: 2026-11-25T14:21:48.194Z
     rewritten: true
