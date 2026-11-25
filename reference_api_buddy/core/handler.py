@@ -1,6 +1,7 @@
 """Request processing pipeline for ProxyHTTPRequestHandler."""
 
 import datetime
+import functools
 import gzip
 import re
 import sys
@@ -23,6 +24,23 @@ _UPSTREAM_EXCLUDED_HEADERS = {"host", "connection", "content-length", PROXY_KEY_
 
 # What the proxy key is replaced with in the access log.
 _REDACTED = "[REDACTED]"
+
+
+@functools.lru_cache(maxsize=8)
+def _proxy_key_pattern(key: str) -> "re.Pattern[str]":
+    """Match the key as a client may send it: each character raw or percent-encoded.
+
+    A client may encode some characters and not others, in either hex case, and a space
+    may arrive as "+".
+    """
+    parts = []
+    for char in key:
+        forms = [re.escape(char)]
+        forms.append("(?i:" + re.escape("".join(f"%{byte:02x}" for byte in char.encode("utf-8"))) + ")")
+        if char == " ":
+            forms.append(re.escape("+"))
+        parts.append("(?:" + "|".join(forms) + ")")
+    return re.compile("".join(parts))
 
 
 class RequestProcessingMixin:
@@ -1143,12 +1161,8 @@ class ProxyHTTPRequestHandler(RequestProcessingMixin, BaseHTTPRequestHandler):
 
     def _redact_proxy_key(self, message: str) -> str:
         """Replace the proxy key, raw or percent-encoded, with [REDACTED]."""
-        security_manager = getattr(self.proxy, "security_manager", None)
+        security_manager = getattr(getattr(self, "proxy", None), "security_manager", None)
         key = getattr(security_manager, "secure_key", None)
-        if not key:
+        if not isinstance(key, str) or not key:
             return message
-        message = message.replace(key, _REDACTED)
-        # Percent-encoding may use either case for its hex digits.
-        for encoded in {urllib.parse.quote(key, safe=""), urllib.parse.quote_plus(key)} - {key}:
-            message = re.sub(re.escape(encoded), _REDACTED, message, flags=re.IGNORECASE)
-        return message
+        return _proxy_key_pattern(key).sub(_REDACTED, message)

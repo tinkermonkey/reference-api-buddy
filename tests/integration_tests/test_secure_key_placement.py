@@ -312,8 +312,12 @@ class TestProxyKeyNotInAccessLog:
         key = "configured/proxy+key=" + secrets.token_hex(16)
         _, base = make_proxy(key=key)
         encoded = urllib.parse.quote(key, safe="")
-        status, _ = _get(f"{base}/up/x?key={encoded.lower()}")
-        assert status == 200
-        log = capfd.readouterr().err
-        assert "key=[REDACTED]" in log
-        assert encoded.lower() not in log.lower()
+        # Fully encoded in lower case, then with "/" left raw (legal in a query) and the rest encoded
+        partly_encoded = urllib.parse.quote(key, safe="/")
+        for sent in (encoded.lower(), partly_encoded):
+            status, _ = _get(f"{base}/up/x?key={sent}")
+            assert status == 200, sent
+            log = capfd.readouterr().err
+            assert "key=[REDACTED]" in log
+            assert sent.lower() not in log.lower()
+            assert key.split("/")[1][:5] not in log

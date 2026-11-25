@@ -29,8 +29,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   is accepted, and only the parameter holding the proxy key is removed: the upstream API's own `key=` reaches it, and
   a proxy key sent both as a path prefix or header and as `?key=` is not forwarded upstream.
 - **The proxy key is no longer written to the access log.** The request line the HTTP server logs to stderr carried a
-  path-prefix or `?key=` proxy key in full. The key, raw or percent-encoded, is now replaced with `[REDACTED]` in every
-  access and error log line.
+  path-prefix or `?key=` proxy key in full. The key, raw or percent-encoded (wholly or in part), is now replaced with
+  `[REDACTED]` in every access and error log line. The proxy writes these lines itself in the standard plain format,
+  so on Python 3.15 they are no longer coloured in a terminal.
 
 ### Tests
 - Regression tests for all four key placements (header, Bearer, path prefix, query) through a running
