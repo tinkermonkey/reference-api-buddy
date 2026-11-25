@@ -24,6 +24,12 @@ class DummySecurityManager:
     def validate_request(self, key):
         return key == "valid-key"
 
+    def validate_secure_key(self, key):
+        return key == "valid-key"
+
+    def is_proxy_authorization(self, authorization):
+        return False
+
 
 class DummyThrottleManager:
     def __init__(self):

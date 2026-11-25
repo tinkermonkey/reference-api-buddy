@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [Unreleased]
+
+### Fixed
+- **A path-prefix key (`/<key>/<domain>/<path>`) works.** The proxy stripped the key but then matched the domain
+  against the unstripped path, so every such request returned 404 "Domain not mapped". The key-free path is now used
+  for domain matching, the cache key and the upstream request.
+- **A query key (`?key=<key>`) works.** `parse_qs` returns lists, so the key reached validation as a list and every
+  such request returned 500. The key parameter is also removed before the request is cached and forwarded, so
+  other query parameters reach upstream unchanged and the cache entry is shared with the other placements.
+- **The proxy key is no longer sent to the upstream API.** `X-API-Buddy-Key` is never forwarded, and
+  `Authorization` is dropped only when it carries `Bearer <proxy key>`; an upstream API's own Bearer token still
+  passes through. A path segment or `key=` parameter that is not the proxy key is left for upstream, so APIs that
+  take their own `?key=` keep working when proxy security is off.
+
+### Tests
+- Regression tests for all four key placements (header, Bearer, path prefix, query) through a running
+  `CachingProxy` and a recording upstream, checking that the proxy key never appears in the upstream request.
+
 ## [0.5.2] - 2026-11-24
 
 ### Removed

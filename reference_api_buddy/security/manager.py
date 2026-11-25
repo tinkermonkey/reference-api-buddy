@@ -4,6 +4,11 @@ import base64
 import hmac
 import secrets
 from typing import Any, Dict, Optional, Tuple
+from urllib.parse import unquote_plus
+
+# Where a client may put the proxy's own key. None of these may reach the upstream API.
+PROXY_KEY_HEADER = "X-API-Buddy-Key"
+PROXY_KEY_QUERY_PARAM = "key"
 
 
 class SecurityManager:
@@ -101,9 +106,9 @@ class SecurityManager:
         key, new_path = self._extract_from_path(request_path)
         if key:
             return key, new_path
-        key, _ = self._extract_from_query(request_path, query_params)
+        key, new_path = self._extract_from_query(request_path, query_params)
         if key:
-            return key, request_path
+            return key, new_path
         key, _ = self._extract_from_header(request_path, headers)
         if key:
             return key, request_path
@@ -129,18 +134,41 @@ class SecurityManager:
             return key_candidate, rest
         return None, request_path
 
-    def _extract_from_query(self, request_path: str, query_params: Dict[str, str]) -> Tuple[Optional[str], str]:
+    def _extract_from_query(self, request_path: str, query_params: Dict[str, Any]) -> Tuple[Optional[str], str]:
         """Extract key from query string (?key=...).
 
         Args:
-            request_path: The request path (returned unchanged)
-            query_params: Dictionary of query parameters
+            request_path: The request path, including its query string
+            query_params: Query parameters, either single values or the lists
+                that ``urllib.parse.parse_qs`` returns
 
         Returns:
-            Tuple of (key, request_path) where key is None if not found
+            Tuple of (key, sanitized_path) where key is None if not found and
+            sanitized_path is the request path without the ``key`` parameter
         """
-        key = query_params.get("key")
-        return (key, request_path) if key else (None, request_path)
+        key = query_params.get(PROXY_KEY_QUERY_PARAM)
+        if isinstance(key, (list, tuple)):
+            key = key[0] if key else None
+        if not key:
+            return None, request_path
+        return key, self._remove_query_param(request_path, PROXY_KEY_QUERY_PARAM)
+
+    @staticmethod
+    def _remove_query_param(request_path: str, name: str) -> str:
+        """Remove every occurrence of one query parameter, leaving the rest byte-for-byte.
+
+        Args:
+            request_path: The request path, including its query string
+            name: The parameter name to remove
+
+        Returns:
+            The request path without that parameter (and without a trailing ``?``)
+        """
+        path, _, query = request_path.partition("?")
+        if not query:
+            return request_path
+        kept = [part for part in query.split("&") if part and unquote_plus(part.split("=", 1)[0]) != name]
+        return f"{path}?{'&'.join(kept)}" if kept else path
 
     def _extract_from_header(self, request_path: str, headers: Dict[str, str]) -> Tuple[Optional[str], str]:
         """Extract key from headers (X-API-Buddy-Key or Authorization: Bearer ...).
@@ -152,10 +180,23 @@ class SecurityManager:
         Returns:
             Tuple of (key, request_path) where key is None if not found
         """
-        key = headers.get("X-API-Buddy-Key")
+        key = headers.get(PROXY_KEY_HEADER)
         if key:
             return key, request_path
         auth = headers.get("Authorization")
         if auth and auth.lower().startswith("bearer "):
             return auth[7:].strip(), request_path
         return None, request_path
+
+    def is_proxy_authorization(self, authorization: Optional[str]) -> bool:
+        """Tell whether an Authorization header carries this proxy's key as a Bearer token.
+
+        Args:
+            authorization: The Authorization header value, may be None
+
+        Returns:
+            True only for ``Bearer <proxy key>``; any other credential belongs to the upstream API
+        """
+        if not authorization or not authorization.lower().startswith("bearer "):
+            return False
+        return self.validate_secure_key(authorization[7:].strip())
