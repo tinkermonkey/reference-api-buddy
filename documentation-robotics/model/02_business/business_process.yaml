@@ -1,0 +1,13 @@
+business.businessprocess.iterate-on-a-data-pipeline:
+  id: 86b667f7-0a05-4f00-80e6-0983d5d427de
+  path: business.businessprocess.iterate-on-a-data-pipeline
+  spec_node_id: business.businessprocess
+  type: businessprocess
+  layer_id: business
+  name: Iterate On A Data Pipeline
+  description: Repeatedly change, rerun and evaluate a pipeline that fetches
+    reference data from external APIs.
+  metadata:
+    created_at: 2026-11-24T17:55:54.504Z
+    updated_at: 2026-11-24T17:55:54.504Z
+    version: 1

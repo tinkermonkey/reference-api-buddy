@@ -1,0 +1,19 @@
+api.mediatype.validate-config-json:
+  id: 77780f26-0015-4624-a68d-c8a07f47d45c
+  path: api.mediatype.validate-config-json
+  spec_node_id: api.mediatype
+  type: mediatype
+  layer_id: api
+  name: Validate Config JSON
+  description: application/json
+  attributes:
+    contentType: application/json
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.540Z
+    updated_at: 2026-11-24T17:55:54.540Z
+    version: 1

@@ -1,0 +1,2985 @@
+id: changeset-1795542507127-a577uh68y
+name: bootstrap-0-5-2
+description: "Bootstrap the reference-api-buddy model from the code as it exists
+  at dbd18d7 (release 0.5.2): the proxy's application components and functions,
+  its HTTP surface (proxied routes and admin endpoints), the SQLite cache
+  schema, the technology it runs on, and its test suite, plus the motivation,
+  business and product context from the README and requirements docs."
+created: 2026-11-24T17:48:27.128Z
+modified: 2026-11-24T18:04:53.461Z
+status: committed
+baseSnapshot: v2:sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
+origin:
+  kind: extract
+purpose: bootstrap
+stats:
+  additions: 2000
+  modifications: 0
+  deletions: 0
+lastSequence: 2196
+unstaged:
+  - sequence: 435
+    removedAt: 1791
+    change:
+      type: add
+      elementId: product.feature.embeddable-caching-proxy-module
+      layerName: product
+      after:
+        id: 1dec5566-88ad-4774-a04d-5ad6d81c6d50
+        path: product.feature.embeddable-caching-proxy-module
+        spec_node_id: product.feature
+        type: feature
+        layer_id: product
+        name: Embeddable Caching Proxy Module
+        description: CachingProxy class a Python app imports, starts in a background
+          thread or as a context manager, and stops.
+        attributes:
+          priority: critical
+          status: delivered
+        source_reference:
+          provenance: manual
+          locations:
+            - file: reference_api_buddy/core/proxy.py
+              symbol: CachingProxy
+        metadata:
+          created_at: 2026-11-24T17:55:54.508Z
+          updated_at: 2026-11-24T17:55:54.508Z
+          version: 1
+      timestamp: 2026-11-24T17:55:54.623Z
+    rewritten: true
+  - sequence: 436
+    removedAt: 1792
+    change:
+      type: add
+      elementId: product.feature.api-buddy-cli
+      layerName: product
+      after:
+        id: 9de5959c-9586-43d5-9551-1906ceb415be
+        path: product.feature.api-buddy-cli
+        spec_node_id: product.feature
+        type: feature
+        layer_id: product
+        name: Api Buddy CLI
+        description: api-buddy command that runs the proxy standalone from a JSON
+          config, generates a default config, or prints a new secure key.
+        attributes:
+          priority: high
+          status: delivered
+        source_reference:
+          provenance: manual
+          locations:
+            - file: reference_api_buddy/cli.py
+              symbol: main
+        metadata:
+          created_at: 2026-11-24T17:55:54.509Z
+          updated_at: 2026-11-24T17:55:54.509Z
+          version: 1
+      timestamp: 2026-11-24T17:55:54.623Z
+    rewritten: true
+  - sequence: 437
+    removedAt: 1793
+    change:
+      type: add
+      elementId: product.feature.path-based-domain-mapping
+      layerName: product
+      after:
+        id: bd705564-895d-428c-b983-b223d83d7d7e
+        path: product.feature.path-based-domain-mapping
+        spec_node_id: product.feature
+        type: feature
+        layer_id: product
+        name: Path Based Domain Mapping
+        description: http://127.0.0.1:<port>/<domain_key>/<path> is forwarded to
+          <upstream><path> with the query string, so a client only changes its
+          base URL.
+        attributes:
+          priority: critical
+          status: delivered
+        source_reference:
+          provenance: manual
+          locations:
+            - file: reference_api_buddy/core/handler.py
+              symbol: RequestProcessingMixin._forward_request
+        metadata:
+          created_at: 2026-11-24T17:55:54.509Z
+          updated_at: 2026-11-24T17:55:54.509Z
+          version: 1
+      timestamp: 2026-11-24T17:55:54.623Z
+    rewritten: true
+  - sequence: 438
+    removedAt: 1794
+    change:
+      type: add
+      elementId: product.feature.persistent-sqlite-cache
+      layerName: product
+      after:
+        id: 32a12771-00e6-4ae3-9a14-b980e6cf166a
+        path: product.feature.persistent-sqlite-cache
+        spec_node_id: product.feature
+        type: feature
+        layer_id: product
+        name: Persistent SQLite Cache
+        description: On-disk or in-memory SQLite cache with compression, LRU eviction
+          and a size cap.
+        attributes:
+          priority: critical
+          status: delivered
+        source_reference:
+          provenance: manual
+          locations:
+            - file: reference_api_buddy/cache/engine.py
+              symbol: CacheEngine
+        metadata:
+          created_at: 2026-11-24T17:55:54.509Z
+          updated_at: 2026-11-24T17:55:54.509Z
+          version: 1
+      timestamp: 2026-11-24T17:55:54.623Z
+    rewritten: true
+  - sequence: 439
+    removedAt: 1795
+    change:
+      type: add
+      elementId: product.feature.per-domain-ttl
+      layerName: product
+      after:
+        id: ab8c8703-86d7-4021-81d1-dfed07a49cb3
+        path: product.feature.per-domain-ttl
+        spec_node_id: product.feature
+        type: feature
+        layer_id: product
+        name: Per Domain TTL
+        description: System default TTL with per-domain ttl_seconds overrides.
+        attributes:
+          priority: high
+          status: delivered
+        source_reference:
+          provenance: manual
+          locations:
+            - file: reference_api_buddy/core/ttl_manager.py
+              symbol: TTLManager
+        metadata:
+          created_at: 2026-11-24T17:55:54.509Z
+          updated_at: 2026-11-24T17:55:54.509Z
+          version: 1
+      timestamp: 2026-11-24T17:55:54.623Z
+    rewritten: true
+  - sequence: 440
+    removedAt: 1796
+    change:
+      type: add
+      elementId: product.feature.request-coalescing
+      layerName: product
+      after:
+        id: ca82f2eb-47da-4e96-a04f-38598ad5620c
+        path: product.feature.request-coalescing
+        spec_node_id: product.feature
+        type: feature
+        layer_id: product
+        name: Request Coalescing
+        description: Concurrent identical misses share one upstream fetch.
+        attributes:
+          priority: high
+          status: delivered
+        source_reference:
+          provenance: manual
+          locations:
+            - file: reference_api_buddy/core/inflight_tracker.py
+              symbol: InFlightTracker
+        metadata:
+          created_at: 2026-11-24T17:55:54.509Z
+          updated_at: 2026-11-24T17:55:54.509Z
+          version: 1
+      timestamp: 2026-11-24T17:55:54.623Z
+    rewritten: true
+  - sequence: 441
+    removedAt: 1797
+    change:
+      type: add
+      elementId: product.feature.fine-grained-rate-limits
+      layerName: product
+      after:
+        id: a732f4da-7de2-47b8-ac9f-af5a0e3b9e1e
+        path: product.feature.fine-grained-rate-limits
+        spec_node_id: product.feature
+        type: feature
+        layer_id: product
+        name: Fine Grained Rate Limits
+        description: Per-second, per-minute and per-hour limits per domain, delays
+          applied only to cache misses, 429 past the maximum delay.
+        attributes:
+          priority: high
+          status: delivered
+        source_reference:
+          provenance: manual
+          locations:
+            - file: reference_api_buddy/throttling/manager.py
+              symbol: ThrottleManager
+        metadata:
+          created_at: 2026-11-24T17:55:54.509Z
+          updated_at: 2026-11-24T17:55:54.509Z
+          version: 1
+      timestamp: 2026-11-24T17:55:54.623Z
+    rewritten: true
+  - sequence: 442
+    removedAt: 1798
+    change:
+      type: add
+      elementId: product.feature.secure-key-authentication
+      layerName: product
+      after:
+        id: 9ed50982-44e7-4fa9-ada4-7c5dfe7e8fc2
+        path: product.feature.secure-key-authentication
+        spec_node_id: product.feature
+        type: feature
+        layer_id: product
+        name: Secure Key Authentication
+        description: Optional proxy key in header, bearer token, path prefix or query.
+        attributes:
+          priority: medium
+          status: delivered
+        source_reference:
+          provenance: manual
+          locations:
+            - file: reference_api_buddy/security/manager.py
+              symbol: SecurityManager
+        metadata:
+          created_at: 2026-11-24T17:55:54.509Z
+          updated_at: 2026-11-24T17:55:54.509Z
+          version: 1
+      timestamp: 2026-11-24T17:55:54.623Z
+    rewritten: true
+  - sequence: 443
+    removedAt: 1799
+    change:
+      type: add
+      elementId: product.feature.upstream-auth-passthrough
+      layerName: product
+      after:
+        id: e614a03e-61fa-4d4e-bfb5-c8ca3c8ea5d4
+        path: product.feature.upstream-auth-passthrough
+        spec_node_id: product.feature
+        type: feature
+        layer_id: product
+        name: Upstream Auth Passthrough
+        description: Client headers, including an upstream Authorization header, are
+          forwarded to the upstream (except Host, Connection and
+          Content-Length).
+        attributes:
+          priority: medium
+          status: delivered
+        source_reference:
+          provenance: manual
+          locations:
+            - file: reference_api_buddy/core/handler.py
+              symbol: RequestProcessingMixin._forward_request
+        metadata:
+          created_at: 2026-11-24T17:55:54.509Z
+          updated_at: 2026-11-24T17:55:54.509Z
+          version: 1
+      timestamp: 2026-11-24T17:55:54.623Z
+    rewritten: true
+  - sequence: 444
+    removedAt: 1800
+    change:
+      type: add
+      elementId: product.feature.admin-debug-endpoints
+      layerName: product
+      after:
+        id: 0878f00e-8a54-41d4-9123-dfa71c52e8d6
+        path: product.feature.admin-debug-endpoints
+        spec_node_id: product.feature
+        type: feature
+        layer_id: product
+        name: Admin Debug Endpoints
+        description: HTTP endpoints for health, sanitized config, status, domains, cache
+          and config validation.
+        attributes:
+          priority: medium
+          status: delivered
+        source_reference:
+          provenance: manual
+          locations:
+            - file: reference_api_buddy/core/handler.py
+              symbol: RequestProcessingMixin._handle_admin_request
+        metadata:
+          created_at: 2026-11-24T17:55:54.509Z
+          updated_at: 2026-11-24T17:55:54.509Z
+          version: 1
+      timestamp: 2026-11-24T17:55:54.623Z
+    rewritten: true
+  - sequence: 445
+    removedAt: 1801
+    change:
+      type: add
+      elementId: product.feature.monitoring-metrics
+      layerName: product
+      after:
+        id: 8e8618ff-be3f-4fda-8705-56033656f31e
+        path: product.feature.monitoring-metrics
+        spec_node_id: product.feature
+        type: feature
+        layer_id: product
+        name: Monitoring Metrics
+        description: MonitoringManager and get_metrics() report cache, upstream,
+          database, health and throttling statistics.
+        attributes:
+          priority: medium
+          status: delivered
+        source_reference:
+          provenance: manual
+          locations:
+            - file: reference_api_buddy/monitoring/manager.py
+              symbol: MonitoringManager
+        metadata:
+          created_at: 2026-11-24T17:55:54.509Z
+          updated_at: 2026-11-24T17:55:54.509Z
+          version: 1
+      timestamp: 2026-11-24T17:55:54.623Z
+    rewritten: true
+  - sequence: 391
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-cli-startup::depends-on::testing.testcasesketch.test-cli-startup-with-different-port
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-cli-startup
+        target: testing.testcasesketch.test-cli-startup-with-different-port
+        predicate: depends-on
+        layer: testing
+        category: structural
+      timestamp: 2026-11-24T17:48:27.157Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 392
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-cli-startup-with-different-port::depends-on::testing.testcasesketch.test-cli-startup
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-cli-startup-with-different-port
+        target: testing.testcasesketch.test-cli-startup
+        predicate: depends-on
+        layer: testing
+        category: structural
+      timestamp: 2026-11-24T17:48:27.157Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 393
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-proxy-startup::depends-on::testing.testcasesketch.test-proxy-startup-and-stop-multiple-times
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-proxy-startup
+        target: testing.testcasesketch.test-proxy-startup-and-stop-multiple-times
+        predicate: depends-on
+        layer: testing
+        category: structural
+      timestamp: 2026-11-24T17:48:27.157Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 394
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-proxy-startup-and-stop-multiple-times::depends-on::testing.testcasesketch.test-proxy-startup
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-proxy-startup-and-stop-multiple-times
+        target: testing.testcasesketch.test-proxy-startup
+        predicate: depends-on
+        layer: testing
+        category: structural
+      timestamp: 2026-11-24T17:48:27.157Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1461
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: product.feature.api-buddy-cli::depends-on::product.feature.embeddable-caching-proxy-module
+      layerName: product
+      after:
+        source: product.feature.api-buddy-cli
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: depends-on
+        layer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 1462
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: product.feature.embeddable-caching-proxy-module::depends-on::product.feature.fine-grained-rate-limits
+      layerName: product
+      after:
+        source: product.feature.embeddable-caching-proxy-module
+        target: product.feature.fine-grained-rate-limits
+        predicate: depends-on
+        layer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 1463
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: product.feature.embeddable-caching-proxy-module::depends-on::product.feature.persistent-sqlite-cache
+      layerName: product
+      after:
+        source: product.feature.embeddable-caching-proxy-module
+        target: product.feature.persistent-sqlite-cache
+        predicate: depends-on
+        layer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 1464
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: product.feature.embeddable-caching-proxy-module::depends-on::product.feature.request-coalescing
+      layerName: product
+      after:
+        source: product.feature.embeddable-caching-proxy-module
+        target: product.feature.request-coalescing
+        predicate: depends-on
+        layer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 1465
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: product.feature.embeddable-caching-proxy-module::depends-on::product.feature.secure-key-authentication
+      layerName: product
+      after:
+        source: product.feature.embeddable-caching-proxy-module
+        target: product.feature.secure-key-authentication
+        predicate: depends-on
+        layer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 1468
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.dbpedia-threading-test-test-concurrent-requests::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.dbpedia-threading-test-test-concurrent-requests
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1498
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-cache-engine-ttl-test-cache-engine-without-config::tests::product.feature.persistent-sqlite-cache
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-cache-engine-ttl-test-cache-engine-without-config
+        target: product.feature.persistent-sqlite-cache
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1500
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-cache-first-throttling-test-cache-hits-bypass-throttling-integration::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-cache-first-throttling-test-cache-hits-bypass-throttling-integration
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1501
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-cache-first-throttling-test-throttling-metrics-include-cache-miss-flag::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-cache-first-throttling-test-throttling-metrics-include-cache-miss-flag
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1505
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-callbacks-and-graceful-shutdown::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-callbacks-and-graceful-shutdown
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1510
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-clear-cache::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-clear-cache
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1511
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-cliargument-parsing-test-cli-custom-host::tests::product.feature.api-buddy-cli
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-cliargument-parsing-test-cli-custom-host
+        target: product.feature.api-buddy-cli
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1512
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-cliargument-parsing-test-cli-custom-log-level::tests::product.feature.api-buddy-cli
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-cliargument-parsing-test-cli-custom-log-level
+        target: product.feature.api-buddy-cli
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1513
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-cliargument-parsing-test-cli-custom-port::tests::product.feature.api-buddy-cli
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-cliargument-parsing-test-cli-custom-port
+        target: product.feature.api-buddy-cli
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1514
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-cliargument-parsing-test-cli-generate-config::tests::product.feature.api-buddy-cli
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-cliargument-parsing-test-cli-generate-config
+        target: product.feature.api-buddy-cli
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1515
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-cliargument-parsing-test-cli-help-output::tests::product.feature.api-buddy-cli
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-cliargument-parsing-test-cli-help-output
+        target: product.feature.api-buddy-cli
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1516
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-cliargument-parsing-test-cli-security-key-only::tests::product.feature.api-buddy-cli
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-cliargument-parsing-test-cli-security-key-only
+        target: product.feature.api-buddy-cli
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1517
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-cliargument-parsing-test-cli-version-output::tests::product.feature.api-buddy-cli
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-cliargument-parsing-test-cli-version-output
+        target: product.feature.api-buddy-cli
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1518
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-cliargument-validation-test-cli-edge-case-port-max::tests::product.feature.api-buddy-cli
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-cliargument-validation-test-cli-edge-case-port-max
+        target: product.feature.api-buddy-cli
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1519
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-cliargument-validation-test-cli-edge-case-port-zero::tests::product.feature.api-buddy-cli
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-cliargument-validation-test-cli-edge-case-port-zero
+        target: product.feature.api-buddy-cli
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1520
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-cliargument-validation-test-cli-invalid-log-level-argument::tests::product.feature.api-buddy-cli
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-cliargument-validation-test-cli-invalid-log-level-argument
+        target: product.feature.api-buddy-cli
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1521
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-cliargument-validation-test-cli-invalid-port-argument::tests::product.feature.api-buddy-cli
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-cliargument-validation-test-cli-invalid-port-argument
+        target: product.feature.api-buddy-cli
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1522
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-cliconfiguration-handling-test-cli-with-config-file::tests::product.feature.api-buddy-cli
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-cliconfiguration-handling-test-cli-with-config-file
+        target: product.feature.api-buddy-cli
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1523
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-cliconfiguration-handling-test-cli-with-invalid-config-file::tests::product.feature.api-buddy-cli
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-cliconfiguration-handling-test-cli-with-invalid-config-file
+        target: product.feature.api-buddy-cli
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1524
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-clidefault-behavior-test-cli-default-configuration-message::tests::product.feature.api-buddy-cli
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-clidefault-behavior-test-cli-default-configuration-message
+        target: product.feature.api-buddy-cli
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1525
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-clidefault-behavior-test-cli-startup-information-display::tests::product.feature.api-buddy-cli
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-clidefault-behavior-test-cli-startup-information-display
+        target: product.feature.api-buddy-cli
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1526
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-cliserver-startup-test-cli-keyboard-interrupt-handling::tests::product.feature.api-buddy-cli
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-cliserver-startup-test-cli-keyboard-interrupt-handling
+        target: product.feature.api-buddy-cli
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1527
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-cliserver-startup-test-cli-server-startup-error-handling::tests::product.feature.api-buddy-cli
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-cliserver-startup-test-cli-server-startup-error-handling
+        target: product.feature.api-buddy-cli
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1528
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-cliserver-startup-test-cli-server-startup-success::tests::product.feature.api-buddy-cli
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-cliserver-startup-test-cli-server-startup-success
+        target: product.feature.api-buddy-cli
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1529
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-cliserver-startup-test-cli-server-startup-with-security-key::tests::product.feature.api-buddy-cli
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-cliserver-startup-test-cli-server-startup-with-security-key
+        target: product.feature.api-buddy-cli
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1530
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-component-integration::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-component-integration
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1533
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-concurrent-requests::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-concurrent-requests
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1536
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-concurrent-requests-wait-for-first::tests::product.feature.request-coalescing
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-concurrent-requests-wait-for-first
+        target: product.feature.request-coalescing
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1574
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-context-manager-lifecycle::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-context-manager-lifecycle
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1590
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-database-persistence-failures-test-database-failure-during-cleanup::tests::product.feature.persistent-sqlite-cache
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-database-persistence-failures-test-database-failure-during-cleanup
+        target: product.feature.persistent-sqlite-cache
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1594
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-database-persistence-failures-test-database-failure-during-get::tests::product.feature.persistent-sqlite-cache
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-database-persistence-failures-test-database-failure-during-get
+        target: product.feature.persistent-sqlite-cache
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1597
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-database-persistence-failures-test-database-persistence-failure-handling::tests::product.feature.persistent-sqlite-cache
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-database-persistence-failures-test-database-persistence-failure-handling
+        target: product.feature.persistent-sqlite-cache
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1605
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-different-cache-keys-independent::tests::product.feature.request-coalescing
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-different-cache-keys-independent
+        target: product.feature.request-coalescing
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1609
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-enhanced-throttling-stats::tests::product.feature.fine-grained-rate-limits
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-enhanced-throttling-stats
+        target: product.feature.fine-grained-rate-limits
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1610
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-enhanced-throttling-stats::tests::product.feature.monitoring-metrics
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-enhanced-throttling-stats
+        target: product.feature.monitoring-metrics
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1611
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-enhanced-throttling-stats::tests::product.feature.persistent-sqlite-cache
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-enhanced-throttling-stats
+        target: product.feature.persistent-sqlite-cache
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1616
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-error-handling-for-missing-methods::tests::product.feature.monitoring-metrics
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-error-handling-for-missing-methods
+        target: product.feature.monitoring-metrics
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1619
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-error-propagation::tests::product.feature.request-coalescing
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-error-propagation
+        target: product.feature.request-coalescing
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1620
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-extract-from-header::tests::product.feature.secure-key-authentication
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-extract-from-header
+        target: product.feature.secure-key-authentication
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1621
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-extract-from-path::tests::product.feature.secure-key-authentication
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-extract-from-path
+        target: product.feature.secure-key-authentication
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1622
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-extract-from-query::tests::product.feature.secure-key-authentication
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-extract-from-query
+        target: product.feature.secure-key-authentication
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1624
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-extract-secure-key-priority::tests::product.feature.secure-key-authentication
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-extract-secure-key-priority
+        target: product.feature.secure-key-authentication
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1627
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-first-request-proceeds-immediately::tests::product.feature.request-coalescing
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-first-request-proceeds-immediately
+        target: product.feature.request-coalescing
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1629
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-generate-secure-key-length-and-format::tests::product.feature.secure-key-authentication
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-generate-secure-key-length-and-format
+        target: product.feature.secure-key-authentication
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1631
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-get-cache-stats-returns-expected-keys::tests::product.feature.monitoring-metrics
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-get-cache-stats-returns-expected-keys
+        target: product.feature.monitoring-metrics
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1633
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-get-database-stats-returns-expected-keys::tests::product.feature.monitoring-metrics
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-get-database-stats-returns-expected-keys
+        target: product.feature.monitoring-metrics
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1635
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-get-proxy-health-returns-expected-keys::tests::product.feature.monitoring-metrics
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-get-proxy-health-returns-expected-keys
+        target: product.feature.monitoring-metrics
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1636
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-get-secure-key::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-get-secure-key
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1638
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-get-throttling-stats-returns-expected-keys::tests::product.feature.monitoring-metrics
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-get-throttling-stats-returns-expected-keys
+        target: product.feature.monitoring-metrics
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1640
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-get-upstream-stats-returns-expected-keys::tests::product.feature.monitoring-metrics
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-get-upstream-stats-returns-expected-keys
+        target: product.feature.monitoring-metrics
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1642
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-cache-ttlintegration-test-cache-hit-preserves-original-ttl::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-cache-ttlintegration-test-cache-hit-preserves-original-ttl
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1644
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-cache-ttlintegration-test-different-domains-get-different-ttls-in-same-proxy::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-cache-ttlintegration-test-different-domains-get-different-ttls-in-same-proxy
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1646
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-cache-ttlintegration-test-end-to-end-ttl-resolution-fast-api::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-cache-ttlintegration-test-end-to-end-ttl-resolution-fast-api
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1648
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-cache-ttlintegration-test-end-to-end-ttl-resolution-slow-api::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-cache-ttlintegration-test-end-to-end-ttl-resolution-slow-api
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1650
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-cache-ttlintegration-test-end-to-end-ttl-resolution-unmapped-domain::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-cache-ttlintegration-test-end-to-end-ttl-resolution-unmapped-domain
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1652
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-cache-ttlintegration-test-post-request-with-domain-specific-ttl::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-cache-ttlintegration-test-post-request-with-domain-specific-ttl
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1653
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-connection-error-recovery::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-connection-error-recovery
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1654
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-deflate-compression-handling::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-deflate-compression-handling
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1655
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-deflate-decompression-failure::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-deflate-decompression-failure
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1656
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-deflate-decompression-success::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-deflate-decompression-success
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1657
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-domain-mapping-edge-cases::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-domain-mapping-edge-cases
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1658
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-domain-not-mapped::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-domain-not-mapped
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1659
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-forward-request-invalid-path::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-forward-request-invalid-path
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1660
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-forward-request-network-error::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-forward-request-network-error
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1661
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-forward-request-no-upstream::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-forward-request-no-upstream
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1662
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-forward-request-unmapped-domain::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-forward-request-unmapped-domain
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1663
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-gzip-compression-handling::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-gzip-compression-handling
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1664
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-gzip-decompression-failure::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-gzip-decompression-failure
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1665
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-gzip-decompression-success::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-gzip-decompression-success
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1666
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-gzip-magic-number-detection::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-gzip-magic-number-detection
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1669
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-header-filtering::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-header-filtering
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1670
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-invalid-headers-processing::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-invalid-headers-processing
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1671
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-invalid-path-handling::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-invalid-path-handling
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1672
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-large-request-body-handling::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-large-request-body-handling
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1673
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-query-parameters-handling::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-query-parameters-handling
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1674
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-query-parameters-in-url::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-query-parameters-in-url
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1675
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-root-path-handling::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-root-path-handling
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1676
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-root-path-with-query::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-root-path-with-query
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1677
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-timeout-scenarios::tests::product.feature.path-based-domain-mapping
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-timeout-scenarios
+        target: product.feature.path-based-domain-mapping
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1681
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-hour-level-still-works-with-new-limits::tests::product.feature.fine-grained-rate-limits
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-hour-level-still-works-with-new-limits
+        target: product.feature.fine-grained-rate-limits
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1687
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-log-security-event-prints::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-log-security-event-prints
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1702
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-max-cache-entries-test-default-is-1000::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-max-cache-entries-test-default-is-1000
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1705
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-max-cache-entries-test-read-from-config::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-max-cache-entries-test-read-from-config
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1706
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-max-cache-entries-test-survives-reload::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-max-cache-entries-test-survives-reload
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1709
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-max-delay-exceeded::tests::product.feature.fine-grained-rate-limits
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-max-delay-exceeded
+        target: product.feature.fine-grained-rate-limits
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1710
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-metrics-collection::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-metrics-collection
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1711
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-monitoring-manager-initialization::tests::product.feature.monitoring-metrics
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-monitoring-manager-initialization
+        target: product.feature.monitoring-metrics
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1713
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-monitoring-manager-method::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-monitoring-manager-method
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1719
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-proxy-startup::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-proxy-startup
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1722
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-proxy-startup-and-stop-multiple-times::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-proxy-startup-and-stop-multiple-times
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1724
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-proxy-ttlintegration-test-proxy-cache-engine-without-config::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-proxy-ttlintegration-test-proxy-cache-engine-without-config
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1727
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-proxy-ttlintegration-test-proxy-config-reload-updates-cache-engine::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-proxy-ttlintegration-test-proxy-config-reload-updates-cache-engine
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1728
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-proxy-ttlintegration-test-proxy-context-manager-with-ttl-config::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-proxy-ttlintegration-test-proxy-context-manager-with-ttl-config
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1730
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-proxy-ttlintegration-test-proxy-initializes-cache-engine-with-config::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-proxy-ttlintegration-test-proxy-initializes-cache-engine-with-config
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1732
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-proxy-ttlintegration-test-proxy-without-ttl-config::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-proxy-ttlintegration-test-proxy-without-ttl-config
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1733
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-sanitize-path-removes-null-and-nonascii::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-sanitize-path-removes-null-and-nonascii
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1736
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-sequential-requests-dont-interfere::tests::product.feature.request-coalescing
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-sequential-requests-dont-interfere
+        target: product.feature.request-coalescing
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1742
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-start-stop::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-start-stop
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1745
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-stats-reporting::tests::product.feature.request-coalescing
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-stats-reporting
+        target: product.feature.request-coalescing
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1751
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-timeout-waiting-for-inflight-request::tests::product.feature.request-coalescing
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-timeout-waiting-for-inflight-request
+        target: product.feature.request-coalescing
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1767
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-ttlmanager-test-default-ttl-resolution::tests::product.feature.per-domain-ttl
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-ttlmanager-test-default-ttl-resolution
+        target: product.feature.per-domain-ttl
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1769
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-ttlmanager-test-domain-specific-ttl-resolution::tests::product.feature.per-domain-ttl
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-ttlmanager-test-domain-specific-ttl-resolution
+        target: product.feature.per-domain-ttl
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1771
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-ttlmanager-test-fallback-to-default-for-unmapped-domain::tests::product.feature.per-domain-ttl
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-ttlmanager-test-fallback-to-default-for-unmapped-domain
+        target: product.feature.per-domain-ttl
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1773
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-ttlmanager-test-invalid-domain-mapping-format::tests::product.feature.per-domain-ttl
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-ttlmanager-test-invalid-domain-mapping-format
+        target: product.feature.per-domain-ttl
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1775
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-ttlmanager-test-missing-cache-config-uses-default::tests::product.feature.per-domain-ttl
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-ttlmanager-test-missing-cache-config-uses-default
+        target: product.feature.per-domain-ttl
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1779
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-update-and-reload-config::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-update-and-reload-config
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1781
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-validate-request-invalid-key::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-validate-request-invalid-key
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1782
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-validate-request-missing-key::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-validate-request-missing-key
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1783
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-validate-request-no-key-required::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-validate-request-no-key-required
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1784
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-validate-request-success-header::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-validate-request-success-header
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1785
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-validate-request-success-path::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-validate-request-success-path
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1786
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-validate-request-success-query::tests::product.feature.embeddable-caching-proxy-module
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-validate-request-success-query
+        target: product.feature.embeddable-caching-proxy-module
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1787
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-validate-secure-key-success-and-failure::tests::product.feature.secure-key-authentication
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-validate-secure-key-success-and-failure
+        target: product.feature.secure-key-authentication
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1790
+    removedAt: 1802
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-waiter-count-tracking::tests::product.feature.request-coalescing
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-waiter-count-tracking
+        target: product.feature.request-coalescing
+        predicate: tests
+        layer: testing
+        targetLayer: product
+        category: structural
+      timestamp: 2026-11-24T17:56:08.177Z
+      origin:
+        by: tier0
+        rule: tier0_test_case_name
+  - sequence: 1803
+    removedAt: 1832
+    change:
+      type: add
+      elementId: application.applicationfunction.get-secure-key
+      layerName: application
+      after:
+        id: c45d5fa1-b8f6-42c4-8c3b-2367f5d0de07
+        path: application.applicationfunction.get-secure-key
+        spec_node_id: application.applicationfunction
+        type: applicationfunction
+        layer_id: application
+        name: Get Secure Key
+        description: Return the proxy's secure key (configured or generated) so the
+          parent application can hand it to its API clients.
+        source_reference:
+          provenance: extracted
+          locations:
+            - file: reference_api_buddy/core/proxy.py
+              symbol: CachingProxy.get_secure_key
+        metadata:
+          created_at: 2026-11-24T17:57:24.293Z
+          updated_at: 2026-11-24T17:57:24.293Z
+          version: 1
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1811
+    removedAt: 1833
+    change:
+      type: relationship-add
+      elementId: application.applicationcomponent.caching-proxy::assigned-to::application.applicationfunction.get-secure-key
+      layerName: application
+      after:
+        source: application.applicationcomponent.caching-proxy
+        target: application.applicationfunction.get-secure-key
+        predicate: assigned-to
+        layer: application
+        category: structural
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1819
+    removedAt: 1834
+    change:
+      type: relationship-add
+      elementId: application.applicationfunction.get-secure-key::realizes::application.applicationservice.embedded-proxy-control
+      layerName: application
+      after:
+        source: application.applicationfunction.get-secure-key
+        target: application.applicationservice.embedded-proxy-control
+        predicate: realizes
+        layer: application
+        category: structural
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1804
+    removedAt: 1835
+    change:
+      type: add
+      elementId: application.applicationfunction.get-proxy-metrics
+      layerName: application
+      after:
+        id: 1d1c5b65-c066-4842-8eb0-84cceed760b8
+        path: application.applicationfunction.get-proxy-metrics
+        spec_node_id: application.applicationfunction
+        type: applicationfunction
+        layer_id: application
+        name: Get Proxy Metrics
+        description: Return the MetricsCollector counters, uptime and recorded events.
+        source_reference:
+          provenance: extracted
+          locations:
+            - file: reference_api_buddy/core/proxy.py
+              symbol: CachingProxy.get_metrics
+        metadata:
+          created_at: 2026-11-24T17:57:24.293Z
+          updated_at: 2026-11-24T17:57:24.293Z
+          version: 1
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1812
+    removedAt: 1836
+    change:
+      type: relationship-add
+      elementId: application.applicationcomponent.caching-proxy::assigned-to::application.applicationfunction.get-proxy-metrics
+      layerName: application
+      after:
+        source: application.applicationcomponent.caching-proxy
+        target: application.applicationfunction.get-proxy-metrics
+        predicate: assigned-to
+        layer: application
+        category: structural
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1822
+    removedAt: 1837
+    change:
+      type: relationship-add
+      elementId: application.applicationfunction.get-proxy-metrics::realizes::application.applicationservice.monitoring-statistics
+      layerName: application
+      after:
+        source: application.applicationfunction.get-proxy-metrics
+        target: application.applicationservice.monitoring-statistics
+        predicate: realizes
+        layer: application
+        category: structural
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1827
+    removedAt: 1838
+    change:
+      type: relationship-add
+      elementId: application.applicationfunction.get-proxy-metrics::accesses::application.dataobject.proxy-metrics-snapshot
+      layerName: application
+      after:
+        source: application.applicationfunction.get-proxy-metrics
+        target: application.dataobject.proxy-metrics-snapshot
+        predicate: accesses
+        layer: application
+        category: structural
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1805
+    removedAt: 1839
+    change:
+      type: add
+      elementId: application.applicationfunction.get-monitoring-manager
+      layerName: application
+      after:
+        id: 71a98dbf-694e-4a83-b91f-7231ec2abd3c
+        path: application.applicationfunction.get-monitoring-manager
+        spec_node_id: application.applicationfunction
+        type: applicationfunction
+        layer_id: application
+        name: Get Monitoring Manager
+        description: Build a MonitoringManager over the proxy's cache engine, database
+          manager and throttle manager.
+        source_reference:
+          provenance: extracted
+          locations:
+            - file: reference_api_buddy/core/proxy.py
+              symbol: CachingProxy.get_monitoring_manager
+        metadata:
+          created_at: 2026-11-24T17:57:24.293Z
+          updated_at: 2026-11-24T17:57:24.293Z
+          version: 1
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1813
+    removedAt: 1840
+    change:
+      type: relationship-add
+      elementId: application.applicationcomponent.caching-proxy::assigned-to::application.applicationfunction.get-monitoring-manager
+      layerName: application
+      after:
+        source: application.applicationcomponent.caching-proxy
+        target: application.applicationfunction.get-monitoring-manager
+        predicate: assigned-to
+        layer: application
+        category: structural
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1823
+    removedAt: 1841
+    change:
+      type: relationship-add
+      elementId: application.applicationfunction.get-monitoring-manager::realizes::application.applicationservice.monitoring-statistics
+      layerName: application
+      after:
+        source: application.applicationfunction.get-monitoring-manager
+        target: application.applicationservice.monitoring-statistics
+        predicate: realizes
+        layer: application
+        category: structural
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1806
+    removedAt: 1842
+    change:
+      type: add
+      elementId: application.applicationfunction.clear-proxy-cache
+      layerName: application
+      after:
+        id: 4aa7f01e-620b-4a10-8c34-809076dba487
+        path: application.applicationfunction.clear-proxy-cache
+        spec_node_id: application.applicationfunction
+        type: applicationfunction
+        layer_id: application
+        name: Clear Proxy Cache
+        description: Public entry point that clears all cache entries, or those for a
+          domain, through the cache engine.
+        source_reference:
+          provenance: extracted
+          locations:
+            - file: reference_api_buddy/core/proxy.py
+              symbol: CachingProxy.clear_cache
+        metadata:
+          created_at: 2026-11-24T17:57:24.293Z
+          updated_at: 2026-11-24T17:57:24.293Z
+          version: 1
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1814
+    removedAt: 1843
+    change:
+      type: relationship-add
+      elementId: application.applicationcomponent.caching-proxy::assigned-to::application.applicationfunction.clear-proxy-cache
+      layerName: application
+      after:
+        source: application.applicationcomponent.caching-proxy
+        target: application.applicationfunction.clear-proxy-cache
+        predicate: assigned-to
+        layer: application
+        category: structural
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1820
+    removedAt: 1844
+    change:
+      type: relationship-add
+      elementId: application.applicationfunction.clear-proxy-cache::realizes::application.applicationservice.embedded-proxy-control
+      layerName: application
+      after:
+        source: application.applicationfunction.clear-proxy-cache
+        target: application.applicationservice.embedded-proxy-control
+        predicate: realizes
+        layer: application
+        category: structural
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1824
+    removedAt: 1845
+    change:
+      type: relationship-add
+      elementId: application.applicationfunction.clear-proxy-cache::flows-to::application.applicationfunction.clear-cache
+      layerName: application
+      after:
+        source: application.applicationfunction.clear-proxy-cache
+        target: application.applicationfunction.clear-cache
+        predicate: flows-to
+        layer: application
+        category: structural
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1807
+    removedAt: 1846
+    change:
+      type: add
+      elementId: application.applicationfunction.validate-request-key
+      layerName: application
+      after:
+        id: 65be2e59-6022-43d6-9674-9cee7e0d5645
+        path: application.applicationfunction.validate-request-key
+        spec_node_id: application.applicationfunction
+        type: applicationfunction
+        layer_id: application
+        name: Validate Request Key
+        description: Programmatic check of a path, headers and query for the secure key;
+          raises SecurityError when it is missing or wrong. The HTTP handler
+          does its own check and does not call this.
+        source_reference:
+          provenance: extracted
+          locations:
+            - file: reference_api_buddy/core/proxy.py
+              symbol: CachingProxy.validate_request
+        metadata:
+          created_at: 2026-11-24T17:57:24.293Z
+          updated_at: 2026-11-24T17:57:24.293Z
+          version: 1
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1815
+    removedAt: 1847
+    change:
+      type: relationship-add
+      elementId: application.applicationcomponent.caching-proxy::assigned-to::application.applicationfunction.validate-request-key
+      layerName: application
+      after:
+        source: application.applicationcomponent.caching-proxy
+        target: application.applicationfunction.validate-request-key
+        predicate: assigned-to
+        layer: application
+        category: structural
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1821
+    removedAt: 1848
+    change:
+      type: relationship-add
+      elementId: application.applicationfunction.validate-request-key::realizes::application.applicationservice.embedded-proxy-control
+      layerName: application
+      after:
+        source: application.applicationfunction.validate-request-key
+        target: application.applicationservice.embedded-proxy-control
+        predicate: realizes
+        layer: application
+        category: structural
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1825
+    removedAt: 1849
+    change:
+      type: relationship-add
+      elementId: application.applicationfunction.validate-request-key::flows-to::application.applicationfunction.extract-secure-key
+      layerName: application
+      after:
+        source: application.applicationfunction.validate-request-key
+        target: application.applicationfunction.extract-secure-key
+        predicate: flows-to
+        layer: application
+        category: structural
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1826
+    removedAt: 1850
+    change:
+      type: relationship-add
+      elementId: application.applicationfunction.validate-request-key::flows-to::application.applicationfunction.validate-secure-key
+      layerName: application
+      after:
+        source: application.applicationfunction.validate-request-key
+        target: application.applicationfunction.validate-secure-key
+        predicate: flows-to
+        layer: application
+        category: structural
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1808
+    removedAt: 1851
+    change:
+      type: add
+      elementId: application.applicationfunction.snapshot-throttle-state
+      layerName: application
+      after:
+        id: ae1849ad-559c-4d61-be76-becf0bfdd0d6
+        path: application.applicationfunction.snapshot-throttle-state
+        spec_node_id: application.applicationfunction
+        type: applicationfunction
+        layer_id: application
+        name: Snapshot Throttle State
+        description: Serialize per-domain throttle state for persistence. Available to
+          callers; the proxy itself never persists throttle state.
+        source_reference:
+          provenance: extracted
+          locations:
+            - file: reference_api_buddy/throttling/manager.py
+              symbol: ThrottleManager.persist_state
+        metadata:
+          created_at: 2026-11-24T17:57:24.293Z
+          updated_at: 2026-11-24T17:57:24.293Z
+          version: 1
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1816
+    removedAt: 1852
+    change:
+      type: relationship-add
+      elementId: application.applicationcomponent.throttle-manager::assigned-to::application.applicationfunction.snapshot-throttle-state
+      layerName: application
+      after:
+        source: application.applicationcomponent.throttle-manager
+        target: application.applicationfunction.snapshot-throttle-state
+        predicate: assigned-to
+        layer: application
+        category: structural
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1828
+    removedAt: 1853
+    change:
+      type: relationship-add
+      elementId: application.applicationfunction.snapshot-throttle-state::accesses::application.dataobject.domain-throttle-state
+      layerName: application
+      after:
+        source: application.applicationfunction.snapshot-throttle-state
+        target: application.dataobject.domain-throttle-state
+        predicate: accesses
+        layer: application
+        category: structural
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1809
+    removedAt: 1854
+    change:
+      type: add
+      elementId: application.applicationfunction.restore-throttle-state
+      layerName: application
+      after:
+        id: dd5abead-7614-4aed-bbea-0172a1cea053
+        path: application.applicationfunction.restore-throttle-state
+        spec_node_id: application.applicationfunction
+        type: applicationfunction
+        layer_id: application
+        name: Restore Throttle State
+        description: Load per-domain throttle state from a snapshot. Not called by the
+          proxy.
+        source_reference:
+          provenance: extracted
+          locations:
+            - file: reference_api_buddy/throttling/manager.py
+              symbol: ThrottleManager.load_state
+        metadata:
+          created_at: 2026-11-24T17:57:24.294Z
+          updated_at: 2026-11-24T17:57:24.294Z
+          version: 1
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1817
+    removedAt: 1855
+    change:
+      type: relationship-add
+      elementId: application.applicationcomponent.throttle-manager::assigned-to::application.applicationfunction.restore-throttle-state
+      layerName: application
+      after:
+        source: application.applicationcomponent.throttle-manager
+        target: application.applicationfunction.restore-throttle-state
+        predicate: assigned-to
+        layer: application
+        category: structural
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1829
+    removedAt: 1856
+    change:
+      type: relationship-add
+      elementId: application.applicationfunction.restore-throttle-state::accesses::application.dataobject.domain-throttle-state
+      layerName: application
+      after:
+        source: application.applicationfunction.restore-throttle-state
+        target: application.dataobject.domain-throttle-state
+        predicate: accesses
+        layer: application
+        category: structural
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1810
+    removedAt: 1857
+    change:
+      type: add
+      elementId: application.applicationfunction.check-should-throttle
+      layerName: application
+      after:
+        id: 495739e3-7b42-4ee7-8f61-ddd05d7110dd
+        path: application.applicationfunction.check-should-throttle
+        spec_node_id: application.applicationfunction
+        type: applicationfunction
+        layer_id: application
+        name: Check Should Throttle
+        description: Legacy hourly check that applies progressive throttling (doubling
+          delay) when a domain exceeds its hourly limit. The request path uses
+          get_required_delay instead and does not call this.
+        source_reference:
+          provenance: extracted
+          locations:
+            - file: reference_api_buddy/throttling/manager.py
+              symbol: ThrottleManager.should_throttle
+        metadata:
+          created_at: 2026-11-24T17:57:24.294Z
+          updated_at: 2026-11-24T17:57:24.294Z
+          version: 1
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1818
+    removedAt: 1858
+    change:
+      type: relationship-add
+      elementId: application.applicationcomponent.throttle-manager::assigned-to::application.applicationfunction.check-should-throttle
+      layerName: application
+      after:
+        source: application.applicationcomponent.throttle-manager
+        target: application.applicationfunction.check-should-throttle
+        predicate: assigned-to
+        layer: application
+        category: structural
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1830
+    removedAt: 1859
+    change:
+      type: relationship-add
+      elementId: application.applicationfunction.check-should-throttle::flows-to::application.applicationfunction.apply-progressive-throttling
+      layerName: application
+      after:
+        source: application.applicationfunction.check-should-throttle
+        target: application.applicationfunction.apply-progressive-throttling
+        predicate: flows-to
+        layer: application
+        category: structural
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 1831
+    removedAt: 1860
+    change:
+      type: relationship-add
+      elementId: application.applicationfunction.check-should-throttle::accesses::application.dataobject.domain-throttle-state
+      layerName: application
+      after:
+        source: application.applicationfunction.check-should-throttle
+        target: application.dataobject.domain-throttle-state
+        predicate: accesses
+        layer: application
+        category: structural
+      timestamp: 2026-11-24T17:57:24.467Z
+  - sequence: 470
+    removedAt: 2183
+    change:
+      type: add
+      elementId: application.applicationservice.cached-reference-proxying
+      layerName: application
+      after:
+        id: b644b9ec-7a62-44d7-a3a4-c8bf161f7fc8
+        path: application.applicationservice.cached-reference-proxying
+        spec_node_id: application.applicationservice
+        type: applicationservice
+        layer_id: application
+        name: Cached Reference Proxying
+        description: Forward a client's request to the mapped upstream, answering from
+          the cache when it can and pacing the upstream otherwise.
+        attributes:
+          serviceType: synchronous
+        metadata:
+          created_at: 2026-11-24T17:55:54.513Z
+          updated_at: 2026-11-24T17:55:54.513Z
+          version: 1
+      timestamp: 2026-11-24T17:55:54.623Z
+    rewritten: true
+  - sequence: 471
+    removedAt: 2184
+    change:
+      type: add
+      elementId: application.applicationservice.admin-diagnostics
+      layerName: application
+      after:
+        id: ab56af55-45fd-4705-b09e-17c4f23bf238
+        path: application.applicationservice.admin-diagnostics
+        spec_node_id: application.applicationservice
+        type: applicationservice
+        layer_id: application
+        name: Admin Diagnostics
+        description: Health, sanitized configuration, component status, domain mappings,
+          cache statistics and configuration validation over HTTP.
+        attributes:
+          serviceType: synchronous
+        metadata:
+          created_at: 2026-11-24T17:55:54.514Z
+          updated_at: 2026-11-24T17:55:54.514Z
+          version: 1
+      timestamp: 2026-11-24T17:55:54.623Z
+    rewritten: true
+  - sequence: 472
+    removedAt: 2185
+    change:
+      type: add
+      elementId: application.applicationservice.monitoring-statistics
+      layerName: application
+      after:
+        id: c95f9588-93f0-4a7d-92f2-25b8410a028b
+        path: application.applicationservice.monitoring-statistics
+        spec_node_id: application.applicationservice
+        type: applicationservice
+        layer_id: application
+        name: Monitoring Statistics
+        description: Programmatic cache, upstream, database, health and throttling metrics.
+        attributes:
+          serviceType: synchronous
+        metadata:
+          created_at: 2026-11-24T17:55:54.514Z
+          updated_at: 2026-11-24T17:55:54.514Z
+          version: 1
+      timestamp: 2026-11-24T17:55:54.623Z
+    rewritten: true
+  - sequence: 473
+    removedAt: 2186
+    change:
+      type: add
+      elementId: application.applicationservice.embedded-proxy-control
+      layerName: application
+      after:
+        id: 3d673afd-419e-4e64-91aa-4ee427b61e2b
+        path: application.applicationservice.embedded-proxy-control
+        spec_node_id: application.applicationservice
+        type: applicationservice
+        layer_id: application
+        name: Embedded Proxy Control
+        description: Start, stop, reconfigure and clear the cache of an embedded proxy,
+          and read its secure key.
+        attributes:
+          serviceType: synchronous
+        metadata:
+          created_at: 2026-11-24T17:55:54.514Z
+          updated_at: 2026-11-24T17:55:54.514Z
+          version: 1
+      timestamp: 2026-11-24T17:55:54.623Z
+    rewritten: true

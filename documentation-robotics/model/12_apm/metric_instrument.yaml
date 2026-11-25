@@ -1,0 +1,170 @@
+apm.metricinstrument.proxy-total-requests:
+  id: 93fab690-a5f1-48a1-9ef1-980748f38616
+  path: apm.metricinstrument.proxy-total-requests
+  spec_node_id: apm.metricinstrument
+  type: metricinstrument
+  layer_id: apm
+  name: proxy total requests
+  description: MetricsCollector total_requests (incremented per recorded event).
+  attributes:
+    type: Counter
+    unit: "{event}"
+    enabled: true
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/proxy.py
+        symbol: MetricsCollector.record_event
+  metadata:
+    created_at: 2026-11-24T17:55:54.551Z
+    updated_at: 2026-11-24T17:55:54.551Z
+    version: 1
+apm.metricinstrument.proxy-cache-hits:
+  id: 20171b1a-0815-435a-98a3-9712f8b96288
+  path: apm.metricinstrument.proxy-cache-hits
+  spec_node_id: apm.metricinstrument
+  type: metricinstrument
+  layer_id: apm
+  name: proxy cache hits
+  description: MetricsCollector cache_hits.
+  attributes:
+    type: Counter
+    unit: "{request}"
+    enabled: true
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/proxy.py
+        symbol: MetricsCollector.record_event
+  metadata:
+    created_at: 2026-11-24T17:55:54.551Z
+    updated_at: 2026-11-24T17:55:54.551Z
+    version: 1
+apm.metricinstrument.proxy-cache-misses:
+  id: 4b8f5057-9065-4dbf-bd30-536c38c3e01b
+  path: apm.metricinstrument.proxy-cache-misses
+  spec_node_id: apm.metricinstrument
+  type: metricinstrument
+  layer_id: apm
+  name: proxy cache misses
+  description: MetricsCollector cache_misses.
+  attributes:
+    type: Counter
+    unit: "{request}"
+    enabled: true
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/proxy.py
+        symbol: MetricsCollector.record_event
+  metadata:
+    created_at: 2026-11-24T17:55:54.551Z
+    updated_at: 2026-11-24T17:55:54.551Z
+    version: 1
+apm.metricinstrument.proxy-throttled-requests:
+  id: 4e86b32e-1079-484c-a2d7-54a8aa931c4a
+  path: apm.metricinstrument.proxy-throttled-requests
+  spec_node_id: apm.metricinstrument
+  type: metricinstrument
+  layer_id: apm
+  name: proxy throttled requests
+  description: "MetricsCollector throttled: requests answered 429."
+  attributes:
+    type: Counter
+    unit: "{request}"
+    enabled: true
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/proxy.py
+        symbol: MetricsCollector.record_event
+  metadata:
+    created_at: 2026-11-24T17:55:54.551Z
+    updated_at: 2026-11-24T17:55:54.551Z
+    version: 1
+apm.metricinstrument.proxy-errors:
+  id: 739e6fb4-17df-4899-9e1b-bee46c33ef65
+  path: apm.metricinstrument.proxy-errors
+  spec_node_id: apm.metricinstrument
+  type: metricinstrument
+  layer_id: apm
+  name: proxy errors
+  description: MetricsCollector errors.
+  attributes:
+    type: Counter
+    unit: "{request}"
+    enabled: true
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/proxy.py
+        symbol: MetricsCollector.record_event
+  metadata:
+    created_at: 2026-11-24T17:55:54.552Z
+    updated_at: 2026-11-24T17:55:54.552Z
+    version: 1
+apm.metricinstrument.upstream-response-time:
+  id: 627e52d3-a034-4e02-ac71-5d9c9e04eb1e
+  path: apm.metricinstrument.upstream-response-time
+  spec_node_id: apm.metricinstrument
+  type: metricinstrument
+  layer_id: apm
+  name: upstream response time
+  description: Per-request response time stored in the metrics table (0 for cache hits).
+  attributes:
+    type: Histogram
+    unit: ms
+    enabled: true
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: DatabaseManager.store_upstream_metrics
+  metadata:
+    created_at: 2026-11-24T17:55:54.552Z
+    updated_at: 2026-11-24T17:55:54.552Z
+    version: 1
+apm.metricinstrument.upstream-responses-by-status:
+  id: 2f354fb0-f21e-4095-ad6f-a0ae16317fcb
+  path: apm.metricinstrument.upstream-responses-by-status
+  spec_node_id: apm.metricinstrument
+  type: metricinstrument
+  layer_id: apm
+  name: upstream responses by status
+  description: Upstream responses by status code from the metrics table; 4xx and
+    5xx count as errors.
+  attributes:
+    type: Counter
+    unit: "{request}"
+    enabled: true
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: DatabaseManager.store_upstream_metrics
+  metadata:
+    created_at: 2026-11-24T17:55:54.552Z
+    updated_at: 2026-11-24T17:55:54.552Z
+    version: 1
+apm.metricinstrument.cache-engine-statistics:
+  id: d46e15a6-d220-41b6-ae66-3f3fb5fabc5d
+  path: apm.metricinstrument.cache-engine-statistics
+  spec_node_id: apm.metricinstrument
+  type: metricinstrument
+  layer_id: apm
+  name: cache engine statistics
+  description: CacheEngine hits, misses, sets, evictions, expirations and
+    compression counts.
+  attributes:
+    type: ObservableGauge
+    unit: "{entry}"
+    enabled: true
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/cache/engine.py
+        symbol: CacheEngine.get_stats
+  metadata:
+    created_at: 2026-11-24T17:55:54.552Z
+    updated_at: 2026-11-24T17:55:54.552Z
+    version: 1

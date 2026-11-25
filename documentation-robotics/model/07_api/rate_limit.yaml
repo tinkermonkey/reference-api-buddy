@@ -1,0 +1,50 @@
+api.ratelimit.upstream-domain-rate-limit:
+  id: 138ce2ae-dba5-4035-b98b-5efba797b656
+  path: api.ratelimit.upstream-domain-rate-limit
+  spec_node_id: api.ratelimit
+  type: ratelimit
+  layer_id: api
+  name: Upstream Domain Rate Limit
+  description: "Per mapped domain: default 1000 requests per hour
+    (throttling.default_requests_per_hour or domain_limits), plus optional
+    per-minute and per-second limits. Requests wait for a slot; past
+    progressive_max_delay (300 s) they get 429. Applies to upstream calls only,
+    never to cache hits or deduplicated waiters."
+  attributes:
+    requests: 1000
+    window: 1h
+    keyBy: domain key
+    action: throttle
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/throttling/manager.py
+        symbol: ThrottleManager.get_required_delay
+  metadata:
+    created_at: 2026-11-24T17:55:54.532Z
+    updated_at: 2026-11-24T17:55:54.532Z
+    version: 1
+api.ratelimit.admin-endpoint-rate-limit:
+  id: 750ee243-844e-4df5-ba3b-42e8700b5ed0
+  path: api.ratelimit.admin-endpoint-rate-limit
+  spec_node_id: api.ratelimit
+  type: ratelimit
+  layer_id: api
+  name: Admin Endpoint Rate Limit
+  description: admin.rate_limit_per_minute (default 10) admin requests per client
+    IP per minute; excess gets 429 RATE_LIMIT_EXCEEDED.
+  attributes:
+    requests: 10
+    window: 1m
+    keyBy: client IP
+    scope: per-ip
+    action: block
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/admin_utils.py
+        symbol: AdminRateLimiter.is_allowed
+  metadata:
+    created_at: 2026-11-24T17:55:54.533Z
+    updated_at: 2026-11-24T17:55:54.533Z
+    version: 1

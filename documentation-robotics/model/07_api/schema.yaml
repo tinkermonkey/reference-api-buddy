@@ -1,0 +1,57 @@
+api.schema.admin-error:
+  id: 5547adba-4c57-4785-8ea1-cbf5f28f917b
+  path: api.schema.admin-error
+  spec_node_id: api.schema
+  type: schema
+  layer_id: api
+  name: Admin Error
+  description: "Admin error body: timestamp, success=false, error message and error_code."
+  attributes:
+    type: object
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._send_admin_error
+  metadata:
+    created_at: 2026-11-24T17:55:54.534Z
+    updated_at: 2026-11-24T17:55:54.534Z
+    version: 1
+api.schema.validate-config-request:
+  id: 16084999-f63e-4e48-895f-38b023c74a46
+  path: api.schema.validate-config-request
+  spec_node_id: api.schema
+  type: schema
+  layer_id: api
+  name: Validate Config Request
+  description: Body with a 'configuration' object to validate.
+  attributes:
+    type: object
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.535Z
+    updated_at: 2026-11-24T17:55:54.535Z
+    version: 1
+api.schema.validate-config-result:
+  id: cbb5e0c8-a947-4954-a45e-88a215cca781
+  path: api.schema.validate-config-result
+  spec_node_id: api.schema
+  type: schema
+  layer_id: api
+  name: Validate Config Result
+  description: valid, errors, warnings and merged_config.
+  attributes:
+    type: object
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.535Z
+    updated_at: 2026-11-24T17:55:54.535Z
+    version: 1

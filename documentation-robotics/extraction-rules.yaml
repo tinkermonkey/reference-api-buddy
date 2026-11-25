@@ -1,0 +1,15 @@
+# Extraction rules for this project, applied by codebase_extract before it makes cards.
+# Each rule: name, where (files, label, visibility, nested, name, declaration, ownerType) or
+# relationship (source, predicate, target), as (a layer.type, or none) and reason.
+# The first rule that matches a symbol wins. Written by codebase_extract (decide with keep: true);
+# edit by hand as you like.
+version: 1
+rules:
+  - name: test-url-routes-not-operations
+    where:
+      label: Route
+    as: none
+    reason: URLs called by tests; the real admin/proxy routes are dispatched by path string comparison in core/handler.py and are modelled by hand as api.operation
+    decided:
+      at: 2026-11-24T17:49:05.286Z
+      changeset: bootstrap-0-5-2

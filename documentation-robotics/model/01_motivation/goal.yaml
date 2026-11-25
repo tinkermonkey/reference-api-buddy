@@ -1,0 +1,47 @@
+motivation.goal.reduce-upstream-api-cost-and-load:
+  id: f30d8e02-6991-4ef5-989b-f0593ffabc32
+  path: motivation.goal.reduce-upstream-api-cost-and-load
+  spec_node_id: motivation.goal
+  type: goal
+  layer_id: motivation
+  name: Reduce Upstream API Cost And Load
+  description: Serve repeated requests for reference data locally so pipelines
+    make far fewer upstream calls.
+  attributes:
+    priority: high
+  metadata:
+    created_at: 2026-11-24T17:55:54.499Z
+    updated_at: 2026-11-24T17:55:54.499Z
+    version: 1
+motivation.goal.stay-within-upstream-rate-limits:
+  id: 3ce513cb-e5ad-47c2-83fb-b65eb60bbe27
+  path: motivation.goal.stay-within-upstream-rate-limits
+  spec_node_id: motivation.goal
+  type: goal
+  layer_id: motivation
+  name: Stay Within Upstream Rate Limits
+  description: Keep the requests that do reach an upstream inside its published
+    per-second, per-minute and per-hour limits instead of being blocked.
+  attributes:
+    priority: high
+  metadata:
+    created_at: 2026-11-24T17:55:54.500Z
+    updated_at: 2026-11-24T17:55:54.500Z
+    version: 1
+motivation.goal.drop-in-without-custom-api-clients:
+  id: 3fe5e1ed-cc37-43b1-9741-3bd3a8a61219
+  path: motivation.goal.drop-in-without-custom-api-clients
+  spec_node_id: motivation.goal
+  type: goal
+  layer_id: motivation
+  name: Drop In Without Custom API Clients
+  description: Let an application use the proxy by pointing its existing API
+    client's base URL at it, either embedded as a Python module or run
+    standalone, with no separate HTTP proxy configuration and no disabled TLS
+    checks.
+  attributes:
+    priority: medium
+  metadata:
+    created_at: 2026-11-24T17:55:54.500Z
+    updated_at: 2026-11-24T17:55:54.500Z
+    version: 1

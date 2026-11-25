@@ -1,0 +1,60 @@
+api.securityscheme.api-buddy-key-header:
+  id: 64744044-68b2-44c8-afec-801e85974b56
+  path: api.securityscheme.api-buddy-key-header
+  spec_node_id: api.securityscheme
+  type: securityscheme
+  layer_id: api
+  name: Api Buddy Key Header
+  description: Secure key in the X-API-Buddy-Key header.
+  attributes:
+    type: apiKey
+    in: header
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/security/manager.py
+        symbol: SecurityManager._extract_from_header
+  metadata:
+    created_at: 2026-11-24T17:55:54.531Z
+    updated_at: 2026-11-24T17:55:54.531Z
+    version: 1
+api.securityscheme.api-buddy-bearer-token:
+  id: f28cf26c-024d-4f00-9297-81df62f23434
+  path: api.securityscheme.api-buddy-bearer-token
+  spec_node_id: api.securityscheme
+  type: securityscheme
+  layer_id: api
+  name: Api Buddy Bearer Token
+  description: "Secure key as Authorization: Bearer <key>."
+  attributes:
+    type: http
+    scheme: bearer
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/security/manager.py
+        symbol: SecurityManager._extract_from_header
+  metadata:
+    created_at: 2026-11-24T17:55:54.532Z
+    updated_at: 2026-11-24T17:55:54.532Z
+    version: 1
+api.securityscheme.api-buddy-key-query:
+  id: 272458eb-3d53-4d84-88b7-b68f18f11197
+  path: api.securityscheme.api-buddy-key-query
+  spec_node_id: api.securityscheme
+  type: securityscheme
+  layer_id: api
+  name: Api Buddy Key Query
+  description: Secure key as a key query parameter. Among several key= values the one that validates wins; only the parameter carrying the proxy key is removed, so an upstream API's own key= passes through.
+  attributes:
+    type: apiKey
+    in: query
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/security/manager.py
+        symbol: SecurityManager._extract_from_query
+  metadata:
+    created_at: 2026-11-24T17:55:54.532Z
+    updated_at: 2026-11-24T17:55:54.532Z
+    version: 1

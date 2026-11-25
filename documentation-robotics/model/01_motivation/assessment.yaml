@@ -1,0 +1,20 @@
+motivation.assessment.secure-key-placement-gaps:
+  id: 4c974716-5b52-438b-8916-a650121650fa
+  path: motivation.assessment.secure-key-placement-gaps
+  spec_node_id: motivation.assessment
+  type: assessment
+  layer_id: motivation
+  name: Secure Key Placement Gaps
+  description: "Checked against a running proxy after #8 and #10 (unreleased 0.5.3): all four placements (path prefix, key= query parameter, X-API-Buddy-Key header, Authorization Bearer) authenticate, and the proxy key is not forwarded upstream in any of them. Fixed since 0.5.2, where a path-prefix key got 404, a key= parameter got 500 and the header key was forwarded. Remaining gap: a path or query key is written to the stderr access log (see Proxy Key Written To Access Log)."
+  attributes:
+    assessmentType: gap
+    documentation: Assessed 2026-11-25 by probing a running proxy with each placement and a recording upstream; regression tests in tests/integration_tests/test_secure_key_placement.py.
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.502Z
+    updated_at: 2026-11-24T17:55:54.502Z
+    version: 1

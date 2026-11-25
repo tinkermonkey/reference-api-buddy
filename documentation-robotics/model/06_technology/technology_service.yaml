@@ -1,0 +1,19 @@
+technology.technologyservice.embedded-sqlite-storage:
+  id: bb731651-3445-4083-b44a-41aec8f5a5df
+  path: technology.technologyservice.embedded-sqlite-storage
+  spec_node_id: technology.technologyservice
+  type: technologyservice
+  layer_id: technology
+  name: Embedded SQLite Storage
+  description: Local file or shared in-memory SQL storage.
+  attributes:
+    serviceType: database
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: DatabaseManager
+  metadata:
+    created_at: 2026-11-24T17:55:54.547Z
+    updated_at: 2026-11-24T17:55:54.547Z
+    version: 1

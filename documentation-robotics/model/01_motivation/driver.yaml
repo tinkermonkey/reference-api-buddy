@@ -1,0 +1,31 @@
+motivation.driver.repeated-reference-api-calls:
+  id: 6eab6b3f-3427-4cc0-9b29-347221f4752c
+  path: motivation.driver.repeated-reference-api-calls
+  spec_node_id: motivation.driver
+  type: driver
+  layer_id: motivation
+  name: Repeated Reference API Calls
+  description: Pipelines re-request the same slowly-changing reference data every
+    time they run during development, so most upstream calls are redundant.
+  attributes:
+    category: operational
+  metadata:
+    created_at: 2026-11-24T17:55:54.499Z
+    updated_at: 2026-11-24T17:55:54.499Z
+    version: 1
+motivation.driver.upstream-rate-limits-and-costs:
+  id: c7fce38d-d950-4810-88b4-88221dfe2af5
+  path: motivation.driver.upstream-rate-limits-and-costs
+  spec_node_id: motivation.driver
+  type: driver
+  layer_id: motivation
+  name: Upstream Rate Limits And Costs
+  description: Upstream reference APIs throttle or block heavy callers and paid
+    APIs bill per request, so redundant calls cost money and get pipelines rate
+    limited.
+  attributes:
+    category: business
+  metadata:
+    created_at: 2026-11-24T17:55:54.499Z
+    updated_at: 2026-11-24T17:55:54.499Z
+    version: 1

@@ -1,0 +1,79 @@
+product.workflowstep.map-upstream-domains:
+  id: 4f56de84-8318-4e67-be6a-5e21a9e68cb7
+  path: product.workflowstep.map-upstream-domains
+  spec_node_id: product.workflowstep
+  type: workflowstep
+  layer_id: product
+  name: Map Upstream Domains
+  description: Add a domain_mappings entry per upstream with its base URL, TTL and limits.
+  attributes:
+    sequence: 1
+    action: Add a domain_mappings entry per upstream with its base URL, TTL and limits.
+  metadata:
+    created_at: 2026-11-24T17:55:54.510Z
+    updated_at: 2026-11-24T17:55:54.510Z
+    version: 1
+product.workflowstep.start-the-proxy:
+  id: 1b440359-71dc-4b92-8f61-06540e08a542
+  path: product.workflowstep.start-the-proxy
+  spec_node_id: product.workflowstep
+  type: workflowstep
+  layer_id: product
+  name: Start The Proxy
+  description: Start it embedded with CachingProxy.start() or standalone with
+    api-buddy --config.
+  attributes:
+    sequence: 2
+    action: Start it embedded with CachingProxy.start() or standalone with api-buddy
+      --config.
+  metadata:
+    created_at: 2026-11-24T17:55:54.511Z
+    updated_at: 2026-11-24T17:55:54.511Z
+    version: 1
+product.workflowstep.point-clients-at-the-proxy:
+  id: 3f4d6617-dc1a-441d-b5b5-6f47226015cc
+  path: product.workflowstep.point-clients-at-the-proxy
+  spec_node_id: product.workflowstep
+  type: workflowstep
+  layer_id: product
+  name: Point Clients At The Proxy
+  description: Set each API client's base URL to
+    http://127.0.0.1:<port>/<domain_key>/, adding the secure key if required.
+  attributes:
+    sequence: 3
+    action: Set each API client's base URL to http://127.0.0.1:<port>/<domain_key>/,
+      adding the secure key if required.
+  metadata:
+    created_at: 2026-11-24T17:55:54.511Z
+    updated_at: 2026-11-24T17:55:54.511Z
+    version: 1
+product.workflowstep.rerun-the-pipeline:
+  id: 68546552-1a1a-41b8-842f-6f3ee9a0d7a1
+  path: product.workflowstep.rerun-the-pipeline
+  spec_node_id: product.workflowstep
+  type: workflowstep
+  layer_id: product
+  name: Rerun The Pipeline
+  description: Run the pipeline again; repeated requests come back from the cache.
+  attributes:
+    sequence: 4
+    action: Run the pipeline again; repeated requests come back from the cache.
+  metadata:
+    created_at: 2026-11-24T17:55:54.511Z
+    updated_at: 2026-11-24T17:55:54.511Z
+    version: 1
+product.workflowstep.check-cache-and-throttling:
+  id: b5e198a2-534c-4379-b6c5-de8fddd33a3b
+  path: product.workflowstep.check-cache-and-throttling
+  spec_node_id: product.workflowstep
+  type: workflowstep
+  layer_id: product
+  name: Check Cache And Throttling
+  description: Read get_metrics(), the MonitoringManager or the admin endpoints.
+  attributes:
+    sequence: 5
+    action: Read get_metrics(), the MonitoringManager or the admin endpoints.
+  metadata:
+    created_at: 2026-11-24T17:55:54.511Z
+    updated_at: 2026-11-24T17:55:54.511Z
+    version: 1

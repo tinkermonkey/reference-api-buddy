@@ -1,0 +1,244 @@
+data-model.objectschema.cached-response:
+  id: 373a148c-e3b6-431b-be86-acbdeb28a897
+  path: data-model.objectschema.cached-response
+  spec_node_id: data-model.objectschema
+  type: objectschema
+  layer_id: data-model
+  name: Cached Response
+  description: "Dataclass for a cached HTTP response: body bytes, headers, status,
+    creation time, TTL, access count and last access."
+  attributes:
+    type: object
+    required:
+      - data
+      - headers
+      - status_code
+      - created_at
+      - ttl_seconds
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/models.py
+        symbol: CachedResponse
+  metadata:
+    created_at: 2026-11-24T17:55:54.517Z
+    updated_at: 2026-11-24T17:55:54.517Z
+    version: 1
+data-model.objectschema.throttle-state-record:
+  id: b2224733-d088-4130-a073-601171db3a1a
+  path: data-model.objectschema.throttle-state-record
+  spec_node_id: data-model.objectschema
+  type: objectschema
+  layer_id: data-model
+  name: Throttle State Record
+  description: "Dataclass of throttle counters (violations, delay_seconds,
+    last_violation, total_requests). Not used: ThrottleManager keeps its own
+    ThrottleState class."
+  attributes:
+    type: object
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/models.py
+        symbol: ThrottleState
+  metadata:
+    created_at: 2026-11-24T17:55:54.518Z
+    updated_at: 2026-11-24T17:55:54.518Z
+    version: 1
+data-model.objectschema.request-metrics-record:
+  id: b0d91eb2-98b1-4bb0-b878-a64b15202f3f
+  path: data-model.objectschema.request-metrics-record
+  spec_node_id: data-model.objectschema
+  type: objectschema
+  layer_id: data-model
+  name: Request Metrics Record
+  description: Dataclass for one request's metrics (domain, method, cache_hit,
+    response time, size, timestamp). Declared but not used; rows are written
+    straight to the metrics table.
+  attributes:
+    type: object
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/models.py
+        symbol: RequestMetrics
+  metadata:
+    created_at: 2026-11-24T17:55:54.518Z
+    updated_at: 2026-11-24T17:55:54.518Z
+    version: 1
+data-model.objectschema.proxy-metrics-record:
+  id: cf3cff16-a7c2-45e4-ad07-13876d524d4a
+  path: data-model.objectschema.proxy-metrics-record
+  spec_node_id: data-model.objectschema
+  type: objectschema
+  layer_id: data-model
+  name: Proxy Metrics Record
+  description: Dataclass of overall counters with hit_rate and
+    average_response_time. Declared but not used.
+  attributes:
+    type: object
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/models.py
+        symbol: ProxyMetrics
+  metadata:
+    created_at: 2026-11-24T17:55:54.518Z
+    updated_at: 2026-11-24T17:55:54.518Z
+    version: 1
+data-model.objectschema.proxy-configuration:
+  id: 3c8c0fe4-4796-4453-b8af-9219749bb06d
+  path: data-model.objectschema.proxy-configuration
+  spec_node_id: data-model.objectschema
+  type: objectschema
+  layer_id: data-model
+  name: Proxy Configuration
+  description: The configuration dictionary passed to CachingProxy and the CLI;
+    defaults in core/config.py DEFAULT_CONFIG.
+  attributes:
+    type: object
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: DEFAULT_CONFIG
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.objectschema.server-config:
+  id: 701067ae-2408-4fb0-abe0-34d58a85b7e7
+  path: data-model.objectschema.server-config
+  spec_node_id: data-model.objectschema
+  type: objectschema
+  layer_id: data-model
+  name: Server Config
+  description: The 'server' section of the proxy configuration.
+  attributes:
+    type: object
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: DEFAULT_CONFIG
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.objectschema.security-config:
+  id: 28aa495e-a55f-4a79-8dbd-7cc8de7c5bea
+  path: data-model.objectschema.security-config
+  spec_node_id: data-model.objectschema
+  type: objectschema
+  layer_id: data-model
+  name: Security Config
+  description: The 'security' section of the proxy configuration.
+  attributes:
+    type: object
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: DEFAULT_CONFIG
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.objectschema.cache-config:
+  id: d57eddd8-2291-4f9d-b76c-f8a05eb2ed6d
+  path: data-model.objectschema.cache-config
+  spec_node_id: data-model.objectschema
+  type: objectschema
+  layer_id: data-model
+  name: Cache Config
+  description: The 'cache' section of the proxy configuration.
+  attributes:
+    type: object
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: DEFAULT_CONFIG
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.objectschema.throttling-config:
+  id: de54752c-7ac0-4337-b184-cea7ecea1fe0
+  path: data-model.objectschema.throttling-config
+  spec_node_id: data-model.objectschema
+  type: objectschema
+  layer_id: data-model
+  name: Throttling Config
+  description: The 'throttling' section of the proxy configuration.
+  attributes:
+    type: object
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: DEFAULT_CONFIG
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.objectschema.logging-config:
+  id: 31142657-3816-43d9-981e-94551221ec38
+  path: data-model.objectschema.logging-config
+  spec_node_id: data-model.objectschema
+  type: objectschema
+  layer_id: data-model
+  name: Logging Config
+  description: The 'logging' section of the proxy configuration.
+  attributes:
+    type: object
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: DEFAULT_CONFIG
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.objectschema.admin-config:
+  id: bef8987e-72d7-4dc4-8de4-0ddf243ba9c9
+  path: data-model.objectschema.admin-config
+  spec_node_id: data-model.objectschema
+  type: objectschema
+  layer_id: data-model
+  name: Admin Config
+  description: The 'admin' section of the proxy configuration.
+  attributes:
+    type: object
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: DEFAULT_CONFIG
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.objectschema.domain-mapping:
+  id: 2ef1ecb1-1414-4691-9c64-d929378cf37f
+  path: data-model.objectschema.domain-mapping
+  spec_node_id: data-model.objectschema
+  type: objectschema
+  layer_id: data-model
+  name: Domain Mapping
+  description: One domain_mappings entry, keyed by the domain key used as the
+    first path segment.
+  attributes:
+    type: object
+    required:
+      - upstream
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1

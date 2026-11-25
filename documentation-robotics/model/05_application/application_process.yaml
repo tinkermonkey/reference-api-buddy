@@ -1,0 +1,17 @@
+application.applicationprocess.proxy-request-pipeline:
+  id: ca7df6d0-1471-4da6-a489-b4d205aaaf8c
+  path: application.applicationprocess.proxy-request-pipeline
+  spec_node_id: application.applicationprocess
+  type: applicationprocess
+  layer_id: application
+  name: Proxy Request Pipeline
+  description: "Per request: extract and check the secure key (401), and when the key is the proxy key continue with the path it was stripped from; route /admin/* to the admin handler; match a domain mapping; for GET/POST look up the cache and replay a hit; join an in-flight fetch for the same key or become its owner; throttle; forward upstream; cache a 2xx result; write the response. Unmatched paths are forwarded without cache or throttling, which yields 404 for an unmapped domain."
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.514Z
+    updated_at: 2026-11-24T17:55:54.514Z
+    version: 1

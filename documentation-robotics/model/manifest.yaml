@@ -1,0 +1,165 @@
+version: 0.1.0
+schema: documentation-robotics-v1
+cli_version: 0.8.0
+spec_version: 0.14.0
+created: 2026-11-24T17:47:26.015Z
+updated: 2026-11-25T10:54:35.512Z
+project:
+  name: reference-api-buddy
+  description: "Embeddable HTTP-to-HTTPS caching proxy Python module (and api-buddy CLI) for reference APIs: SQLite-backed caching with TTL, request deduplication, per-domain rate limiting with progressive throttling, optional secure-key access control, admin endpoints and monitoring metrics."
+  version: 0.1.0
+documentation: .dr/README.md
+layers:
+  motivation:
+    order: 1
+    name: Motivation
+    path: documentation-robotics/model/01_motivation/
+    enabled: true
+    elements:
+      assessment: 1
+      constraint: 2
+      driver: 2
+      goal: 3
+      principle: 2
+      requirement: 15
+      stakeholder: 2
+      value: 1
+  business:
+    order: 2
+    name: Business
+    path: documentation-robotics/model/02_business/
+    enabled: true
+    elements:
+      businessobject: 1
+      businessprocess: 1
+      businessrole: 1
+      businessservice: 1
+  product:
+    order: 3
+    name: Product
+    path: documentation-robotics/model/03_product/
+    enabled: true
+    elements:
+      feature: 11
+      milestone: 1
+      persona: 1
+      softwarecapability: 6
+      userworkflow: 1
+      workflowstep: 5
+  security:
+    order: 4
+    name: Security
+    path: documentation-robotics/model/04_security/
+    enabled: true
+    elements:
+      countermeasure: 7
+      dataclassification: 1
+      secureresource: 3
+      threat: 6
+  application:
+    order: 5
+    name: Application
+    path: documentation-robotics/model/05_application/
+    enabled: true
+    elements:
+      applicationcomponent: 16
+      applicationfunction: 58
+      applicationinterface: 2
+      applicationprocess: 1
+      applicationservice: 4
+      dataobject: 3
+  technology:
+    order: 6
+    name: Technology
+    path: documentation-robotics/model/06_technology/
+    enabled: true
+    elements:
+      artifact: 3
+      communicationnetwork: 1
+      device: 1
+      systemsoftware: 4
+      technologyprocess: 2
+      technologyservice: 1
+  api:
+    order: 7
+    name: Api
+    path: documentation-robotics/model/07_api/
+    enabled: true
+    elements:
+      components: 1
+      header: 4
+      info: 1
+      mediatype: 1
+      openapidocument: 1
+      operation: 11
+      parameter: 3
+      pathitem: 8
+      paths: 1
+      ratelimit: 2
+      requestbody: 2
+      response: 55
+      responses: 11
+      schema: 3
+      securityscheme: 3
+      server: 1
+      tag: 2
+  data-model:
+    order: 8
+    name: Data model
+    path: documentation-robotics/model/08_data-model/
+    enabled: true
+    elements:
+      objectschema: 12
+      schemaproperty: 44
+  data-store:
+    order: 9
+    name: Data store
+    path: documentation-robotics/model/09_data-store/
+    enabled: true
+    elements:
+      accesspattern: 8
+      collection: 3
+      database: 1
+      field: 20
+      index: 3
+      validationrule: 2
+  ux:
+    order: 10
+    name: Ux
+    path: documentation-robotics/model/10_ux/
+    enabled: true
+    elements: {}
+  navigation:
+    order: 11
+    name: Navigation
+    path: documentation-robotics/model/11_navigation/
+    enabled: true
+    elements: {}
+  apm:
+    order: 12
+    name: Apm
+    path: documentation-robotics/model/12_apm/
+    enabled: true
+    elements:
+      logconfiguration: 1
+      metricinstrument: 8
+      resource: 1
+  testing:
+    order: 13
+    name: Testing
+    path: documentation-robotics/model/13_testing/
+    enabled: true
+    elements:
+      testcasesketch: 417
+changeset_history:
+  - name: bootstrap-0-5-2
+    committed_at: 2026-11-24T18:04:53.600Z
+    action: committed
+  - name: secure-key-fixes
+    committed_at: 2026-11-25T10:54:35.380Z
+    action: committed
+reconciled:
+  changeset: secure-key-fixes
+  changeset_id: changeset-1795601455978-aks4hgara
+  landed_at: 2026-11-25T10:54:35.380Z
+  code_commit: 1e7ad851adadc97caf477e10e2658c1c92045382

@@ -1,0 +1,407 @@
+data-store.field.cache-entries-cache-key:
+  id: 79aa17db-8f63-4478-b7fa-d95667b1db2f
+  path: data-store.field.cache-entries-cache-key
+  spec_node_id: data-store.field
+  type: field
+  layer_id: data-store
+  name: cache_entries cache_key
+  description: cache_entries.cache_key
+  attributes:
+    dataType: TEXT
+    nullable: false
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.523Z
+    updated_at: 2026-11-24T17:55:54.523Z
+    version: 1
+data-store.field.cache-entries-response-data:
+  id: fe9a9c31-e118-4145-80fa-896a0bbe69de
+  path: data-store.field.cache-entries-response-data
+  spec_node_id: data-store.field
+  type: field
+  layer_id: data-store
+  name: cache_entries response_data
+  description: cache_entries.response_data
+  attributes:
+    dataType: BLOB
+    nullable: false
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.523Z
+    updated_at: 2026-11-24T17:55:54.523Z
+    version: 1
+data-store.field.cache-entries-headers:
+  id: daad299d-9acd-46c0-bf39-9e4ce66ff327
+  path: data-store.field.cache-entries-headers
+  spec_node_id: data-store.field
+  type: field
+  layer_id: data-store
+  name: cache_entries headers
+  description: cache_entries.headers
+  attributes:
+    dataType: TEXT
+    nullable: false
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.523Z
+    updated_at: 2026-11-24T17:55:54.523Z
+    version: 1
+data-store.field.cache-entries-status-code:
+  id: 3a103a0c-676b-4b67-898c-f6180d7922f2
+  path: data-store.field.cache-entries-status-code
+  spec_node_id: data-store.field
+  type: field
+  layer_id: data-store
+  name: cache_entries status_code
+  description: cache_entries.status_code
+  attributes:
+    dataType: INTEGER
+    nullable: false
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.524Z
+    updated_at: 2026-11-24T17:55:54.524Z
+    version: 1
+data-store.field.cache-entries-created-at:
+  id: b429f4a6-7c65-41d4-8e83-26a39924ca83
+  path: data-store.field.cache-entries-created-at
+  spec_node_id: data-store.field
+  type: field
+  layer_id: data-store
+  name: cache_entries created_at
+  description: cache_entries.created_at
+  attributes:
+    dataType: TIMESTAMP
+    nullable: true
+    defaultValue: CURRENT_TIMESTAMP
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.524Z
+    updated_at: 2026-11-24T17:55:54.524Z
+    version: 1
+data-store.field.cache-entries-ttl-seconds:
+  id: 24e364f3-70bc-4c87-b928-1827299b36a8
+  path: data-store.field.cache-entries-ttl-seconds
+  spec_node_id: data-store.field
+  type: field
+  layer_id: data-store
+  name: cache_entries ttl_seconds
+  description: cache_entries.ttl_seconds
+  attributes:
+    dataType: INTEGER
+    nullable: false
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.524Z
+    updated_at: 2026-11-24T17:55:54.524Z
+    version: 1
+data-store.field.cache-entries-access-count:
+  id: d96042ff-4eb8-4e4a-8140-a5b1b14c72f0
+  path: data-store.field.cache-entries-access-count
+  spec_node_id: data-store.field
+  type: field
+  layer_id: data-store
+  name: cache_entries access_count
+  description: cache_entries.access_count
+  attributes:
+    dataType: INTEGER
+    nullable: true
+    defaultValue: "0"
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.524Z
+    updated_at: 2026-11-24T17:55:54.524Z
+    version: 1
+data-store.field.cache-entries-last-accessed:
+  id: 744ebcd8-8bf6-4d7a-a793-24b90731bfaa
+  path: data-store.field.cache-entries-last-accessed
+  spec_node_id: data-store.field
+  type: field
+  layer_id: data-store
+  name: cache_entries last_accessed
+  description: cache_entries.last_accessed
+  attributes:
+    dataType: TIMESTAMP
+    nullable: true
+    defaultValue: CURRENT_TIMESTAMP
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.524Z
+    updated_at: 2026-11-24T17:55:54.524Z
+    version: 1
+data-store.field.metrics-id:
+  id: 6a9e60d7-26d5-450d-a060-4d54fef2190a
+  path: data-store.field.metrics-id
+  spec_node_id: data-store.field
+  type: field
+  layer_id: data-store
+  name: metrics id
+  description: metrics.id
+  attributes:
+    dataType: INTEGER
+    nullable: false
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.524Z
+    updated_at: 2026-11-24T17:55:54.524Z
+    version: 1
+data-store.field.metrics-domain:
+  id: 52ba98d0-0b37-4d6e-9f28-47fdace53cc9
+  path: data-store.field.metrics-domain
+  spec_node_id: data-store.field
+  type: field
+  layer_id: data-store
+  name: metrics domain
+  description: metrics.domain
+  attributes:
+    dataType: TEXT
+    nullable: false
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.524Z
+    updated_at: 2026-11-24T17:55:54.524Z
+    version: 1
+data-store.field.metrics-method:
+  id: 97067fa6-3354-40ff-8c13-5e22566d7934
+  path: data-store.field.metrics-method
+  spec_node_id: data-store.field
+  type: field
+  layer_id: data-store
+  name: metrics method
+  description: metrics.method
+  attributes:
+    dataType: TEXT
+    nullable: false
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.524Z
+    updated_at: 2026-11-24T17:55:54.524Z
+    version: 1
+data-store.field.metrics-cache-hit:
+  id: 33d5703a-0d5e-4dc8-bd5d-bff828bac5a8
+  path: data-store.field.metrics-cache-hit
+  spec_node_id: data-store.field
+  type: field
+  layer_id: data-store
+  name: metrics cache_hit
+  description: metrics.cache_hit
+  attributes:
+    dataType: BOOLEAN
+    nullable: false
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.524Z
+    updated_at: 2026-11-24T17:55:54.524Z
+    version: 1
+data-store.field.metrics-response-time-ms:
+  id: 6304d184-cd97-4a38-9f04-cae57a11cac5
+  path: data-store.field.metrics-response-time-ms
+  spec_node_id: data-store.field
+  type: field
+  layer_id: data-store
+  name: metrics response_time_ms
+  description: metrics.response_time_ms
+  attributes:
+    dataType: INTEGER
+    nullable: true
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.524Z
+    updated_at: 2026-11-24T17:55:54.524Z
+    version: 1
+data-store.field.metrics-response-size-bytes:
+  id: 616cb5db-a655-4a11-988f-32495a4e93e5
+  path: data-store.field.metrics-response-size-bytes
+  spec_node_id: data-store.field
+  type: field
+  layer_id: data-store
+  name: metrics response_size_bytes
+  description: metrics.response_size_bytes
+  attributes:
+    dataType: INTEGER
+    nullable: true
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.524Z
+    updated_at: 2026-11-24T17:55:54.524Z
+    version: 1
+data-store.field.metrics-timestamp:
+  id: 57662507-1ee2-4c85-ab71-c7a0e6786d1b
+  path: data-store.field.metrics-timestamp
+  spec_node_id: data-store.field
+  type: field
+  layer_id: data-store
+  name: metrics timestamp
+  description: metrics.timestamp
+  attributes:
+    dataType: TIMESTAMP
+    nullable: true
+    defaultValue: CURRENT_TIMESTAMP
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.524Z
+    updated_at: 2026-11-24T17:55:54.524Z
+    version: 1
+data-store.field.metrics-status-code:
+  id: 6f79f30b-7f7f-4927-bb63-69d6297829b7
+  path: data-store.field.metrics-status-code
+  spec_node_id: data-store.field
+  type: field
+  layer_id: data-store
+  name: metrics status_code
+  description: metrics.status_code Added at runtime by store_upstream_metrics with
+    ALTER TABLE when missing.
+  attributes:
+    dataType: INTEGER
+    nullable: true
+    defaultValue: "200"
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: DatabaseManager.store_upstream_metrics
+  metadata:
+    created_at: 2026-11-24T17:55:54.524Z
+    updated_at: 2026-11-24T17:55:54.524Z
+    version: 1
+data-store.field.config-history-id:
+  id: a9ba2ad4-916c-489c-ba10-822a9da88578
+  path: data-store.field.config-history-id
+  spec_node_id: data-store.field
+  type: field
+  layer_id: data-store
+  name: config_history id
+  description: config_history.id
+  attributes:
+    dataType: INTEGER
+    nullable: false
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.524Z
+    updated_at: 2026-11-24T17:55:54.524Z
+    version: 1
+data-store.field.config-history-config-data:
+  id: c8707a0e-eb68-4d4c-8490-dc1fd3a8a165
+  path: data-store.field.config-history-config-data
+  spec_node_id: data-store.field
+  type: field
+  layer_id: data-store
+  name: config_history config_data
+  description: config_history.config_data
+  attributes:
+    dataType: TEXT
+    nullable: false
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.524Z
+    updated_at: 2026-11-24T17:55:54.524Z
+    version: 1
+data-store.field.config-history-changed-by:
+  id: feef2509-0cd7-4008-ba67-fbed73580a12
+  path: data-store.field.config-history-changed-by
+  spec_node_id: data-store.field
+  type: field
+  layer_id: data-store
+  name: config_history changed_by
+  description: config_history.changed_by
+  attributes:
+    dataType: TEXT
+    nullable: true
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.524Z
+    updated_at: 2026-11-24T17:55:54.524Z
+    version: 1
+data-store.field.config-history-timestamp:
+  id: 9352a725-a405-46ec-bd29-0b5753391570
+  path: data-store.field.config-history-timestamp
+  spec_node_id: data-store.field
+  type: field
+  layer_id: data-store
+  name: config_history timestamp
+  description: config_history.timestamp
+  attributes:
+    dataType: TIMESTAMP
+    nullable: true
+    defaultValue: CURRENT_TIMESTAMP
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.524Z
+    updated_at: 2026-11-24T17:55:54.524Z
+    version: 1

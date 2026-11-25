@@ -1,0 +1,39 @@
+application.applicationinterface.proxy-http-endpoint:
+  id: 19d5e4b4-1442-4885-bc74-8ec8ae09367b
+  path: application.applicationinterface.proxy-http-endpoint
+  spec_node_id: application.applicationinterface
+  type: applicationinterface
+  layer_id: application
+  name: Proxy HTTP Endpoint
+  description: Plain-HTTP listener (default 127.0.0.1:8080) that accepts
+    /<domain_key>/<path> requests and forwards them to the mapped upstream.
+  attributes:
+    protocol: HTTP
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: ProxyHTTPRequestHandler
+  metadata:
+    created_at: 2026-11-24T17:55:54.513Z
+    updated_at: 2026-11-24T17:55:54.513Z
+    version: 1
+application.applicationinterface.admin-http-endpoint:
+  id: 1d8cb649-a088-4bde-8d54-c8f6b23e5a84
+  path: application.applicationinterface.admin-http-endpoint
+  spec_node_id: application.applicationinterface
+  type: applicationinterface
+  layer_id: application
+  name: Admin HTTP Endpoint
+  description: The /admin/* paths on the same listener, returning JSON.
+  attributes:
+    protocol: HTTP
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.513Z
+    updated_at: 2026-11-24T17:55:54.513Z
+    version: 1

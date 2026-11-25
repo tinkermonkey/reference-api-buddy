@@ -1,0 +1,19 @@
+api.server.local-proxy-server:
+  id: 6d237dc9-c824-47bc-8716-59328326353f
+  path: api.server.local-proxy-server
+  spec_node_id: api.server
+  type: server
+  layer_id: api
+  name: Local Proxy Server
+  description: Default listener; host and port come from server.host and server.port.
+  attributes:
+    url: http://127.0.0.1:8080
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/cli.py
+        symbol: create_default_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.530Z
+    updated_at: 2026-11-24T17:55:54.530Z
+    version: 1

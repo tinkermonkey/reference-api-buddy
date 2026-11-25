@@ -1,0 +1,23 @@
+data-store.database.api-buddy-cache-database:
+  id: 14d3707d-0ede-4ef2-a738-c4746e3aca98
+  path: data-store.database.api-buddy-cache-database
+  spec_node_id: data-store.database
+  type: database
+  layer_id: data-store
+  name: API Buddy Cache Database
+  description: SQLite database at cache.database_path (api_buddy_cache.db from the
+    CLI default config) or a shared in-memory database, opened in WAL mode by a
+    five-connection pool.
+  attributes:
+    engine: SQLite
+    paradigm: RELATIONAL
+    deploymentModel: EMBEDDED
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: SCHEMA
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1

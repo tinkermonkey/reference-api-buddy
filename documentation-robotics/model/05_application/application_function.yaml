@@ -1,0 +1,986 @@
+application.applicationfunction.forward-upstream-request:
+  id: c5180e15-2be7-42db-9eea-83f649525168
+  path: application.applicationfunction.forward-upstream-request
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Forward Upstream Request
+  description: Map /<domain_key>/<path>?query to the upstream URL, copy headers except Host, Connection, Content-Length, X-API-Buddy-Key and a Bearer proxy key, send with urllib (60 s timeout), pass HTTP errors through, map network errors to 502, and record upstream metrics.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._forward_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.514Z
+    updated_at: 2026-11-24T17:55:54.514Z
+    version: 1
+application.applicationfunction.normalize-upstream-response:
+  id: b7ef7dfa-d1d7-495f-baff-ae565c476cd1
+  path: application.applicationfunction.normalize-upstream-response
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Normalize Upstream Response
+  description: Decompress gzip or deflate bodies and fix Content-Encoding, Content-Length and Transfer-Encoding headers before replay or caching.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._normalize_upstream_response
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.throttle-upstream-request:
+  id: 2b1b9f03-e4e7-4cc2-8f2d-a9ed87b3f3be
+  path: application.applicationfunction.throttle-upstream-request
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Throttle Upstream Request
+  description: Ask the throttle manager for the required delay, sleep for it and record the request, or build the 429 response with Retry-After and X-RateLimit headers.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._throttle_upstream_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.check-cacheable-status:
+  id: 6fcef0a5-e87e-4e89-9497-89d8a535553b
+  path: application.applicationfunction.check-cacheable-status
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Check Cacheable Status
+  description: Only 2xx statuses may be cached.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._is_cacheable_status
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.handle-admin-request:
+  id: a835fc1b-a837-4ccf-97b2-8c82d46396d4
+  path: application.applicationfunction.handle-admin-request
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Handle Admin Request
+  description: Rate-limit by client IP, log access and route /admin/* GET and POST requests to their handlers; 404 for unknown paths, 405 for other methods.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.report-component-status:
+  id: 1ac1bb3c-6fba-4527-b37d-3fe21da6cd6e
+  path: application.applicationfunction.report-component-status
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Report Component Status
+  description: Build the status of the cache engine, database, throttle and security managers and derive healthy, degraded or error.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._get_component_status
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.sanitize-configuration:
+  id: f24bf5c4-280b-45bb-80cb-e3308089f106
+  path: application.applicationfunction.sanitize-configuration
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Sanitize Configuration
+  description: Deep-copy the config and redact fields whose names contain key, secret, password or token.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._get_sanitized_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.report-cache-statistics:
+  id: 059d649b-8210-4b42-8515-e2d2117f9c2d
+  path: application.applicationfunction.report-cache-statistics
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Report Cache Statistics
+  description: Assemble the cache backend, size, hit rate and entry counts for /admin/cache.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._get_cache_statistics
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.report-domain-mapping-statistics:
+  id: 87fba6e2-2c24-4079-b90b-238568a7a5b7
+  path: application.applicationfunction.report-domain-mapping-statistics
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Report Domain Mapping Statistics
+  description: "Per domain mapping: upstream, TTL, request counts and error-rate status."
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._get_domain_mapping_statistics
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.validate-posted-configuration:
+  id: 3bcc97ac-9173-4e48-8341-d4a0642b23e2
+  path: application.applicationfunction.validate-posted-configuration
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Validate Posted Configuration
+  description: Merge a posted configuration with the defaults, validate it and list defaulted fields as warnings.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.generate-cache-key:
+  id: a4a4af4f-ae29-4e54-ba47-65e48b9e1359
+  path: application.applicationfunction.generate-cache-key
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Generate Cache Key
+  description: SHA-256 of method, normalized URL and, for POST, the normalized body.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/cache/engine.py
+        symbol: CacheEngine.generate_cache_key
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.get-cached-response:
+  id: 687c6521-b74e-4bd4-8567-e01359a3d6a3
+  path: application.applicationfunction.get-cached-response
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Get Cached Response
+  description: Read an entry, delete it if its TTL has passed, decompress it and bump its access count and last_accessed.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/cache/engine.py
+        symbol: CacheEngine.get
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.store-cached-response:
+  id: 36181237-bb7b-4956-8aac-1791b84afcf9
+  path: application.applicationfunction.store-cached-response
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Store Cached Response
+  description: Resolve the TTL, compress bodies over 1 KB, REPLACE INTO cache_entries and evict down to max_cache_entries; responses over max_response_size are skipped.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/cache/engine.py
+        symbol: CacheEngine.set
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.evict-least-recently-used-entries:
+  id: 2c7c4d7c-bbe1-476d-b6c5-711f722a9fa7
+  path: application.applicationfunction.evict-least-recently-used-entries
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Evict Least Recently Used Entries
+  description: Delete the least recently accessed entries above the cap.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/cache/engine.py
+        symbol: CacheEngine._evict_if_needed
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.clean-up-expired-entries:
+  id: e963c37f-1faf-449d-9779-0e660bc45d5b
+  path: application.applicationfunction.clean-up-expired-entries
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Clean Up Expired Entries
+  description: At startup, scan cache_entries and delete those past their TTL.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/cache/engine.py
+        symbol: CacheEngine._cleanup_expired_entries
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.clear-cache:
+  id: 9b5a954e-f90c-43c7-a1f3-68ee3d61844a
+  path: application.applicationfunction.clear-cache
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Clear Cache
+  description: Delete all entries, or those whose cache key contains a domain string. Cache keys are SHA-256 hashes, so the domain filter matches nothing in practice.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/cache/engine.py
+        symbol: CacheEngine.clear_cache
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.report-cache-performance:
+  id: 292a9bc6-7612-4d1e-9642-828b4437769d
+  path: application.applicationfunction.report-cache-performance
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Report Cache Performance
+  description: Entry count, stored bytes, hit rate, evictions and compression counts.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/cache/engine.py
+        symbol: CacheEngine.get_cache_performance
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.resolve-domain-ttl:
+  id: 5379cd69-2155-45b7-a45a-8194238cd789
+  path: application.applicationfunction.resolve-domain-ttl
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Resolve Domain TTL
+  description: Return the domain's ttl_seconds or the default TTL.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/ttl_manager.py
+        symbol: TTLManager.get_ttl_for_domain
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.calculate-required-delay:
+  id: c1b43fe3-3312-456f-bc3a-947d5c3c3ffa
+  path: application.applicationfunction.calculate-required-delay
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Calculate Required Delay
+  description: Longest wait needed across the domain's second, minute and hour windows; -1 when it exceeds progressive_max_delay.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/throttling/manager.py
+        symbol: ThrottleManager.get_required_delay
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.record-upstream-request:
+  id: dae53f4f-5a48-4dfd-8b2a-b7d8d4b78570
+  path: application.applicationfunction.record-upstream-request
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Record Upstream Request
+  description: Append the request time to the domain's hour, minute and second windows.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/throttling/manager.py
+        symbol: ThrottleManager.record_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.apply-progressive-throttling:
+  id: 91d30ec5-762e-41ae-acd9-be9a9eca2f70
+  path: application.applicationfunction.apply-progressive-throttling
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Apply Progressive Throttling
+  description: Count a violation and double the domain's delay up to progressive_max_delay (reached through should_throttle, which the request path does not call).
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/throttling/manager.py
+        symbol: ThrottleManager._apply_progressive_throttling
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.join-or-own-in-flight-request:
+  id: 886ca641-be31-4aea-85a0-466f6f207cd4
+  path: application.applicationfunction.join-or-own-in-flight-request
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Join Or Own In Flight Request
+  description: Register the first caller for a cache key as owner, or add a waiter to the existing entry.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/inflight_tracker.py
+        symbol: InFlightTracker.should_wait
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.wait-for-in-flight-result:
+  id: 7e838253-3e44-47fa-8029-f32dcd31a87b
+  path: application.applicationfunction.wait-for-in-flight-result
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Wait For In Flight Result
+  description: Block until the owner completes (60 s timeout) and return its result or error.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/inflight_tracker.py
+        symbol: InFlightTracker.wait_for_result
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.complete-in-flight-request:
+  id: b46bed25-dcef-4060-bab1-77b4d46fbd06
+  path: application.applicationfunction.complete-in-flight-request
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Complete In Flight Request
+  description: Publish the owner's result or error to all waiters and release the entry.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/inflight_tracker.py
+        symbol: InFlightTracker.complete_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.extract-secure-key:
+  id: cd956bf0-bd76-467c-a841-6c5cc5990228
+  path: application.applicationfunction.extract-secure-key
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Extract Secure Key
+  description: Collect candidates from a 32-44 character path prefix, key= query parameters, the X-API-Buddy-Key header and a Bearer token; return the first that validates (else the first found) and the path with that key removed.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/security/manager.py
+        symbol: SecurityManager.extract_secure_key
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.validate-secure-key:
+  id: 6bb13330-10fe-421d-8e09-69293f06db0a
+  path: application.applicationfunction.validate-secure-key
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Validate Secure Key
+  description: Constant-time comparison with hmac.compare_digest; always true when security is off.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/security/manager.py
+        symbol: SecurityManager.validate_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.generate-secure-key:
+  id: 2cfda8a2-00ea-4982-825c-01251579e958
+  path: application.applicationfunction.generate-secure-key
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Generate Secure Key
+  description: 256 random bits, URL-safe base64 without padding.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/security/manager.py
+        symbol: SecurityManager.generate_secure_key
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.store-upstream-metrics:
+  id: f9dce1c2-8afa-4070-a74c-c21b8ea7f052
+  path: application.applicationfunction.store-upstream-metrics
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Store Upstream Metrics
+  description: Insert one metrics row per proxied request (cache hit or upstream call), adding the status_code column on first use.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: DatabaseManager.store_upstream_metrics
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.aggregate-upstream-metrics:
+  id: 310d18c8-29bc-438f-ab55-e71c931f8d70
+  path: application.applicationfunction.aggregate-upstream-metrics
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Aggregate Upstream Metrics
+  description: Response times, error rates by status and hourly volumes over the last N hours, overall and per domain.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: DatabaseManager.get_upstream_metrics
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.execute-sql-with-retry:
+  id: dd360503-ba1e-4c1d-9766-a88803597b36
+  path: application.applicationfunction.execute-sql-with-retry
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Execute SQL With Retry
+  description: Run a statement on a pooled connection, retrying 'database is locked' errors with exponential backoff and jitter.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: DatabaseManager.execute_update
+  metadata:
+    created_at: 2026-11-24T17:55:54.515Z
+    updated_at: 2026-11-24T17:55:54.515Z
+    version: 1
+application.applicationfunction.initialize-schema:
+  id: 476a41c0-30c2-4f2a-8ac3-9132813a70a0
+  path: application.applicationfunction.initialize-schema
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Initialize Schema
+  description: Create the cache_entries, metrics and config_history tables and their indexes.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: DatabaseManager._initialize_schema
+  metadata:
+    created_at: 2026-11-24T17:55:54.516Z
+    updated_at: 2026-11-24T17:55:54.516Z
+    version: 1
+application.applicationfunction.validate-configuration:
+  id: 0f3b977d-dc00-482b-849a-c8fed7087b25
+  path: application.applicationfunction.validate-configuration
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Validate Configuration
+  description: Type-check every config section and per-domain TTL and limits, returning the list of errors.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.516Z
+    updated_at: 2026-11-24T17:55:54.516Z
+    version: 1
+application.applicationfunction.merge-configuration-with-defaults:
+  id: f3d9c750-0043-4c31-9b20-eba0f94b7866
+  path: application.applicationfunction.merge-configuration-with-defaults
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Merge Configuration With Defaults
+  description: Deep-merge a user config over DEFAULT_CONFIG.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: deep_merge
+  metadata:
+    created_at: 2026-11-24T17:55:54.516Z
+    updated_at: 2026-11-24T17:55:54.516Z
+    version: 1
+application.applicationfunction.check-admin-rate-limit:
+  id: a5665211-ff79-4e0f-9d82-3313ab11f952
+  path: application.applicationfunction.check-admin-rate-limit
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Check Admin Rate Limit
+  description: Allow at most admin.rate_limit_per_minute admin requests per client IP per minute.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/admin_utils.py
+        symbol: AdminRateLimiter.is_allowed
+  metadata:
+    created_at: 2026-11-24T17:55:54.516Z
+    updated_at: 2026-11-24T17:55:54.516Z
+    version: 1
+application.applicationfunction.record-proxy-event:
+  id: d23255f7-fe90-4480-b028-ed6e3bed7850
+  path: application.applicationfunction.record-proxy-event
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Record Proxy Event
+  description: Count a request event (cache_hit, cache_miss, throttle, error) and keep it in the event list.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/proxy.py
+        symbol: MetricsCollector.record_event
+  metadata:
+    created_at: 2026-11-24T17:55:54.516Z
+    updated_at: 2026-11-24T17:55:54.516Z
+    version: 1
+application.applicationfunction.start-proxy:
+  id: 46d62284-a688-4c20-bb3b-fdcde842d0dd
+  path: application.applicationfunction.start-proxy
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Start Proxy
+  description: Bind the threaded server to server.host and server.port and serve, blocking or in the background.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/proxy.py
+        symbol: CachingProxy.start
+  metadata:
+    created_at: 2026-11-24T17:55:54.516Z
+    updated_at: 2026-11-24T17:55:54.516Z
+    version: 1
+application.applicationfunction.stop-proxy:
+  id: 644a2eb6-9d17-4b02-b595-5bef4aeecfae
+  path: application.applicationfunction.stop-proxy
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Stop Proxy
+  description: Shut the server down, close the database pool and call the on_shutdown callback.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/proxy.py
+        symbol: CachingProxy.stop
+  metadata:
+    created_at: 2026-11-24T17:55:54.516Z
+    updated_at: 2026-11-24T17:55:54.516Z
+    version: 1
+application.applicationfunction.reload-configuration:
+  id: cbd18f7b-d49f-49a6-89a6-7468b5095c22
+  path: application.applicationfunction.reload-configuration
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Reload Configuration
+  description: Replace the config and rebuild every component; server settings need a restart.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/proxy.py
+        symbol: CachingProxy.reload_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.516Z
+    updated_at: 2026-11-24T17:55:54.516Z
+    version: 1
+application.applicationfunction.update-configuration-value:
+  id: 02979e2b-f63c-4f89-bbde-f8e2ea82c251
+  path: application.applicationfunction.update-configuration-value
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Update Configuration Value
+  description: Set one dotted config key at runtime without revalidating.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/proxy.py
+        symbol: CachingProxy.update_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.516Z
+    updated_at: 2026-11-24T17:55:54.516Z
+    version: 1
+application.applicationfunction.get-cache-stats:
+  id: ec65720e-aa64-450c-a28c-be85cea2a0b9
+  path: application.applicationfunction.get-cache-stats
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Get Cache Stats
+  description: Cache performance plus hit, miss, set and compression counts.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/monitoring/manager.py
+        symbol: MonitoringManager.get_cache_stats
+  metadata:
+    created_at: 2026-11-24T17:55:54.516Z
+    updated_at: 2026-11-24T17:55:54.516Z
+    version: 1
+application.applicationfunction.get-upstream-stats:
+  id: 2a6bdda3-0551-4c78-b0f7-08735f933e31
+  path: application.applicationfunction.get-upstream-stats
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Get Upstream Stats
+  description: Upstream metrics from the database, overall and by domain.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/monitoring/manager.py
+        symbol: MonitoringManager.get_upstream_stats
+  metadata:
+    created_at: 2026-11-24T17:55:54.516Z
+    updated_at: 2026-11-24T17:55:54.516Z
+    version: 1
+application.applicationfunction.get-database-stats:
+  id: b4c281d0-b49f-46ac-a7e1-e8b097651487
+  path: application.applicationfunction.get-database-stats
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Get Database Stats
+  description: Database file path and size, and a SELECT 1 health check.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/monitoring/manager.py
+        symbol: MonitoringManager.get_database_stats
+  metadata:
+    created_at: 2026-11-24T17:55:54.516Z
+    updated_at: 2026-11-24T17:55:54.516Z
+    version: 1
+application.applicationfunction.get-proxy-health:
+  id: 01f5e44d-2b09-4dfb-8b89-3ef2d36a9050
+  path: application.applicationfunction.get-proxy-health
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Get Proxy Health
+  description: Uptime and active thread count.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/monitoring/manager.py
+        symbol: MonitoringManager.get_proxy_health
+  metadata:
+    created_at: 2026-11-24T17:55:54.516Z
+    updated_at: 2026-11-24T17:55:54.516Z
+    version: 1
+application.applicationfunction.get-throttling-stats:
+  id: f2a8a23f-4037-4e8d-b2e4-50be56683c0e
+  path: application.applicationfunction.get-throttling-stats
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Get Throttling Stats
+  description: Per-domain window counts, violations and delays, with the limits.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/monitoring/manager.py
+        symbol: MonitoringManager.get_throttling_stats
+  metadata:
+    created_at: 2026-11-24T17:55:54.516Z
+    updated_at: 2026-11-24T17:55:54.516Z
+    version: 1
+application.applicationfunction.configure-logging:
+  id: 226a049f-2964-4ed8-8d83-13c69e4ce1ac
+  path: application.applicationfunction.configure-logging
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Configure Logging
+  description: Apply the logging config to the package's root logger.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/utils/logger.py
+        symbol: configure_logging
+  metadata:
+    created_at: 2026-11-24T17:55:54.516Z
+    updated_at: 2026-11-24T17:55:54.516Z
+    version: 1
+application.applicationfunction.get-logger:
+  id: 7aa8ed8b-980c-4a95-a337-ca5866151609
+  path: application.applicationfunction.get-logger
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Get Logger
+  description: Return a named logger under the package's root logger.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/utils/logger.py
+        symbol: get_logger
+  metadata:
+    created_at: 2026-11-24T17:55:54.516Z
+    updated_at: 2026-11-24T17:55:54.516Z
+    version: 1
+application.applicationfunction.load-config-file:
+  id: fb62a26c-7abb-4ebe-9704-ecf6e994c972
+  path: application.applicationfunction.load-config-file
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Load Config File
+  description: Read the JSON config given with --config; exit 1 if missing or invalid.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/cli.py
+        symbol: load_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.516Z
+    updated_at: 2026-11-24T17:55:54.516Z
+    version: 1
+application.applicationfunction.create-default-config:
+  id: 7e122424-f51b-4526-ab46-4f11354880cd
+  path: application.applicationfunction.create-default-config
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Create Default Config
+  description: Default CLI config, honouring API_BUDDY_DB_PATH and API_BUDDY_LOG_LEVEL.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/cli.py
+        symbol: create_default_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.516Z
+    updated_at: 2026-11-24T17:55:54.516Z
+    version: 1
+application.applicationfunction.get-secure-key:
+  id: 8b497bb5-66e3-4298-a36f-a181dc6affab
+  path: application.applicationfunction.get-secure-key
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Get Secure Key
+  description: Return the proxy's secure key (configured or generated) so the parent application can hand it to its API clients.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/proxy.py
+        symbol: CachingProxy.get_secure_key
+  metadata:
+    created_at: 2026-11-24T17:58:09.353Z
+    updated_at: 2026-11-24T17:58:09.353Z
+    version: 1
+application.applicationfunction.get-proxy-metrics:
+  id: 1c1646b1-7570-4ab5-9659-42330a3c0a2d
+  path: application.applicationfunction.get-proxy-metrics
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Get Proxy Metrics
+  description: Return the MetricsCollector counters, uptime and recorded events.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/proxy.py
+        symbol: CachingProxy.get_metrics
+  metadata:
+    created_at: 2026-11-24T17:58:09.353Z
+    updated_at: 2026-11-24T17:58:09.353Z
+    version: 1
+application.applicationfunction.get-monitoring-manager:
+  id: 7c678d42-ed10-4c7d-addb-6d9fe88d1afc
+  path: application.applicationfunction.get-monitoring-manager
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Get Monitoring Manager
+  description: Build a MonitoringManager over the proxy's cache engine, database manager and throttle manager.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/proxy.py
+        symbol: CachingProxy.get_monitoring_manager
+  metadata:
+    created_at: 2026-11-24T17:58:09.353Z
+    updated_at: 2026-11-24T17:58:09.353Z
+    version: 1
+application.applicationfunction.clear-proxy-cache:
+  id: b6dd7348-f6a8-4209-8038-43d45064e60c
+  path: application.applicationfunction.clear-proxy-cache
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Clear Proxy Cache
+  description: Public entry point that clears all cache entries, or those for a domain, through the cache engine.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/proxy.py
+        symbol: CachingProxy.clear_cache
+  metadata:
+    created_at: 2026-11-24T17:58:09.353Z
+    updated_at: 2026-11-24T17:58:09.353Z
+    version: 1
+application.applicationfunction.validate-request-key:
+  id: 80369671-b031-4c67-890d-af0fc267eabd
+  path: application.applicationfunction.validate-request-key
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Validate Request Key
+  description: Programmatic check of a path, headers and query for the secure key; raises SecurityError when it is missing or wrong. The HTTP handler does its own check and does not call this.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/proxy.py
+        symbol: CachingProxy.validate_request
+  metadata:
+    created_at: 2026-11-24T17:58:09.353Z
+    updated_at: 2026-11-24T17:58:09.353Z
+    version: 1
+application.applicationfunction.snapshot-throttle-state:
+  id: 0d668f15-7571-4982-8b78-3ab0227c8ac5
+  path: application.applicationfunction.snapshot-throttle-state
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Snapshot Throttle State
+  description: Serialize per-domain throttle state for persistence. Available to callers; the proxy itself never persists throttle state.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/throttling/manager.py
+        symbol: ThrottleManager.persist_state
+  metadata:
+    created_at: 2026-11-24T17:58:09.353Z
+    updated_at: 2026-11-24T17:58:09.353Z
+    version: 1
+application.applicationfunction.restore-throttle-state:
+  id: f36dc553-5ee9-40aa-9495-a220f1975db0
+  path: application.applicationfunction.restore-throttle-state
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Restore Throttle State
+  description: Load per-domain throttle state from a snapshot. Not called by the proxy.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/throttling/manager.py
+        symbol: ThrottleManager.load_state
+  metadata:
+    created_at: 2026-11-24T17:58:09.353Z
+    updated_at: 2026-11-24T17:58:09.353Z
+    version: 1
+application.applicationfunction.check-should-throttle:
+  id: 89185a14-ab94-4dad-a5b6-87feb166395b
+  path: application.applicationfunction.check-should-throttle
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Check Should Throttle
+  description: Legacy hourly check that applies progressive throttling (doubling delay) when a domain exceeds its hourly limit. The request path uses get_required_delay instead and does not call this.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/throttling/manager.py
+        symbol: ThrottleManager.should_throttle
+  metadata:
+    created_at: 2026-11-24T17:58:09.353Z
+    updated_at: 2026-11-24T17:58:09.353Z
+    version: 1
+application.applicationfunction.strip-proxy-key-from-query:
+  id: e96296c9-64dd-447f-95c7-e45c78fc2e13
+  path: application.applicationfunction.strip-proxy-key-from-query
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Strip Proxy Key From Query
+  description: Remove only the key= parameters whose decoded value is the proxy key, leaving every other parameter (including an upstream API's own key=) byte-for-byte.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/security/manager.py
+        symbol: SecurityManager._remove_query_param
+  metadata:
+    created_at: 2026-11-25T10:12:39.314Z
+    updated_at: 2026-11-25T10:12:39.314Z
+    version: 1
+application.applicationfunction.detect-proxy-bearer-token:
+  id: ff66e2e6-1f0f-4bb5-b36c-b4f2248accba
+  path: application.applicationfunction.detect-proxy-bearer-token
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Detect Proxy Bearer Token
+  description: Tell whether an Authorization header is 'Bearer <proxy key>', so the forwarder drops that header but passes a real upstream token.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/security/manager.py
+        symbol: SecurityManager.is_proxy_authorization
+  metadata:
+    created_at: 2026-11-25T10:12:39.315Z
+    updated_at: 2026-11-25T10:12:39.315Z
+    version: 1

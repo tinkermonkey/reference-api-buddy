@@ -1,0 +1,253 @@
+api.operation.get-proxied-upstream-request:
+  id: 33bc5538-64ed-40fc-8bc3-831ffabb8178
+  path: api.operation.get-proxied-upstream-request
+  spec_node_id: api.operation
+  type: operation
+  layer_id: api
+  name: GET Proxied Upstream Request
+  description: Proxied Upstream Request
+  attributes:
+    operationId: get_proxied_upstream_request
+    summary: Proxied Upstream Request
+    tags: proxy
+    http_method: GET
+    http_path: /{domainKey}/{path}
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.536Z
+    updated_at: 2026-11-24T17:55:54.536Z
+    version: 1
+api.operation.post-proxied-upstream-request:
+  id: 866b2c50-58ba-478c-894b-99740bd1ab22
+  path: api.operation.post-proxied-upstream-request
+  spec_node_id: api.operation
+  type: operation
+  layer_id: api
+  name: POST Proxied Upstream Request
+  description: Proxied Upstream Request
+  attributes:
+    operationId: post_proxied_upstream_request
+    summary: Proxied Upstream Request
+    tags: proxy
+    http_method: POST
+    http_path: /{domainKey}/{path}
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.operation.put-proxied-upstream-request:
+  id: 3ef9b031-5047-42e1-95ba-9186f7b82088
+  path: api.operation.put-proxied-upstream-request
+  spec_node_id: api.operation
+  type: operation
+  layer_id: api
+  name: PUT Proxied Upstream Request
+  description: Proxied Upstream Request
+  attributes:
+    operationId: put_proxied_upstream_request
+    summary: Proxied Upstream Request
+    tags: proxy
+    http_method: PUT
+    http_path: /{domainKey}/{path}
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.operation.delete-proxied-upstream-request:
+  id: cc83c78a-ff41-49fd-a9af-d2096cf88005
+  path: api.operation.delete-proxied-upstream-request
+  spec_node_id: api.operation
+  type: operation
+  layer_id: api
+  name: DELETE Proxied Upstream Request
+  description: Proxied Upstream Request
+  attributes:
+    operationId: delete_proxied_upstream_request
+    summary: Proxied Upstream Request
+    tags: proxy
+    http_method: DELETE
+    http_path: /{domainKey}/{path}
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.538Z
+    updated_at: 2026-11-24T17:55:54.538Z
+    version: 1
+api.operation.get-admin-health:
+  id: 1d0ae6c4-e8cf-4d3a-bb4f-fe4c942bad94
+  path: api.operation.get-admin-health
+  spec_node_id: api.operation
+  type: operation
+  layer_id: api
+  name: GET Admin Health
+  description: Admin Health
+  attributes:
+    operationId: get_admin_health
+    summary: Admin Health
+    tags: admin
+    http_method: GET
+    http_path: /admin/health
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_health
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.operation.get-admin-config:
+  id: 22dc6687-88f0-4a69-a3c9-c5f3b8745acf
+  path: api.operation.get-admin-config
+  spec_node_id: api.operation
+  type: operation
+  layer_id: api
+  name: GET Admin Config
+  description: Admin Config
+  attributes:
+    operationId: get_admin_config
+    summary: Admin Config
+    tags: admin
+    http_method: GET
+    http_path: /admin/config
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.operation.get-admin-status:
+  id: fa22fe92-f5b3-4dd3-bf35-5300b2165995
+  path: api.operation.get-admin-status
+  spec_node_id: api.operation
+  type: operation
+  layer_id: api
+  name: GET Admin Status
+  description: Admin Status
+  attributes:
+    operationId: get_admin_status
+    summary: Admin Status
+    tags: admin
+    http_method: GET
+    http_path: /admin/status
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_status
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.operation.get-admin-domains:
+  id: e04819cf-8d09-4327-8010-8d7c7f8d1dcb
+  path: api.operation.get-admin-domains
+  spec_node_id: api.operation
+  type: operation
+  layer_id: api
+  name: GET Admin Domains
+  description: Admin Domains
+  attributes:
+    operationId: get_admin_domains
+    summary: Admin Domains
+    tags: admin
+    http_method: GET
+    http_path: /admin/domains
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_domains
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.operation.get-admin-cache:
+  id: aef4f925-ef18-4b16-a6de-e837eb85ffef
+  path: api.operation.get-admin-cache
+  spec_node_id: api.operation
+  type: operation
+  layer_id: api
+  name: GET Admin Cache
+  description: Admin Cache
+  attributes:
+    operationId: get_admin_cache
+    summary: Admin Cache
+    tags: admin
+    http_method: GET
+    http_path: /admin/cache
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_cache
+  metadata:
+    created_at: 2026-11-24T17:55:54.539Z
+    updated_at: 2026-11-24T17:55:54.539Z
+    version: 1
+api.operation.get-admin-cache-domain:
+  id: be6e4958-f506-49d9-826e-f505fabf1b06
+  path: api.operation.get-admin-cache-domain
+  spec_node_id: api.operation
+  type: operation
+  layer_id: api
+  name: GET Admin Cache Domain
+  description: Admin Cache Domain
+  attributes:
+    operationId: get_admin_cache_domain
+    summary: Admin Cache Domain
+    tags: admin
+    http_method: GET
+    http_path: /admin/cache/{domain}
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_cache_domain
+  metadata:
+    created_at: 2026-11-24T17:55:54.540Z
+    updated_at: 2026-11-24T17:55:54.540Z
+    version: 1
+api.operation.post-admin-validate-config:
+  id: e27463f9-710c-4d56-a8e0-0a6d65a413f9
+  path: api.operation.post-admin-validate-config
+  spec_node_id: api.operation
+  type: operation
+  layer_id: api
+  name: POST Admin Validate Config
+  description: Admin Validate Config
+  attributes:
+    operationId: post_admin_validate_config
+    summary: Admin Validate Config
+    tags: admin
+    http_method: POST
+    http_path: /admin/validate-config
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.540Z
+    updated_at: 2026-11-24T17:55:54.540Z
+    version: 1

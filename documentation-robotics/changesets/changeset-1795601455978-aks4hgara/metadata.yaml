@@ -1,0 +1,431 @@
+id: changeset-1795601455978-aks4hgara
+name: secure-key-fixes
+description: "Record the secure-key fixes from #8 and #10 (0.5.3 unreleased): path-prefix and query keys are stripped before forwarding, the proxy key is never sent upstream (path, query, header or bearer), and a valid proxy key wins among several key= values. Updates the assessment, threat, security scheme and function descriptions that described the old bugs, and adds the new tests. Done when the model describes the fixed behavior and validates clean."
+created: 2026-11-25T10:10:55.997Z
+modified: 2026-11-25T10:54:35.319Z
+status: committed
+baseSnapshot: v2:sha256:8f1a6664a8beae5d967fa249c784a487882d91b35c70566b671976cdd68e5e37
+origin:
+  kind: extract
+purpose: reconcile
+stats:
+  additions: 84
+  modifications: 8
+  deletions: 0
+lastSequence: 138
+unstaged:
+  - sequence: 35
+    removedAt: 59
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-connection-error-recovery::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-connection-error-recovery
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 36
+    removedAt: 60
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-deflate-compression-handling::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-deflate-compression-handling
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 37
+    removedAt: 61
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-deflate-decompression-failure::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-deflate-decompression-failure
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 38
+    removedAt: 62
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-deflate-decompression-success::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-deflate-decompression-success
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 39
+    removedAt: 63
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-domain-mapping-edge-cases::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-domain-mapping-edge-cases
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 40
+    removedAt: 64
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-domain-not-mapped::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-domain-not-mapped
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 41
+    removedAt: 65
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-forward-request-invalid-path::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-forward-request-invalid-path
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 42
+    removedAt: 66
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-forward-request-network-error::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-forward-request-network-error
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 43
+    removedAt: 67
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-forward-request-no-upstream::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-forward-request-no-upstream
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 44
+    removedAt: 68
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-forward-request-unmapped-domain::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-forward-request-unmapped-domain
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 45
+    removedAt: 69
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-gzip-compression-handling::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-gzip-compression-handling
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 46
+    removedAt: 70
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-gzip-decompression-failure::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-gzip-decompression-failure
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 47
+    removedAt: 71
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-gzip-decompression-success::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-gzip-decompression-success
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 48
+    removedAt: 72
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-gzip-magic-number-detection::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-gzip-magic-number-detection
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 49
+    removedAt: 73
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-header-filtering::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-header-filtering
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 50
+    removedAt: 74
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-invalid-headers-processing::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-invalid-headers-processing
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 51
+    removedAt: 75
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-invalid-path-handling::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-invalid-path-handling
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 52
+    removedAt: 76
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-large-request-body-handling::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-large-request-body-handling
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 53
+    removedAt: 77
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-query-parameters-handling::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-query-parameters-handling
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 54
+    removedAt: 78
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-query-parameters-in-url::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-query-parameters-in-url
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 55
+    removedAt: 79
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-root-path-handling::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-root-path-handling
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 56
+    removedAt: 80
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-root-path-with-query::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-root-path-with-query
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 57
+    removedAt: 81
+    change:
+      type: relationship-add
+      elementId: testing.testcasesketch.test-handler-edge-cases-test-timeout-scenarios::tests::security.threat.proxy-key-forwarded-upstream
+      layerName: testing
+      after:
+        source: testing.testcasesketch.test-handler-edge-cases-test-timeout-scenarios
+        target: security.threat.proxy-key-forwarded-upstream
+        predicate: tests
+        layer: testing
+        targetLayer: security
+        category: structural
+      timestamp: 2026-11-25T10:10:56.005Z
+      origin:
+        by: tier0
+        rule: edge:CALLS
+  - sequence: 134
+    removedAt: 138
+    change:
+      type: add
+      elementId: security.threat.proxy-key-written-to-access-log
+      layerName: security
+      after:
+        id: c4df3d43-c4f1-4a0a-8171-0bbd98a135fb
+        path: security.threat.proxy-key-written-to-access-log
+        spec_node_id: security.threat
+        type: threat
+        layer_id: security
+        name: Proxy Key Written To Access Log
+        description: ProxyHTTPRequestHandler keeps BaseHTTPRequestHandler's default access log, which writes the raw request line to stderr. A key sent as a path prefix or key= parameter therefore appears in the local console or any log that captures it. Header and Bearer placements are not logged. No countermeasure.
+        attributes:
+          threatens: Proxy Endpoint Resource
+          likelihood: moderate
+          impact: low
+        metadata:
+          created_at: 2026-11-25T10:12:42.719Z
+          updated_at: 2026-11-25T10:12:42.719Z
+          version: 1
+      timestamp: 2026-11-25T10:12:42.747Z
+    rewritten: true

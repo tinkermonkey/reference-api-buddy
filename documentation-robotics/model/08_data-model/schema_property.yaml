@@ -1,0 +1,856 @@
+data-model.schemaproperty.cached-response-data:
+  id: 9bd967ff-4771-4a34-b99a-3d40c6955bbd
+  path: data-model.schemaproperty.cached-response-data
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: Cached Response data
+  description: CachedResponse.data.
+  attributes:
+    type: string
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/models.py
+        symbol: CachedResponse
+  metadata:
+    created_at: 2026-11-24T17:55:54.518Z
+    updated_at: 2026-11-24T17:55:54.518Z
+    version: 1
+data-model.schemaproperty.cached-response-headers:
+  id: 091849b8-1d43-4fa5-bce6-c9866cba75d7
+  path: data-model.schemaproperty.cached-response-headers
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: Cached Response headers
+  description: CachedResponse.headers.
+  attributes:
+    type: object
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/models.py
+        symbol: CachedResponse
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.schemaproperty.cached-response-status-code:
+  id: 8f80632a-1f9f-4744-8414-460d2b50c7d9
+  path: data-model.schemaproperty.cached-response-status-code
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: Cached Response status code
+  description: CachedResponse.status_code.
+  attributes:
+    type: integer
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/models.py
+        symbol: CachedResponse
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.schemaproperty.cached-response-created-at:
+  id: fc633904-c46d-423f-8e5a-64223824cd07
+  path: data-model.schemaproperty.cached-response-created-at
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: Cached Response created at
+  description: CachedResponse.created_at.
+  attributes:
+    type: string
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/models.py
+        symbol: CachedResponse
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.schemaproperty.cached-response-ttl-seconds:
+  id: ce32dba7-fa0d-496c-b599-0736e7f51d3a
+  path: data-model.schemaproperty.cached-response-ttl-seconds
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: Cached Response ttl seconds
+  description: CachedResponse.ttl_seconds.
+  attributes:
+    type: integer
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/models.py
+        symbol: CachedResponse
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.schemaproperty.cached-response-access-count:
+  id: a52525e3-cf0f-4234-9593-438ba06da455
+  path: data-model.schemaproperty.cached-response-access-count
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: Cached Response access count
+  description: CachedResponse.access_count.
+  attributes:
+    type: integer
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/models.py
+        symbol: CachedResponse
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.schemaproperty.cached-response-last-accessed:
+  id: faa3bbf6-d920-491c-8b1f-d7e22a051200
+  path: data-model.schemaproperty.cached-response-last-accessed
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: Cached Response last accessed
+  description: CachedResponse.last_accessed.
+  attributes:
+    type: string
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/models.py
+        symbol: CachedResponse
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.schemaproperty.config-server:
+  id: 0cf3866d-d160-4193-afe8-5849aab66510
+  path: data-model.schemaproperty.config-server
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: Config server
+  description: Top-level 'server' key.
+  attributes:
+    type: object
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: DEFAULT_CONFIG
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.schemaproperty.server-host:
+  id: c6947fd7-dbf3-481f-9c14-5437f8590c6b
+  path: data-model.schemaproperty.server-host
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: server host
+  description: Bind address.
+  attributes:
+    type: string
+    default: 127.0.0.1
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.schemaproperty.server-port:
+  id: 24b5c5ba-5ce2-4545-b115-06dee379b0a9
+  path: data-model.schemaproperty.server-port
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: server port
+  description: Bind port (CachingProxy and CLI default).
+  attributes:
+    type: integer
+    default: "8080"
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.schemaproperty.server-request-timeout:
+  id: 51453e72-96cd-4747-9cd0-8ac8e2792b31
+  path: data-model.schemaproperty.server-request-timeout
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: server request_timeout
+  description: Validated but not used; upstream calls use 60 s.
+  attributes:
+    type: integer
+    default: "30"
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.schemaproperty.config-security:
+  id: 0d4b2d44-9b51-40bd-9987-1d015cf26415
+  path: data-model.schemaproperty.config-security
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: Config security
+  description: Top-level 'security' key.
+  attributes:
+    type: object
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: DEFAULT_CONFIG
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.schemaproperty.security-require-secure-key:
+  id: 01524911-50b1-4094-83e4-b91f9bd4d463
+  path: data-model.schemaproperty.security-require-secure-key
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: security require_secure_key
+  description: Require the secure key.
+  attributes:
+    type: boolean
+    default: "false"
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.schemaproperty.security-secure-key:
+  id: bc47f987-760d-4a3c-8e96-85614653ce8a
+  path: data-model.schemaproperty.security-secure-key
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: security secure_key
+  description: Fixed key; generated when absent.
+  attributes:
+    type: string
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.schemaproperty.security-log-security-events:
+  id: b430f892-6216-4c45-a79d-f04573d639cc
+  path: data-model.schemaproperty.security-log-security-events
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: security log_security_events
+  description: Log security events.
+  attributes:
+    type: boolean
+    default: "true"
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.schemaproperty.config-cache:
+  id: 2b2991bc-6e55-4055-b65c-0bc0b55322e2
+  path: data-model.schemaproperty.config-cache
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: Config cache
+  description: Top-level 'cache' key.
+  attributes:
+    type: object
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: DEFAULT_CONFIG
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.schemaproperty.cache-database-path:
+  id: aa362302-cf7b-454c-95c0-83702e4805b6
+  path: data-model.schemaproperty.cache-database-path
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: cache database_path
+  description: SQLite file, or :memory:.
+  attributes:
+    type: string
+    default: ":memory:"
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.schemaproperty.cache-max-cache-response-size:
+  id: 315703f4-b038-4fdf-8283-5afc3b2c0e53
+  path: data-model.schemaproperty.cache-max-cache-response-size
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: cache max_cache_response_size
+  description: Largest response cached, bytes.
+  attributes:
+    type: integer
+    default: "10485760"
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.schemaproperty.cache-max-cache-entries:
+  id: 7198c1c8-b72d-4b11-8aeb-a190fc6b227f
+  path: data-model.schemaproperty.cache-max-cache-entries
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: cache max_cache_entries
+  description: LRU cap on entries.
+  attributes:
+    type: integer
+    default: "1000"
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.schemaproperty.cache-default-ttl-seconds:
+  id: da62f1fe-2534-4978-9a06-6769190d5cfa
+  path: data-model.schemaproperty.cache-default-ttl-seconds
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: cache default_ttl_seconds
+  description: Default entry TTL.
+  attributes:
+    type: integer
+    default: "86400"
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.519Z
+    updated_at: 2026-11-24T17:55:54.519Z
+    version: 1
+data-model.schemaproperty.config-throttling:
+  id: 09e32c20-032e-458b-972c-8d6bbcbf8f1a
+  path: data-model.schemaproperty.config-throttling
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: Config throttling
+  description: Top-level 'throttling' key.
+  attributes:
+    type: object
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: DEFAULT_CONFIG
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.throttling-default-requests-per-hour:
+  id: 261d8bae-e0b9-4185-b81a-2efd97b5489e
+  path: data-model.schemaproperty.throttling-default-requests-per-hour
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: throttling default_requests_per_hour
+  description: Default hourly limit.
+  attributes:
+    type: integer
+    default: "1000"
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.throttling-progressive-max-delay:
+  id: 4135f1bf-2072-4787-a19a-416ed26110c9
+  path: data-model.schemaproperty.throttling-progressive-max-delay
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: throttling progressive_max_delay
+  description: Longest delay the proxy will sleep before answering 429.
+  attributes:
+    type: integer
+    default: "300"
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.throttling-domain-limits:
+  id: 37a0f2fc-8b96-4d01-a674-85a2557df372
+  path: data-model.schemaproperty.throttling-domain-limits
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: throttling domain_limits
+  description: Hourly limit per domain key.
+  attributes:
+    type: object
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.config-logging:
+  id: 387a1634-a97b-454b-b8dd-33b86bdb98b4
+  path: data-model.schemaproperty.config-logging
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: Config logging
+  description: Top-level 'logging' key.
+  attributes:
+    type: object
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: DEFAULT_CONFIG
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.logging-level:
+  id: d26f363e-3ae4-4214-a364-1a5645f564f0
+  path: data-model.schemaproperty.logging-level
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: logging level
+  description: Log level.
+  attributes:
+    type: string
+    default: INFO
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.logging-parent-logger:
+  id: 3334b205-53a7-475d-bdb2-8c6f9e33930e
+  path: data-model.schemaproperty.logging-parent-logger
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: logging parent_logger
+  description: Parent application logger name.
+  attributes:
+    type: string
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.logging-format:
+  id: 765e2791-db11-4a41-a7f0-fffc82aafaa2
+  path: data-model.schemaproperty.logging-format
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: logging format
+  description: Log record format.
+  attributes:
+    type: string
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.logging-enable-console:
+  id: 61ebace1-cfda-4598-bc59-6e82d31807f2
+  path: data-model.schemaproperty.logging-enable-console
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: logging enable_console
+  description: Console handler.
+  attributes:
+    type: boolean
+    default: "true"
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.logging-enable-file:
+  id: d3e00224-1d85-4665-a548-9bd0292c4729
+  path: data-model.schemaproperty.logging-enable-file
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: logging enable_file
+  description: Rotating file handler.
+  attributes:
+    type: boolean
+    default: "false"
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.logging-file-path:
+  id: 0c0bd0c8-0bd3-458d-aa06-2680d13cda8c
+  path: data-model.schemaproperty.logging-file-path
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: logging file_path
+  description: Log file path.
+  attributes:
+    type: string
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.logging-max-file-size:
+  id: 877d4e52-5930-4583-b3f1-919c5a084ea5
+  path: data-model.schemaproperty.logging-max-file-size
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: logging max_file_size
+  description: Rotation size, bytes.
+  attributes:
+    type: integer
+    default: "10485760"
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.logging-backup-count:
+  id: 13f554a6-ae69-47e1-9222-308f439b3e85
+  path: data-model.schemaproperty.logging-backup-count
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: logging backup_count
+  description: Rotated files kept.
+  attributes:
+    type: integer
+    default: "5"
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.config-admin:
+  id: f406eae3-a5fc-4d13-9cd7-6220e7c7dd6d
+  path: data-model.schemaproperty.config-admin
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: Config admin
+  description: Top-level 'admin' key.
+  attributes:
+    type: object
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: DEFAULT_CONFIG
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.admin-enabled:
+  id: c9740240-a467-41be-9762-ed28ab37d426
+  path: data-model.schemaproperty.admin-enabled
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: admin enabled
+  description: Serve /admin/* (404 when false).
+  attributes:
+    type: boolean
+    default: "true"
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.admin-rate-limit-per-minute:
+  id: fb8f3e41-f3d4-45b9-885c-3f3328c4f26c
+  path: data-model.schemaproperty.admin-rate-limit-per-minute
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: admin rate_limit_per_minute
+  description: Admin requests per client IP per minute.
+  attributes:
+    type: integer
+    default: "10"
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.admin-include-sensitive-config:
+  id: 531fd242-6cc7-4758-8d87-4d784f250b3a
+  path: data-model.schemaproperty.admin-include-sensitive-config
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: admin include_sensitive_config
+  description: Validated but not used.
+  attributes:
+    type: boolean
+    default: "false"
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.admin-log-access:
+  id: 712b7d9a-3438-4358-8841-1c135dc0c590
+  path: data-model.schemaproperty.admin-log-access
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: admin log_access
+  description: Log admin access.
+  attributes:
+    type: boolean
+    default: "true"
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.config-domain-mappings:
+  id: 5f9323d2-c345-409f-bed9-25fa1b9e2c5f
+  path: data-model.schemaproperty.config-domain-mappings
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: Config domain mappings
+  description: "Top-level 'domain_mappings' key: domain key to Domain Mapping."
+  attributes:
+    type: object
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: DEFAULT_CONFIG
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.domain-mapping-upstream:
+  id: eaa470c6-24f3-4147-9b20-16b743efa5e4
+  path: data-model.schemaproperty.domain-mapping-upstream
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: domain mapping upstream
+  description: Upstream base URL, normally https.
+  attributes:
+    type: string
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.domain-mapping-ttl-seconds:
+  id: bc30cc9b-a171-4508-b99a-54edaaa4d1b2
+  path: data-model.schemaproperty.domain-mapping-ttl-seconds
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: domain mapping ttl_seconds
+  description: TTL override for this domain.
+  attributes:
+    type: integer
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.domain-mapping-max-requests-per-minute:
+  id: 64e6ab51-865d-482a-800b-9e7f16c080db
+  path: data-model.schemaproperty.domain-mapping-max-requests-per-minute
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: domain mapping max_requests_per_minute
+  description: Per-minute limit.
+  attributes:
+    type: integer
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.domain-mapping-max-requests-per-second:
+  id: a48b1591-a877-4885-bc95-35aa451d866e
+  path: data-model.schemaproperty.domain-mapping-max-requests-per-second
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: domain mapping max_requests_per_second
+  description: Per-second limit.
+  attributes:
+    type: integer
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/config.py
+        symbol: ConfigurationValidator.validate_config
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1
+data-model.schemaproperty.config-callbacks:
+  id: 063221ed-5f1c-4239-abe7-87856508d1ca
+  path: data-model.schemaproperty.config-callbacks
+  spec_node_id: data-model.schemaproperty
+  type: schemaproperty
+  layer_id: data-model
+  name: Config callbacks
+  description: Top-level 'callbacks' key; on_shutdown(proxy) is called by stop().
+  attributes:
+    type: object
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/core/proxy.py
+        symbol: CachingProxy.stop
+  metadata:
+    created_at: 2026-11-24T17:55:54.520Z
+    updated_at: 2026-11-24T17:55:54.520Z
+    version: 1

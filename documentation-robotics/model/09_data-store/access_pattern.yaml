@@ -1,0 +1,178 @@
+data-store.accesspattern.cache-lookup-by-key:
+  id: 29703bf5-34b8-472e-b7f3-bac8f9d38da8
+  path: data-store.accesspattern.cache-lookup-by-key
+  spec_node_id: data-store.accesspattern
+  type: accesspattern
+  layer_id: data-store
+  name: Cache Lookup By Key
+  description: "POINT_READ on cache_entries: cache_key = ?."
+  attributes:
+    patternType: POINT_READ
+    targetCollection: cache_entries
+    keyCondition: cache_key = ?
+    expectedFrequency: FREQUENT
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/cache/engine.py
+        symbol: CacheEngine.get
+  metadata:
+    created_at: 2026-11-24T17:55:54.526Z
+    updated_at: 2026-11-24T17:55:54.526Z
+    version: 1
+data-store.accesspattern.cache-access-update:
+  id: 089dc7dc-c8ca-42d2-9366-d6877b931b1f
+  path: data-store.accesspattern.cache-access-update
+  spec_node_id: data-store.accesspattern
+  type: accesspattern
+  layer_id: data-store
+  name: Cache Access Update
+  description: "WRITE on cache_entries: cache_key = ?."
+  attributes:
+    patternType: WRITE
+    targetCollection: cache_entries
+    keyCondition: cache_key = ?
+    expectedFrequency: FREQUENT
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/cache/engine.py
+        symbol: CacheEngine.get
+  metadata:
+    created_at: 2026-11-24T17:55:54.527Z
+    updated_at: 2026-11-24T17:55:54.527Z
+    version: 1
+data-store.accesspattern.cache-upsert:
+  id: 48c9c6c7-3002-4136-95c4-0cbc31bc12ce
+  path: data-store.accesspattern.cache-upsert
+  spec_node_id: data-store.accesspattern
+  type: accesspattern
+  layer_id: data-store
+  name: Cache Upsert
+  description: "UPSERT on cache_entries: cache_key."
+  attributes:
+    patternType: UPSERT
+    targetCollection: cache_entries
+    keyCondition: cache_key
+    expectedFrequency: FREQUENT
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/cache/engine.py
+        symbol: CacheEngine.set
+  metadata:
+    created_at: 2026-11-24T17:55:54.527Z
+    updated_at: 2026-11-24T17:55:54.527Z
+    version: 1
+data-store.accesspattern.lru-eviction-scan:
+  id: a161ebba-e246-416c-900c-af1cff97cbc2
+  path: data-store.accesspattern.lru-eviction-scan
+  spec_node_id: data-store.accesspattern
+  type: accesspattern
+  layer_id: data-store
+  name: LRU Eviction Scan
+  description: "RANGE_SCAN on cache_entries: ORDER BY last_accessed ASC LIMIT n."
+  attributes:
+    patternType: RANGE_SCAN
+    targetCollection: cache_entries
+    keyCondition: ORDER BY last_accessed ASC LIMIT n
+    expectedFrequency: OCCASIONAL
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/cache/engine.py
+        symbol: CacheEngine._evict_if_needed
+  metadata:
+    created_at: 2026-11-24T17:55:54.527Z
+    updated_at: 2026-11-24T17:55:54.527Z
+    version: 1
+data-store.accesspattern.expired-entry-scan:
+  id: 68674976-8fe1-4393-be5b-09c13bfbec5c
+  path: data-store.accesspattern.expired-entry-scan
+  spec_node_id: data-store.accesspattern
+  type: accesspattern
+  layer_id: data-store
+  name: Expired Entry Scan
+  description: "FULL_SCAN on cache_entries: all rows; created_at + ttl_seconds < now."
+  attributes:
+    patternType: FULL_SCAN
+    targetCollection: cache_entries
+    keyCondition: all rows; created_at + ttl_seconds < now
+    expectedFrequency: RARE
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/cache/engine.py
+        symbol: CacheEngine._cleanup_expired_entries
+  metadata:
+    created_at: 2026-11-24T17:55:54.527Z
+    updated_at: 2026-11-24T17:55:54.527Z
+    version: 1
+data-store.accesspattern.cache-clear:
+  id: f240fbac-6fe0-49c2-a3f2-b81d86f215e0
+  path: data-store.accesspattern.cache-clear
+  spec_node_id: data-store.accesspattern
+  type: accesspattern
+  layer_id: data-store
+  name: Cache Clear
+  description: "CUSTOM on cache_entries: all rows, or cache_key LIKE %domain%."
+  attributes:
+    patternType: CUSTOM
+    targetCollection: cache_entries
+    keyCondition: all rows, or cache_key LIKE %domain%
+    expectedFrequency: RARE
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/cache/engine.py
+        symbol: CacheEngine.clear_cache
+  metadata:
+    created_at: 2026-11-24T17:55:54.527Z
+    updated_at: 2026-11-24T17:55:54.527Z
+    version: 1
+data-store.accesspattern.metrics-insert:
+  id: 0ea39466-01a7-4afb-8912-91dd1cec9c50
+  path: data-store.accesspattern.metrics-insert
+  spec_node_id: data-store.accesspattern
+  type: accesspattern
+  layer_id: data-store
+  name: Metrics Insert
+  description: "WRITE on metrics: append."
+  attributes:
+    patternType: WRITE
+    targetCollection: metrics
+    keyCondition: append
+    expectedFrequency: FREQUENT
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: DatabaseManager.store_upstream_metrics
+  metadata:
+    created_at: 2026-11-24T17:55:54.527Z
+    updated_at: 2026-11-24T17:55:54.527Z
+    version: 1
+data-store.accesspattern.upstream-metrics-aggregation:
+  id: b3ecdf09-d251-489d-9de1-aafcf6e14a40
+  path: data-store.accesspattern.upstream-metrics-aggregation
+  spec_node_id: data-store.accesspattern
+  type: accesspattern
+  layer_id: data-store
+  name: Upstream Metrics Aggregation
+  description: "AGGREGATION on metrics: timestamp >= now - N hours [AND domain =
+    ?], grouped by status_code and hour."
+  attributes:
+    patternType: AGGREGATION
+    targetCollection: metrics
+    keyCondition: timestamp >= now - N hours [AND domain = ?], grouped by
+      status_code and hour
+    expectedFrequency: OCCASIONAL
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: DatabaseManager._get_domain_metrics
+  metadata:
+    created_at: 2026-11-24T17:55:54.527Z
+    updated_at: 2026-11-24T17:55:54.527Z
+    version: 1

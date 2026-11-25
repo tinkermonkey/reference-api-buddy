@@ -1,0 +1,60 @@
+security.secureresource.proxy-endpoint-resource:
+  id: cadc5096-f2b1-48b3-8541-1638967ab1cb
+  path: security.secureresource.proxy-endpoint-resource
+  spec_node_id: security.secureresource
+  type: secureresource
+  layer_id: security
+  name: Proxy Endpoint Resource
+  description: The proxied upstream paths.
+  attributes:
+    resource: /{domainKey}/{path}
+    type: api
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.541Z
+    updated_at: 2026-11-24T17:55:54.541Z
+    version: 1
+security.secureresource.admin-endpoint-resource:
+  id: b537c9be-52c3-4d77-8b14-9f34d4bcd940
+  path: security.secureresource.admin-endpoint-resource
+  spec_node_id: security.secureresource
+  type: secureresource
+  layer_id: security
+  name: Admin Endpoint Resource
+  description: The /admin/* paths.
+  attributes:
+    resource: /admin/*
+    type: api
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._handle_admin_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.542Z
+    updated_at: 2026-11-24T17:55:54.542Z
+    version: 1
+security.secureresource.cache-database-resource:
+  id: db6fbac8-e07d-4df4-92c4-77270e33c08d
+  path: security.secureresource.cache-database-resource
+  spec_node_id: security.secureresource
+  type: secureresource
+  layer_id: security
+  name: Cache Database Resource
+  description: The SQLite cache file holding upstream responses.
+  attributes:
+    resource: cache.database_path
+    type: database
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/database/manager.py
+        symbol: DatabaseManager
+  metadata:
+    created_at: 2026-11-24T17:55:54.543Z
+    updated_at: 2026-11-24T17:55:54.543Z
+    version: 1

@@ -1,0 +1,15 @@
+motivation.value.cheaper-faster-pipeline-iteration:
+  id: 46b15a29-d8b4-469e-be27-2886e0c77ae4
+  path: motivation.value.cheaper-faster-pipeline-iteration
+  spec_node_id: motivation.value
+  type: value
+  layer_id: motivation
+  name: Cheaper Faster Pipeline Iteration
+  description: Reruns are served from the local cache in milliseconds and cost
+    nothing upstream, so developers iterate faster and spend less on paid APIs.
+  attributes:
+    valueType: operational
+  metadata:
+    created_at: 2026-11-24T17:55:54.503Z
+    updated_at: 2026-11-24T17:55:54.503Z
+    version: 1

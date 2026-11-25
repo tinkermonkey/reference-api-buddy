@@ -1,0 +1,125 @@
+security.threat.unauthorized-local-use-of-the-proxy:
+  id: a784ad54-8944-4bac-9687-44db66fedcb0
+  path: security.threat.unauthorized-local-use-of-the-proxy
+  spec_node_id: security.threat
+  type: threat
+  layer_id: security
+  name: Unauthorized Local Use Of The Proxy
+  description: Other software on the machine uses the proxy and its upstream credentials or quota.
+  attributes:
+    threatens: Proxy Endpoint Resource
+    likelihood: moderate
+    impact: moderate
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+  metadata:
+    created_at: 2026-11-24T17:55:54.544Z
+    updated_at: 2026-11-24T17:55:54.544Z
+    version: 1
+security.threat.timing-attack-on-secure-key:
+  id: 98ede1a3-1630-4ea4-af94-d82db63206aa
+  path: security.threat.timing-attack-on-secure-key
+  spec_node_id: security.threat
+  type: threat
+  layer_id: security
+  name: Timing Attack On Secure Key
+  description: Guessing the key from comparison timing.
+  attributes:
+    threatens: Proxy Endpoint Resource
+    likelihood: low
+    impact: low
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+  metadata:
+    created_at: 2026-11-24T17:55:54.545Z
+    updated_at: 2026-11-24T17:55:54.545Z
+    version: 1
+security.threat.secret-disclosure-via-admin-config:
+  id: 53fef41f-8298-4766-8b68-7ce0aa2defb7
+  path: security.threat.secret-disclosure-via-admin-config
+  spec_node_id: security.threat
+  type: threat
+  layer_id: security
+  name: Secret Disclosure Via Admin Config
+  description: Reading keys or tokens from /admin/config.
+  attributes:
+    threatens: Admin Endpoint Resource
+    likelihood: moderate
+    impact: moderate
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+  metadata:
+    created_at: 2026-11-24T17:55:54.545Z
+    updated_at: 2026-11-24T17:55:54.545Z
+    version: 1
+security.threat.admin-endpoint-abuse:
+  id: 62143c65-540a-4fd7-8b24-79814e8170d6
+  path: security.threat.admin-endpoint-abuse
+  spec_node_id: security.threat
+  type: threat
+  layer_id: security
+  name: Admin Endpoint Abuse
+  description: Flooding admin endpoints that run database queries.
+  attributes:
+    threatens: Admin Endpoint Resource
+    likelihood: low
+    impact: low
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+  metadata:
+    created_at: 2026-11-24T17:55:54.545Z
+    updated_at: 2026-11-24T17:55:54.545Z
+    version: 1
+security.threat.proxy-key-forwarded-upstream:
+  id: 1c8309ad-dfa7-415e-99ed-ee54519b8fb5
+  path: security.threat.proxy-key-forwarded-upstream
+  spec_node_id: security.threat
+  type: threat
+  layer_id: security
+  name: Proxy Key Forwarded Upstream
+  description: "The proxy key, in any placement, reaching the upstream API along with the forwarded request. In 0.5.2 the X-API-Buddy-Key header, a Bearer proxy key and a key= parameter were all forwarded. Mitigated since #8 and #10 by Proxy Key Stripped Before Forwarding."
+  attributes:
+    threatens: Proxy Endpoint Resource
+    likelihood: high
+    impact: low
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: RequestProcessingMixin._forward_request
+  metadata:
+    created_at: 2026-11-24T17:55:54.545Z
+    updated_at: 2026-11-24T17:55:54.545Z
+    version: 1
+security.threat.proxy-key-written-to-access-log:
+  id: c4df3d43-c4f1-4a0a-8171-0bbd98a135fb
+  path: security.threat.proxy-key-written-to-access-log
+  spec_node_id: security.threat
+  type: threat
+  layer_id: security
+  name: Proxy Key Written To Access Log
+  description: ProxyHTTPRequestHandler keeps BaseHTTPRequestHandler's default access log, which writes the raw request line to stderr. A key sent as a path prefix or key= parameter therefore appears in the local console or any log that captures it. Header and Bearer placements are not logged. No countermeasure.
+  attributes:
+    threatens: Proxy Endpoint Resource
+    likelihood: moderate
+    impact: low
+  accepted_gaps:
+    - direction: incoming
+      predicate: mitigates
+      other_spec_node_id: security.countermeasure
+      reason: "No countermeasure in the code yet: the handler keeps BaseHTTPRequestHandler's default access log. Recorded as an open finding, not fixed in #8 or #10."
+      decided_by: agent
+      decided_at: 2026-11-25T10:13:11.283Z
+      changeset: changeset-1795601455978-aks4hgara
+  metadata:
+    created_at: 2026-11-25T10:12:42.719Z
+    updated_at: 2026-11-25T10:12:42.719Z
+    version: 1

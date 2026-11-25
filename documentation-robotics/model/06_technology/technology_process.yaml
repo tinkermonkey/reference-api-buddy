@@ -1,0 +1,35 @@
+technology.technologyprocess.ci-pipeline:
+  id: 6186337a-10c9-49bc-b2fc-509913e937b0
+  path: technology.technologyprocess.ci-pipeline
+  spec_node_id: technology.technologyprocess
+  type: technologyprocess
+  layer_id: technology
+  name: CI Pipeline
+  description: "GitHub Actions on push and PR: flake8, black, isort, mypy
+    (non-blocking), pytest with coverage on Ubuntu, Windows and macOS for Python
+    3.10 to 3.15, plus bandit and pip-audit."
+  source_reference:
+    provenance: manual
+    locations:
+      - file: .github/workflows/ci.yml
+  metadata:
+    created_at: 2026-11-24T17:55:54.549Z
+    updated_at: 2026-11-24T17:55:54.549Z
+    version: 1
+technology.technologyprocess.release-publishing:
+  id: ead62bf9-9f1f-4f51-926a-68b6495ec80f
+  path: technology.technologyprocess.release-publishing
+  spec_node_id: technology.technologyprocess
+  type: technologyprocess
+  layer_id: technology
+  name: Release Publishing
+  description: "On a published GitHub release: build wheel and sdist, twine check,
+    publish to PyPI."
+  source_reference:
+    provenance: manual
+    locations:
+      - file: .github/workflows/release.yml
+  metadata:
+    created_at: 2026-11-24T17:55:54.549Z
+    updated_at: 2026-11-24T17:55:54.549Z
+    version: 1
