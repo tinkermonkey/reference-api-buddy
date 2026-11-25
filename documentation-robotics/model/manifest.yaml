@@ -1,15 +1,12 @@
 version: 0.1.0
 schema: documentation-robotics-v1
-cli_version: 0.7.1
+cli_version: 0.8.0
 spec_version: 0.14.0
 created: 2026-11-24T17:47:26.015Z
-updated: 2026-11-24T18:04:53.601Z
+updated: 2026-11-25T10:54:35.512Z
 project:
   name: reference-api-buddy
-  description: "Embeddable HTTP-to-HTTPS caching proxy Python module (and
-    api-buddy CLI) for reference APIs: SQLite-backed caching with TTL, request
-    deduplication, per-domain rate limiting with progressive throttling,
-    optional secure-key access control, admin endpoints and monitoring metrics."
+  description: "Embeddable HTTP-to-HTTPS caching proxy Python module (and api-buddy CLI) for reference APIs: SQLite-backed caching with TTL, request deduplication, per-domain rate limiting with progressive throttling, optional secure-key access control, admin endpoints and monitoring metrics."
   version: 0.1.0
 documentation: .dr/README.md
 layers:
@@ -19,13 +16,13 @@ layers:
     path: documentation-robotics/model/01_motivation/
     enabled: true
     elements:
-      stakeholder: 2
+      assessment: 1
+      constraint: 2
       driver: 2
       goal: 3
       principle: 2
-      constraint: 2
       requirement: 15
-      assessment: 1
+      stakeholder: 2
       value: 1
   business:
     order: 2
@@ -33,9 +30,9 @@ layers:
     path: documentation-robotics/model/02_business/
     enabled: true
     elements:
-      businessrole: 1
-      businessprocess: 1
       businessobject: 1
+      businessprocess: 1
+      businessrole: 1
       businessservice: 1
   product:
     order: 3
@@ -43,10 +40,10 @@ layers:
     path: documentation-robotics/model/03_product/
     enabled: true
     elements:
-      persona: 1
-      milestone: 1
-      softwarecapability: 6
       feature: 11
+      milestone: 1
+      persona: 1
+      softwarecapability: 6
       userworkflow: 1
       workflowstep: 5
   security:
@@ -55,10 +52,10 @@ layers:
     path: documentation-robotics/model/04_security/
     enabled: true
     elements:
-      secureresource: 3
+      countermeasure: 7
       dataclassification: 1
-      countermeasure: 6
-      threat: 5
+      secureresource: 3
+      threat: 6
   application:
     order: 5
     name: Application
@@ -66,10 +63,10 @@ layers:
     enabled: true
     elements:
       applicationcomponent: 16
+      applicationfunction: 58
       applicationinterface: 2
-      applicationservice: 4
       applicationprocess: 1
-      applicationfunction: 56
+      applicationservice: 4
       dataobject: 3
   technology:
     order: 6
@@ -77,35 +74,35 @@ layers:
     path: documentation-robotics/model/06_technology/
     enabled: true
     elements:
-      systemsoftware: 4
-      technologyservice: 1
-      device: 1
-      communicationnetwork: 1
       artifact: 3
+      communicationnetwork: 1
+      device: 1
+      systemsoftware: 4
       technologyprocess: 2
+      technologyservice: 1
   api:
     order: 7
     name: Api
     path: documentation-robotics/model/07_api/
     enabled: true
     elements:
-      openapidocument: 1
-      info: 1
-      server: 1
-      paths: 1
       components: 1
-      tag: 2
-      securityscheme: 3
-      ratelimit: 2
       header: 4
-      schema: 3
+      info: 1
+      mediatype: 1
+      openapidocument: 1
+      operation: 11
       parameter: 3
       pathitem: 8
-      operation: 11
-      responses: 11
-      response: 55
+      paths: 1
+      ratelimit: 2
       requestbody: 2
-      mediatype: 1
+      response: 55
+      responses: 11
+      schema: 3
+      securityscheme: 3
+      server: 1
+      tag: 2
   data-model:
     order: 8
     name: Data model
@@ -120,12 +117,12 @@ layers:
     path: documentation-robotics/model/09_data-store/
     enabled: true
     elements:
-      database: 1
+      accesspattern: 8
       collection: 3
+      database: 1
       field: 20
       index: 3
       validationrule: 2
-      accesspattern: 8
   ux:
     order: 10
     name: Ux
@@ -153,13 +150,16 @@ layers:
     path: documentation-robotics/model/13_testing/
     enabled: true
     elements:
-      testcasesketch: 391
+      testcasesketch: 417
 changeset_history:
   - name: bootstrap-0-5-2
     committed_at: 2026-11-24T18:04:53.600Z
     action: committed
+  - name: secure-key-fixes
+    committed_at: 2026-11-25T10:54:35.380Z
+    action: committed
 reconciled:
-  changeset: bootstrap-0-5-2
-  changeset_id: changeset-1795542507127-a577uh68y
-  landed_at: 2026-11-24T18:04:53.600Z
-  code_commit: dbd18d785a2167cd5f1f5c430229e0ba4d034586
+  changeset: secure-key-fixes
+  changeset_id: changeset-1795601455978-aks4hgara
+  landed_at: 2026-11-25T10:54:35.380Z
+  code_commit: 1e7ad851adadc97caf477e10e2658c1c92045382

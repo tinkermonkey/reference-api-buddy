@@ -3430,8 +3430,7 @@ testing.testcasesketch.test-ttlconfiguration-test-missing-ttl-configuration-uses
   type: testcasesketch
   layer_id: testing
   name: TestTTLConfiguration.test_missing_ttl_configuration_uses_default
-  description: Test that missing TTL configuration is handled (should use default
-    from merge).
+  description: Test that missing TTL configuration is handled (should use default from merge).
   attributes:
     status: automated
   source_reference:
@@ -6474,8 +6473,7 @@ testing.testcasesketch.test-proxy-ttlintegration-test-proxy-config-reload-update
   type: testcasesketch
   layer_id: testing
   name: TestProxyTTLIntegration.test_proxy_config_reload_updates_cache_engine
-  description: Test that proxy config reload properly updates cache engine TTL
-    configuration.
+  description: Test that proxy config reload properly updates cache engine TTL configuration.
   attributes:
     status: automated
   source_reference:
@@ -7357,4 +7355,472 @@ testing.testcasesketch.test-ttlmanager-test-missing-cache-config-uses-default:
   metadata:
     created_at: 2026-11-24T17:48:26.908Z
     updated_at: 2026-11-24T17:48:26.908Z
+    version: 1
+testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-header-key-with-long-domain:
+  id: 95360478-7509-4a43-8414-deb293501b17
+  path: testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-header-key-with-long-domain
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: TestProxyKeyWinsOverOtherCandidates.test_header_key_with_long_domain
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/integration_tests/test_secure_key_placement.py
+        symbol: TestProxyKeyWinsOverOtherCandidates.test_header_key_with_long_domain
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-header-key-with-long-domain-and-upstream-query-key:
+  id: 1e371a19-0e39-44d4-8cd9-2553462f43e3
+  path: testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-header-key-with-long-domain-and-upstream-query-key
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: TestProxyKeyWinsOverOtherCandidates.test_header_key_with_long_domain_and_upstream_query_key
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/integration_tests/test_secure_key_placement.py
+        symbol: TestProxyKeyWinsOverOtherCandidates.test_header_key_with_long_domain_and_upstream_query_key
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-header-key-with-upstream-query-key:
+  id: 5b062ccc-155d-4efa-9aa1-e8c16ffae38f
+  path: testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-header-key-with-upstream-query-key
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: TestProxyKeyWinsOverOtherCandidates.test_header_key_with_upstream_query_key
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/integration_tests/test_secure_key_placement.py
+        symbol: TestProxyKeyWinsOverOtherCandidates.test_header_key_with_upstream_query_key
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-key-repeated-in-query-is-not-forwarded:
+  id: ed743825-a308-4b02-b3b9-0fe2e757fce0
+  path: testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-key-repeated-in-query-is-not-forwarded
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: TestProxyKeyWinsOverOtherCandidates.test_key_repeated_in_query_is_not_forwarded
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/integration_tests/test_secure_key_placement.py
+        symbol: TestProxyKeyWinsOverOtherCandidates.test_key_repeated_in_query_is_not_forwarded
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-proxy-query-key-after-upstream-query-key:
+  id: 7a823117-63e8-4bf8-8c28-2650219d174a
+  path: testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-proxy-query-key-after-upstream-query-key
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: TestProxyKeyWinsOverOtherCandidates.test_proxy_query_key_after_upstream_query_key
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/integration_tests/test_secure_key_placement.py
+        symbol: TestProxyKeyWinsOverOtherCandidates.test_proxy_query_key_after_upstream_query_key
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-proxy-query-key-before-upstream-query-key:
+  id: 94875adf-b165-4c4e-a55d-13d3f4949404
+  path: testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-proxy-query-key-before-upstream-query-key
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: TestProxyKeyWinsOverOtherCandidates.test_proxy_query_key_before_upstream_query_key
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/integration_tests/test_secure_key_placement.py
+        symbol: TestProxyKeyWinsOverOtherCandidates.test_proxy_query_key_before_upstream_query_key
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-query-key-with-long-domain:
+  id: adae78db-340c-40ae-8005-ab86e995f14e
+  path: testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-query-key-with-long-domain
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: TestProxyKeyWinsOverOtherCandidates.test_query_key_with_long_domain
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/integration_tests/test_secure_key_placement.py
+        symbol: TestProxyKeyWinsOverOtherCandidates.test_query_key_with_long_domain
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-wrong-header-key-with-upstream-candidates-is-rejected:
+  id: 2167e1c0-d3a9-475c-b354-c1eff305596c
+  path: testing.testcasesketch.test-proxy-key-wins-over-other-candidates-test-wrong-header-key-with-upstream-candidates-is-rejected
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: TestProxyKeyWinsOverOtherCandidates.test_wrong_header_key_with_upstream_candidates_is_rejected
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/integration_tests/test_secure_key_placement.py
+        symbol: TestProxyKeyWinsOverOtherCandidates.test_wrong_header_key_with_upstream_candidates_is_rejected
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-secure-key-not-in-cache-key-test-every-placement-shares-one-cache-entry:
+  id: 4fb0eade-97ff-40aa-9922-083c64f5c944
+  path: testing.testcasesketch.test-secure-key-not-in-cache-key-test-every-placement-shares-one-cache-entry
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: TestSecureKeyNotInCacheKey.test_every_placement_shares_one_cache_entry
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/integration_tests/test_secure_key_placement.py
+        symbol: TestSecureKeyNotInCacheKey.test_every_placement_shares_one_cache_entry
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-secure-key-placements-test-bearer-key:
+  id: e7c31873-9da6-4213-87d5-2a31c3c5b27c
+  path: testing.testcasesketch.test-secure-key-placements-test-bearer-key
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: TestSecureKeyPlacements.test_bearer_key
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/integration_tests/test_secure_key_placement.py
+        symbol: TestSecureKeyPlacements.test_bearer_key
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-secure-key-placements-test-header-key:
+  id: 0e9bf8f1-dff4-4529-9692-bead50aaab12
+  path: testing.testcasesketch.test-secure-key-placements-test-header-key
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: TestSecureKeyPlacements.test_header_key
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/integration_tests/test_secure_key_placement.py
+        symbol: TestSecureKeyPlacements.test_header_key
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-secure-key-placements-test-missing-key-is-rejected:
+  id: 59c0fe1f-b831-4fff-b307-cf5ad2a3a42c
+  path: testing.testcasesketch.test-secure-key-placements-test-missing-key-is-rejected
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: TestSecureKeyPlacements.test_missing_key_is_rejected
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/integration_tests/test_secure_key_placement.py
+        symbol: TestSecureKeyPlacements.test_missing_key_is_rejected
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-secure-key-placements-test-path-prefix-key:
+  id: 16ba1703-034a-4eb8-9632-de08a6efef5f
+  path: testing.testcasesketch.test-secure-key-placements-test-path-prefix-key
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: TestSecureKeyPlacements.test_path_prefix_key
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/integration_tests/test_secure_key_placement.py
+        symbol: TestSecureKeyPlacements.test_path_prefix_key
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-secure-key-placements-test-query-key:
+  id: 46245066-7780-4855-b14d-efc93e2c8097
+  path: testing.testcasesketch.test-secure-key-placements-test-query-key
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: TestSecureKeyPlacements.test_query_key
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/integration_tests/test_secure_key_placement.py
+        symbol: TestSecureKeyPlacements.test_query_key
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-secure-key-placements-test-query-key-keeps-other-parameters:
+  id: a5f45a7e-1549-40f3-89d6-a6d2f178a1cb
+  path: testing.testcasesketch.test-secure-key-placements-test-query-key-keeps-other-parameters
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: TestSecureKeyPlacements.test_query_key_keeps_other_parameters
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/integration_tests/test_secure_key_placement.py
+        symbol: TestSecureKeyPlacements.test_query_key_keeps_other_parameters
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-secure-key-placements-test-wrong-key-is-rejected:
+  id: 09f11466-1b03-4b83-8d57-8fcafdcbacf6
+  path: testing.testcasesketch.test-secure-key-placements-test-wrong-key-is-rejected
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: TestSecureKeyPlacements.test_wrong_key_is_rejected
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/integration_tests/test_secure_key_placement.py
+        symbol: TestSecureKeyPlacements.test_wrong_key_is_rejected
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-upstream-credentials-pass-through-test-proxy-key-is-still-stripped-when-security-is-off:
+  id: eb63dee8-7b2c-4966-8968-277658733464
+  path: testing.testcasesketch.test-upstream-credentials-pass-through-test-proxy-key-is-still-stripped-when-security-is-off
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: TestUpstreamCredentialsPassThrough.test_proxy_key_is_still_stripped_when_security_is_off
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/integration_tests/test_secure_key_placement.py
+        symbol: TestUpstreamCredentialsPassThrough.test_proxy_key_is_still_stripped_when_security_is_off
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-upstream-credentials-pass-through-test-upstream-bearer-token-is-forwarded:
+  id: 6c4d89cf-8a28-494c-b7ee-3f893c2b0b19
+  path: testing.testcasesketch.test-upstream-credentials-pass-through-test-upstream-bearer-token-is-forwarded
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: TestUpstreamCredentialsPassThrough.test_upstream_bearer_token_is_forwarded
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/integration_tests/test_secure_key_placement.py
+        symbol: TestUpstreamCredentialsPassThrough.test_upstream_bearer_token_is_forwarded
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-upstream-credentials-pass-through-test-upstream-key-parameter-is-forwarded-when-security-is-off:
+  id: f0205ba1-9116-490f-8a2d-806bdb01dcd8
+  path: testing.testcasesketch.test-upstream-credentials-pass-through-test-upstream-key-parameter-is-forwarded-when-security-is-off
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: TestUpstreamCredentialsPassThrough.test_upstream_key_parameter_is_forwarded_when_security_is_off
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/integration_tests/test_secure_key_placement.py
+        symbol: TestUpstreamCredentialsPassThrough.test_upstream_key_parameter_is_forwarded_when_security_is_off
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-extract-from-query-accepts-parse-qs-lists:
+  id: e59f095d-2d46-470f-a935-6f681229c509
+  path: testing.testcasesketch.test-extract-from-query-accepts-parse-qs-lists
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: test_extract_from_query_accepts_parse_qs_lists
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/unit_tests/test_security_manager.py
+        symbol: test_extract_from_query_accepts_parse_qs_lists
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-extract-from-query-prefers-the-proxy-key-among-several:
+  id: 44b2f9e6-25e9-4513-8659-8e3ba018abec
+  path: testing.testcasesketch.test-extract-from-query-prefers-the-proxy-key-among-several
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: test_extract_from_query_prefers_the_proxy_key_among_several
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/unit_tests/test_security_manager.py
+        symbol: test_extract_from_query_prefers_the_proxy_key_among_several
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-extract-secure-key-falls-back-to-first-candidate:
+  id: 04ec76c8-7c4a-4358-9d77-3184c557a689
+  path: testing.testcasesketch.test-extract-secure-key-falls-back-to-first-candidate
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: test_extract_secure_key_falls_back_to_first_candidate
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/unit_tests/test_security_manager.py
+        symbol: test_extract_secure_key_falls_back_to_first_candidate
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-extract-secure-key-prefers-the-proxy-key:
+  id: 4eb592a3-8368-46e8-b92f-59d3f4984032
+  path: testing.testcasesketch.test-extract-secure-key-prefers-the-proxy-key
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: test_extract_secure_key_prefers_the_proxy_key
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/unit_tests/test_security_manager.py
+        symbol: test_extract_secure_key_prefers_the_proxy_key
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-extract-secure-key-strips-query-key:
+  id: 992c508d-c54e-4600-84a7-a8a8fbb0e4b1
+  path: testing.testcasesketch.test-extract-secure-key-strips-query-key
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: test_extract_secure_key_strips_query_key
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/unit_tests/test_security_manager.py
+        symbol: test_extract_secure_key_strips_query_key
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-is-proxy-authorization:
+  id: 6ff2d568-cefc-4f87-b62a-bbb0f925f79f
+  path: testing.testcasesketch.test-is-proxy-authorization
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: test_is_proxy_authorization
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/unit_tests/test_security_manager.py
+        symbol: test_is_proxy_authorization
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
+    version: 1
+testing.testcasesketch.test-remove-query-param-keeps-other-parameters-verbatim:
+  id: 7b69a51d-2e33-4c9b-a893-4ea031546a54
+  path: testing.testcasesketch.test-remove-query-param-keeps-other-parameters-verbatim
+  spec_node_id: testing.testcasesketch
+  type: testcasesketch
+  layer_id: testing
+  name: test_remove_query_param_keeps_other_parameters_verbatim
+  attributes:
+    status: automated
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: tests/unit_tests/test_security_manager.py
+        symbol: test_remove_query_param_keeps_other_parameters_verbatim
+  metadata:
+    created_at: 2026-11-25T10:10:55.927Z
+    updated_at: 2026-11-25T10:10:55.927Z
     version: 1

@@ -5,9 +5,7 @@ application.applicationfunction.forward-upstream-request:
   type: applicationfunction
   layer_id: application
   name: Forward Upstream Request
-  description: Map /<domain_key>/<path>?query to the upstream URL, copy headers,
-    send with urllib (60 s timeout), pass HTTP errors through, map network
-    errors to 502, and record upstream metrics.
+  description: Map /<domain_key>/<path>?query to the upstream URL, copy headers except Host, Connection, Content-Length, X-API-Buddy-Key and a Bearer proxy key, send with urllib (60 s timeout), pass HTTP errors through, map network errors to 502, and record upstream metrics.
   source_reference:
     provenance: extracted
     locations:
@@ -24,8 +22,7 @@ application.applicationfunction.normalize-upstream-response:
   type: applicationfunction
   layer_id: application
   name: Normalize Upstream Response
-  description: Decompress gzip or deflate bodies and fix Content-Encoding,
-    Content-Length and Transfer-Encoding headers before replay or caching.
+  description: Decompress gzip or deflate bodies and fix Content-Encoding, Content-Length and Transfer-Encoding headers before replay or caching.
   source_reference:
     provenance: extracted
     locations:
@@ -42,9 +39,7 @@ application.applicationfunction.throttle-upstream-request:
   type: applicationfunction
   layer_id: application
   name: Throttle Upstream Request
-  description: Ask the throttle manager for the required delay, sleep for it and
-    record the request, or build the 429 response with Retry-After and
-    X-RateLimit headers.
+  description: Ask the throttle manager for the required delay, sleep for it and record the request, or build the 429 response with Retry-After and X-RateLimit headers.
   source_reference:
     provenance: extracted
     locations:
@@ -78,8 +73,7 @@ application.applicationfunction.handle-admin-request:
   type: applicationfunction
   layer_id: application
   name: Handle Admin Request
-  description: Rate-limit by client IP, log access and route /admin/* GET and POST
-    requests to their handlers; 404 for unknown paths, 405 for other methods.
+  description: Rate-limit by client IP, log access and route /admin/* GET and POST requests to their handlers; 404 for unknown paths, 405 for other methods.
   source_reference:
     provenance: extracted
     locations:
@@ -96,8 +90,7 @@ application.applicationfunction.report-component-status:
   type: applicationfunction
   layer_id: application
   name: Report Component Status
-  description: Build the status of the cache engine, database, throttle and
-    security managers and derive healthy, degraded or error.
+  description: Build the status of the cache engine, database, throttle and security managers and derive healthy, degraded or error.
   source_reference:
     provenance: extracted
     locations:
@@ -114,8 +107,7 @@ application.applicationfunction.sanitize-configuration:
   type: applicationfunction
   layer_id: application
   name: Sanitize Configuration
-  description: Deep-copy the config and redact fields whose names contain key,
-    secret, password or token.
+  description: Deep-copy the config and redact fields whose names contain key, secret, password or token.
   source_reference:
     provenance: extracted
     locations:
@@ -166,8 +158,7 @@ application.applicationfunction.validate-posted-configuration:
   type: applicationfunction
   layer_id: application
   name: Validate Posted Configuration
-  description: Merge a posted configuration with the defaults, validate it and
-    list defaulted fields as warnings.
+  description: Merge a posted configuration with the defaults, validate it and list defaulted fields as warnings.
   source_reference:
     provenance: extracted
     locations:
@@ -201,8 +192,7 @@ application.applicationfunction.get-cached-response:
   type: applicationfunction
   layer_id: application
   name: Get Cached Response
-  description: Read an entry, delete it if its TTL has passed, decompress it and
-    bump its access count and last_accessed.
+  description: Read an entry, delete it if its TTL has passed, decompress it and bump its access count and last_accessed.
   source_reference:
     provenance: extracted
     locations:
@@ -219,9 +209,7 @@ application.applicationfunction.store-cached-response:
   type: applicationfunction
   layer_id: application
   name: Store Cached Response
-  description: Resolve the TTL, compress bodies over 1 KB, REPLACE INTO
-    cache_entries and evict down to max_cache_entries; responses over
-    max_response_size are skipped.
+  description: Resolve the TTL, compress bodies over 1 KB, REPLACE INTO cache_entries and evict down to max_cache_entries; responses over max_response_size are skipped.
   source_reference:
     provenance: extracted
     locations:
@@ -272,9 +260,7 @@ application.applicationfunction.clear-cache:
   type: applicationfunction
   layer_id: application
   name: Clear Cache
-  description: Delete all entries, or those whose cache key contains a domain
-    string. Cache keys are SHA-256 hashes, so the domain filter matches nothing
-    in practice.
+  description: Delete all entries, or those whose cache key contains a domain string. Cache keys are SHA-256 hashes, so the domain filter matches nothing in practice.
   source_reference:
     provenance: extracted
     locations:
@@ -325,8 +311,7 @@ application.applicationfunction.calculate-required-delay:
   type: applicationfunction
   layer_id: application
   name: Calculate Required Delay
-  description: Longest wait needed across the domain's second, minute and hour
-    windows; -1 when it exceeds progressive_max_delay.
+  description: Longest wait needed across the domain's second, minute and hour windows; -1 when it exceeds progressive_max_delay.
   source_reference:
     provenance: extracted
     locations:
@@ -360,9 +345,7 @@ application.applicationfunction.apply-progressive-throttling:
   type: applicationfunction
   layer_id: application
   name: Apply Progressive Throttling
-  description: Count a violation and double the domain's delay up to
-    progressive_max_delay (reached through should_throttle, which the request
-    path does not call).
+  description: Count a violation and double the domain's delay up to progressive_max_delay (reached through should_throttle, which the request path does not call).
   source_reference:
     provenance: extracted
     locations:
@@ -379,8 +362,7 @@ application.applicationfunction.join-or-own-in-flight-request:
   type: applicationfunction
   layer_id: application
   name: Join Or Own In Flight Request
-  description: Register the first caller for a cache key as owner, or add a waiter
-    to the existing entry.
+  description: Register the first caller for a cache key as owner, or add a waiter to the existing entry.
   source_reference:
     provenance: extracted
     locations:
@@ -397,8 +379,7 @@ application.applicationfunction.wait-for-in-flight-result:
   type: applicationfunction
   layer_id: application
   name: Wait For In Flight Result
-  description: Block until the owner completes (60 s timeout) and return its
-    result or error.
+  description: Block until the owner completes (60 s timeout) and return its result or error.
   source_reference:
     provenance: extracted
     locations:
@@ -432,8 +413,7 @@ application.applicationfunction.extract-secure-key:
   type: applicationfunction
   layer_id: application
   name: Extract Secure Key
-  description: Look for the key as a 32-44 character path prefix, a key query
-    parameter, an X-API-Buddy-Key header or a Bearer token.
+  description: Collect candidates from a 32-44 character path prefix, key= query parameters, the X-API-Buddy-Key header and a Bearer token; return the first that validates (else the first found) and the path with that key removed.
   source_reference:
     provenance: extracted
     locations:
@@ -450,8 +430,7 @@ application.applicationfunction.validate-secure-key:
   type: applicationfunction
   layer_id: application
   name: Validate Secure Key
-  description: Constant-time comparison with hmac.compare_digest; always true when
-    security is off.
+  description: Constant-time comparison with hmac.compare_digest; always true when security is off.
   source_reference:
     provenance: extracted
     locations:
@@ -485,8 +464,7 @@ application.applicationfunction.store-upstream-metrics:
   type: applicationfunction
   layer_id: application
   name: Store Upstream Metrics
-  description: Insert one metrics row per proxied request (cache hit or upstream
-    call), adding the status_code column on first use.
+  description: Insert one metrics row per proxied request (cache hit or upstream call), adding the status_code column on first use.
   source_reference:
     provenance: extracted
     locations:
@@ -503,8 +481,7 @@ application.applicationfunction.aggregate-upstream-metrics:
   type: applicationfunction
   layer_id: application
   name: Aggregate Upstream Metrics
-  description: Response times, error rates by status and hourly volumes over the
-    last N hours, overall and per domain.
+  description: Response times, error rates by status and hourly volumes over the last N hours, overall and per domain.
   source_reference:
     provenance: extracted
     locations:
@@ -521,8 +498,7 @@ application.applicationfunction.execute-sql-with-retry:
   type: applicationfunction
   layer_id: application
   name: Execute SQL With Retry
-  description: Run a statement on a pooled connection, retrying 'database is
-    locked' errors with exponential backoff and jitter.
+  description: Run a statement on a pooled connection, retrying 'database is locked' errors with exponential backoff and jitter.
   source_reference:
     provenance: extracted
     locations:
@@ -539,8 +515,7 @@ application.applicationfunction.initialize-schema:
   type: applicationfunction
   layer_id: application
   name: Initialize Schema
-  description: Create the cache_entries, metrics and config_history tables and
-    their indexes.
+  description: Create the cache_entries, metrics and config_history tables and their indexes.
   source_reference:
     provenance: extracted
     locations:
@@ -557,8 +532,7 @@ application.applicationfunction.validate-configuration:
   type: applicationfunction
   layer_id: application
   name: Validate Configuration
-  description: Type-check every config section and per-domain TTL and limits,
-    returning the list of errors.
+  description: Type-check every config section and per-domain TTL and limits, returning the list of errors.
   source_reference:
     provenance: extracted
     locations:
@@ -592,8 +566,7 @@ application.applicationfunction.check-admin-rate-limit:
   type: applicationfunction
   layer_id: application
   name: Check Admin Rate Limit
-  description: Allow at most admin.rate_limit_per_minute admin requests per client
-    IP per minute.
+  description: Allow at most admin.rate_limit_per_minute admin requests per client IP per minute.
   source_reference:
     provenance: extracted
     locations:
@@ -610,8 +583,7 @@ application.applicationfunction.record-proxy-event:
   type: applicationfunction
   layer_id: application
   name: Record Proxy Event
-  description: Count a request event (cache_hit, cache_miss, throttle, error) and
-    keep it in the event list.
+  description: Count a request event (cache_hit, cache_miss, throttle, error) and keep it in the event list.
   source_reference:
     provenance: extracted
     locations:
@@ -628,8 +600,7 @@ application.applicationfunction.start-proxy:
   type: applicationfunction
   layer_id: application
   name: Start Proxy
-  description: Bind the threaded server to server.host and server.port and serve,
-    blocking or in the background.
+  description: Bind the threaded server to server.host and server.port and serve, blocking or in the background.
   source_reference:
     provenance: extracted
     locations:
@@ -646,8 +617,7 @@ application.applicationfunction.stop-proxy:
   type: applicationfunction
   layer_id: application
   name: Stop Proxy
-  description: Shut the server down, close the database pool and call the
-    on_shutdown callback.
+  description: Shut the server down, close the database pool and call the on_shutdown callback.
   source_reference:
     provenance: extracted
     locations:
@@ -664,8 +634,7 @@ application.applicationfunction.reload-configuration:
   type: applicationfunction
   layer_id: application
   name: Reload Configuration
-  description: Replace the config and rebuild every component; server settings
-    need a restart.
+  description: Replace the config and rebuild every component; server settings need a restart.
   source_reference:
     provenance: extracted
     locations:
@@ -852,8 +821,7 @@ application.applicationfunction.get-secure-key:
   type: applicationfunction
   layer_id: application
   name: Get Secure Key
-  description: Return the proxy's secure key (configured or generated) so the
-    parent application can hand it to its API clients.
+  description: Return the proxy's secure key (configured or generated) so the parent application can hand it to its API clients.
   source_reference:
     provenance: extracted
     locations:
@@ -887,8 +855,7 @@ application.applicationfunction.get-monitoring-manager:
   type: applicationfunction
   layer_id: application
   name: Get Monitoring Manager
-  description: Build a MonitoringManager over the proxy's cache engine, database
-    manager and throttle manager.
+  description: Build a MonitoringManager over the proxy's cache engine, database manager and throttle manager.
   source_reference:
     provenance: extracted
     locations:
@@ -905,8 +872,7 @@ application.applicationfunction.clear-proxy-cache:
   type: applicationfunction
   layer_id: application
   name: Clear Proxy Cache
-  description: Public entry point that clears all cache entries, or those for a
-    domain, through the cache engine.
+  description: Public entry point that clears all cache entries, or those for a domain, through the cache engine.
   source_reference:
     provenance: extracted
     locations:
@@ -923,9 +889,7 @@ application.applicationfunction.validate-request-key:
   type: applicationfunction
   layer_id: application
   name: Validate Request Key
-  description: Programmatic check of a path, headers and query for the secure key;
-    raises SecurityError when it is missing or wrong. The HTTP handler does its
-    own check and does not call this.
+  description: Programmatic check of a path, headers and query for the secure key; raises SecurityError when it is missing or wrong. The HTTP handler does its own check and does not call this.
   source_reference:
     provenance: extracted
     locations:
@@ -942,8 +906,7 @@ application.applicationfunction.snapshot-throttle-state:
   type: applicationfunction
   layer_id: application
   name: Snapshot Throttle State
-  description: Serialize per-domain throttle state for persistence. Available to
-    callers; the proxy itself never persists throttle state.
+  description: Serialize per-domain throttle state for persistence. Available to callers; the proxy itself never persists throttle state.
   source_reference:
     provenance: extracted
     locations:
@@ -977,9 +940,7 @@ application.applicationfunction.check-should-throttle:
   type: applicationfunction
   layer_id: application
   name: Check Should Throttle
-  description: Legacy hourly check that applies progressive throttling (doubling
-    delay) when a domain exceeds its hourly limit. The request path uses
-    get_required_delay instead and does not call this.
+  description: Legacy hourly check that applies progressive throttling (doubling delay) when a domain exceeds its hourly limit. The request path uses get_required_delay instead and does not call this.
   source_reference:
     provenance: extracted
     locations:
@@ -988,4 +949,38 @@ application.applicationfunction.check-should-throttle:
   metadata:
     created_at: 2026-11-24T17:58:09.353Z
     updated_at: 2026-11-24T17:58:09.353Z
+    version: 1
+application.applicationfunction.strip-proxy-key-from-query:
+  id: e96296c9-64dd-447f-95c7-e45c78fc2e13
+  path: application.applicationfunction.strip-proxy-key-from-query
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Strip Proxy Key From Query
+  description: Remove only the key= parameters whose decoded value is the proxy key, leaving every other parameter (including an upstream API's own key=) byte-for-byte.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/security/manager.py
+        symbol: SecurityManager._remove_query_param
+  metadata:
+    created_at: 2026-11-25T10:12:39.314Z
+    updated_at: 2026-11-25T10:12:39.314Z
+    version: 1
+application.applicationfunction.detect-proxy-bearer-token:
+  id: ff66e2e6-1f0f-4bb5-b36c-b4f2248accba
+  path: application.applicationfunction.detect-proxy-bearer-token
+  spec_node_id: application.applicationfunction
+  type: applicationfunction
+  layer_id: application
+  name: Detect Proxy Bearer Token
+  description: Tell whether an Authorization header is 'Bearer <proxy key>', so the forwarder drops that header but passes a real upstream token.
+  source_reference:
+    provenance: extracted
+    locations:
+      - file: reference_api_buddy/security/manager.py
+        symbol: SecurityManager.is_proxy_authorization
+  metadata:
+    created_at: 2026-11-25T10:12:39.315Z
+    updated_at: 2026-11-25T10:12:39.315Z
     version: 1

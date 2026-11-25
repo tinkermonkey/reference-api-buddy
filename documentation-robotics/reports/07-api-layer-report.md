@@ -2616,7 +2616,7 @@ Secure key in the X-API-Buddy-Key header.
 
 **Type**: `securityscheme`
 
-Secure key as the key query parameter. Fails with 500 in 0.5.2 (see the Secure Key Placement Gaps assessment).
+Secure key as a key query parameter. Among several key= values the one that validates wins; only the parameter carrying the proxy key is removed, so an upstream API's own key= passes through.
 
 #### Attributes
 
@@ -2686,4 +2686,4 @@ Proxied upstream requests.
 
 ---
 
-Generated: 2026-11-24T18:04:53.605Z | Model Version: 0.1.0
+Generated: 2026-11-25T10:54:35.596Z | Model Version: 0.1.0

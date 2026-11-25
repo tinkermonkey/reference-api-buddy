@@ -18,8 +18,8 @@ Goals, requirements, drivers, and strategic outcomes of the architecture.
 | ------------------------- | ----- |
 | Elements                  | 28    |
 | Intra-Layer Relationships | 28    |
-| Inter-Layer Relationships | 59    |
-| Inbound Relationships     | 59    |
+| Inter-Layer Relationships | 60    |
+| Inbound Relationships     | 60    |
 | Outbound Relationships    | 0     |
 
 **Cross-Layer References**:
@@ -120,67 +120,68 @@ flowchart TB
 
 ## Inter-Layer Relationships Table
 
-| Relationship ID                                             | Source Node                                                | Dest Node                                                         | Dest Layer   | Predicate    | Cardinality  | Strength |
-| ----------------------------------------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------- | ------------ | ------------ | ------------ | -------- |
-| `api.operation.satisfies.motivation.requirement`            | `api.operation.delete-proxied-upstream-request`            | `motivation.requirement.distinguish-upstream-errors-from-outages` | `motivation` | `satisfies`  | many-to-many | medium   |
-| `api.operation.satisfies.motivation.requirement`            | `api.operation.delete-proxied-upstream-request`            | `motivation.requirement.per-domain-rate-limiting`                 | `motivation` | `satisfies`  | many-to-many | medium   |
-| `api.operation.satisfies.motivation.requirement`            | `api.operation.get-admin-cache-domain`                     | `motivation.requirement.admin-debug-endpoints`                    | `motivation` | `satisfies`  | many-to-many | medium   |
-| `api.operation.satisfies.motivation.requirement`            | `api.operation.get-admin-cache`                            | `motivation.requirement.admin-debug-endpoints`                    | `motivation` | `satisfies`  | many-to-many | medium   |
-| `api.operation.satisfies.motivation.requirement`            | `api.operation.get-admin-config`                           | `motivation.requirement.admin-debug-endpoints`                    | `motivation` | `satisfies`  | many-to-many | medium   |
-| `api.operation.satisfies.motivation.requirement`            | `api.operation.get-admin-config`                           | `motivation.requirement.redact-secrets-in-admin-output`           | `motivation` | `satisfies`  | many-to-many | medium   |
-| `api.operation.satisfies.motivation.requirement`            | `api.operation.get-admin-domains`                          | `motivation.requirement.admin-debug-endpoints`                    | `motivation` | `satisfies`  | many-to-many | medium   |
-| `api.operation.satisfies.motivation.requirement`            | `api.operation.get-admin-health`                           | `motivation.requirement.admin-debug-endpoints`                    | `motivation` | `satisfies`  | many-to-many | medium   |
-| `api.operation.satisfies.motivation.requirement`            | `api.operation.get-admin-status`                           | `motivation.requirement.admin-debug-endpoints`                    | `motivation` | `satisfies`  | many-to-many | medium   |
-| `api.operation.satisfies.motivation.requirement`            | `api.operation.get-proxied-upstream-request`               | `motivation.requirement.cache-get-and-post-by-request-signature`  | `motivation` | `satisfies`  | many-to-many | medium   |
-| `api.operation.satisfies.motivation.requirement`            | `api.operation.get-proxied-upstream-request`               | `motivation.requirement.deduplicate-concurrent-requests`          | `motivation` | `satisfies`  | many-to-many | medium   |
-| `api.operation.satisfies.motivation.requirement`            | `api.operation.get-proxied-upstream-request`               | `motivation.requirement.distinguish-upstream-errors-from-outages` | `motivation` | `satisfies`  | many-to-many | medium   |
-| `api.operation.satisfies.motivation.requirement`            | `api.operation.get-proxied-upstream-request`               | `motivation.requirement.per-domain-rate-limiting`                 | `motivation` | `satisfies`  | many-to-many | medium   |
-| `api.operation.satisfies.motivation.requirement`            | `api.operation.post-admin-validate-config`                 | `motivation.requirement.admin-debug-endpoints`                    | `motivation` | `satisfies`  | many-to-many | medium   |
-| `api.operation.satisfies.motivation.requirement`            | `api.operation.post-proxied-upstream-request`              | `motivation.requirement.cache-get-and-post-by-request-signature`  | `motivation` | `satisfies`  | many-to-many | medium   |
-| `api.operation.satisfies.motivation.requirement`            | `api.operation.post-proxied-upstream-request`              | `motivation.requirement.deduplicate-concurrent-requests`          | `motivation` | `satisfies`  | many-to-many | medium   |
-| `api.operation.satisfies.motivation.requirement`            | `api.operation.post-proxied-upstream-request`              | `motivation.requirement.distinguish-upstream-errors-from-outages` | `motivation` | `satisfies`  | many-to-many | medium   |
-| `api.operation.satisfies.motivation.requirement`            | `api.operation.post-proxied-upstream-request`              | `motivation.requirement.per-domain-rate-limiting`                 | `motivation` | `satisfies`  | many-to-many | medium   |
-| `api.operation.satisfies.motivation.requirement`            | `api.operation.put-proxied-upstream-request`               | `motivation.requirement.distinguish-upstream-errors-from-outages` | `motivation` | `satisfies`  | many-to-many | medium   |
-| `api.operation.satisfies.motivation.requirement`            | `api.operation.put-proxied-upstream-request`               | `motivation.requirement.per-domain-rate-limiting`                 | `motivation` | `satisfies`  | many-to-many | medium   |
-| `apm.metricinstrument.satisfies.motivation.requirement`     | `apm.metricinstrument.cache-engine-statistics`             | `motivation.requirement.programmatic-monitoring-interface`        | `motivation` | `satisfies`  | many-to-many | medium   |
-| `apm.metricinstrument.satisfies.motivation.requirement`     | `apm.metricinstrument.upstream-responses-by-status`        | `motivation.requirement.programmatic-monitoring-interface`        | `motivation` | `satisfies`  | many-to-many | medium   |
-| `application.applicationservice.delivers.motivation.value`  | `application.applicationservice.cached-reference-proxying` | `motivation.value.cheaper-faster-pipeline-iteration`              | `motivation` | `delivers`   | many-to-many | medium   |
-| `application.applicationservice.realizes.motivation.goal`   | `application.applicationservice.cached-reference-proxying` | `motivation.goal.reduce-upstream-api-cost-and-load`               | `motivation` | `realizes`   | many-to-many | medium   |
-| `business.businessservice.delivers.motivation.value`        | `business.businessservice.cached-reference-data-access`    | `motivation.value.cheaper-faster-pipeline-iteration`              | `motivation` | `delivers`   | many-to-many | medium   |
-| `business.businessservice.realizes.motivation.goal`         | `business.businessservice.cached-reference-data-access`    | `motivation.goal.reduce-upstream-api-cost-and-load`               | `motivation` | `realizes`   | many-to-many | medium   |
-| `business.businessservice.satisfies.motivation.requirement` | `business.businessservice.cached-reference-data-access`    | `motivation.requirement.per-domain-rate-limiting`                 | `motivation` | `satisfies`  | many-to-many | medium   |
-| `product.feature.satisfies.motivation.requirement`          | `product.feature.admin-debug-endpoints`                    | `motivation.requirement.admin-debug-endpoints`                    | `motivation` | `satisfies`  | many-to-many | medium   |
-| `product.feature.satisfies.motivation.requirement`          | `product.feature.admin-debug-endpoints`                    | `motivation.requirement.redact-secrets-in-admin-output`           | `motivation` | `satisfies`  | many-to-many | medium   |
-| `product.feature.satisfies.motivation.requirement`          | `product.feature.embeddable-caching-proxy-module`          | `motivation.requirement.embeddable-module-lifecycle`              | `motivation` | `satisfies`  | many-to-many | medium   |
-| `product.feature.satisfies.motivation.requirement`          | `product.feature.embeddable-caching-proxy-module`          | `motivation.requirement.parent-application-logging-integration`   | `motivation` | `satisfies`  | many-to-many | medium   |
-| `product.feature.satisfies.motivation.requirement`          | `product.feature.embeddable-caching-proxy-module`          | `motivation.requirement.thread-safe-concurrent-handling`          | `motivation` | `satisfies`  | many-to-many | medium   |
-| `product.feature.satisfies.motivation.requirement`          | `product.feature.fine-grained-rate-limits`                 | `motivation.requirement.per-domain-rate-limiting`                 | `motivation` | `satisfies`  | many-to-many | medium   |
-| `product.feature.satisfies.motivation.requirement`          | `product.feature.monitoring-metrics`                       | `motivation.requirement.programmatic-monitoring-interface`        | `motivation` | `satisfies`  | many-to-many | medium   |
-| `product.feature.satisfies.motivation.requirement`          | `product.feature.path-based-domain-mapping`                | `motivation.requirement.distinguish-upstream-errors-from-outages` | `motivation` | `satisfies`  | many-to-many | medium   |
-| `product.feature.satisfies.motivation.requirement`          | `product.feature.per-domain-ttl`                           | `motivation.requirement.configurable-cache-ttl`                   | `motivation` | `satisfies`  | many-to-many | medium   |
-| `product.feature.delivers.motivation.value`                 | `product.feature.persistent-sqlite-cache`                  | `motivation.value.cheaper-faster-pipeline-iteration`              | `motivation` | `delivers`   | many-to-many | medium   |
-| `product.feature.satisfies.motivation.requirement`          | `product.feature.persistent-sqlite-cache`                  | `motivation.requirement.bounded-cache-size`                       | `motivation` | `satisfies`  | many-to-many | medium   |
-| `product.feature.satisfies.motivation.requirement`          | `product.feature.persistent-sqlite-cache`                  | `motivation.requirement.cache-get-and-post-by-request-signature`  | `motivation` | `satisfies`  | many-to-many | medium   |
-| `product.feature.satisfies.motivation.requirement`          | `product.feature.persistent-sqlite-cache`                  | `motivation.requirement.cache-only-successful-responses`          | `motivation` | `satisfies`  | many-to-many | medium   |
-| `product.feature.satisfies.motivation.requirement`          | `product.feature.persistent-sqlite-cache`                  | `motivation.requirement.persistent-or-in-memory-cache`            | `motivation` | `satisfies`  | many-to-many | medium   |
-| `product.feature.satisfies.motivation.requirement`          | `product.feature.request-coalescing`                       | `motivation.requirement.deduplicate-concurrent-requests`          | `motivation` | `satisfies`  | many-to-many | medium   |
-| `product.feature.satisfies.motivation.requirement`          | `product.feature.secure-key-authentication`                | `motivation.requirement.optional-secure-key-access-control`       | `motivation` | `satisfies`  | many-to-many | medium   |
-| `product.persona.references.motivation.stakeholder`         | `product.persona.pipeline-builder`                         | `motivation.stakeholder.pipeline-developer`                       | `motivation` | `references` | many-to-many | medium   |
-| `product.softwarecapability.supports.motivation.goal`       | `product.softwarecapability.configurable-domain-routing`   | `motivation.goal.drop-in-without-custom-api-clients`              | `motivation` | `supports`   | many-to-many | medium   |
-| `product.softwarecapability.supports.motivation.goal`       | `product.softwarecapability.operational-visibility`        | `motivation.goal.drop-in-without-custom-api-clients`              | `motivation` | `supports`   | many-to-many | medium   |
-| `product.softwarecapability.supports.motivation.goal`       | `product.softwarecapability.proxy-access-control`          | `motivation.goal.drop-in-without-custom-api-clients`              | `motivation` | `supports`   | many-to-many | medium   |
-| `product.softwarecapability.supports.motivation.goal`       | `product.softwarecapability.rate-limiting-and-throttling`  | `motivation.goal.stay-within-upstream-rate-limits`                | `motivation` | `supports`   | many-to-many | medium   |
-| `product.softwarecapability.supports.motivation.goal`       | `product.softwarecapability.request-deduplication`         | `motivation.goal.reduce-upstream-api-cost-and-load`               | `motivation` | `supports`   | many-to-many | medium   |
-| `product.softwarecapability.supports.motivation.goal`       | `product.softwarecapability.request-deduplication`         | `motivation.goal.stay-within-upstream-rate-limits`                | `motivation` | `supports`   | many-to-many | medium   |
-| `product.softwarecapability.supports.motivation.goal`       | `product.softwarecapability.response-caching`              | `motivation.goal.reduce-upstream-api-cost-and-load`               | `motivation` | `supports`   | many-to-many | medium   |
-| `security.countermeasure.satisfies.motivation.requirement`  | `security.countermeasure.admin-endpoints-switch`           | `motivation.requirement.admin-debug-endpoints`                    | `motivation` | `satisfies`  | many-to-many | medium   |
-| `security.countermeasure.satisfies.motivation.requirement`  | `security.countermeasure.admin-rate-limiting`              | `motivation.requirement.admin-debug-endpoints`                    | `motivation` | `satisfies`  | many-to-many | medium   |
-| `security.countermeasure.satisfies.motivation.requirement`  | `security.countermeasure.config-secret-redaction`          | `motivation.requirement.redact-secrets-in-admin-output`           | `motivation` | `satisfies`  | many-to-many | medium   |
-| `security.countermeasure.satisfies.motivation.requirement`  | `security.countermeasure.constant-time-key-comparison`     | `motivation.requirement.optional-secure-key-access-control`       | `motivation` | `satisfies`  | many-to-many | medium   |
-| `security.countermeasure.satisfies.motivation.requirement`  | `security.countermeasure.secure-key-authentication`        | `motivation.requirement.optional-secure-key-access-control`       | `motivation` | `satisfies`  | many-to-many | medium   |
-| `technology.systemsoftware.satisfies.motivation.constraint` | `technology.systemsoftware.cpython-runtime`                | `motivation.constraint.python-3-10-or-later`                      | `motivation` | `satisfies`  | many-to-many | medium   |
-| `technology.systemsoftware.satisfies.motivation.principle`  | `technology.systemsoftware.cpython-runtime`                | `motivation.principle.standard-library-only`                      | `motivation` | `satisfies`  | many-to-many | medium   |
-| `technology.systemsoftware.satisfies.motivation.principle`  | `technology.systemsoftware.python-urllib`                  | `motivation.principle.keep-upstream-tls-verification`             | `motivation` | `satisfies`  | many-to-many | medium   |
+| Relationship ID                                             | Source Node                                                    | Dest Node                                                         | Dest Layer   | Predicate    | Cardinality  | Strength |
+| ----------------------------------------------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------- | ------------ | ------------ | ------------ | -------- |
+| `api.operation.satisfies.motivation.requirement`            | `api.operation.delete-proxied-upstream-request`                | `motivation.requirement.distinguish-upstream-errors-from-outages` | `motivation` | `satisfies`  | many-to-many | medium   |
+| `api.operation.satisfies.motivation.requirement`            | `api.operation.delete-proxied-upstream-request`                | `motivation.requirement.per-domain-rate-limiting`                 | `motivation` | `satisfies`  | many-to-many | medium   |
+| `api.operation.satisfies.motivation.requirement`            | `api.operation.get-admin-cache-domain`                         | `motivation.requirement.admin-debug-endpoints`                    | `motivation` | `satisfies`  | many-to-many | medium   |
+| `api.operation.satisfies.motivation.requirement`            | `api.operation.get-admin-cache`                                | `motivation.requirement.admin-debug-endpoints`                    | `motivation` | `satisfies`  | many-to-many | medium   |
+| `api.operation.satisfies.motivation.requirement`            | `api.operation.get-admin-config`                               | `motivation.requirement.admin-debug-endpoints`                    | `motivation` | `satisfies`  | many-to-many | medium   |
+| `api.operation.satisfies.motivation.requirement`            | `api.operation.get-admin-config`                               | `motivation.requirement.redact-secrets-in-admin-output`           | `motivation` | `satisfies`  | many-to-many | medium   |
+| `api.operation.satisfies.motivation.requirement`            | `api.operation.get-admin-domains`                              | `motivation.requirement.admin-debug-endpoints`                    | `motivation` | `satisfies`  | many-to-many | medium   |
+| `api.operation.satisfies.motivation.requirement`            | `api.operation.get-admin-health`                               | `motivation.requirement.admin-debug-endpoints`                    | `motivation` | `satisfies`  | many-to-many | medium   |
+| `api.operation.satisfies.motivation.requirement`            | `api.operation.get-admin-status`                               | `motivation.requirement.admin-debug-endpoints`                    | `motivation` | `satisfies`  | many-to-many | medium   |
+| `api.operation.satisfies.motivation.requirement`            | `api.operation.get-proxied-upstream-request`                   | `motivation.requirement.cache-get-and-post-by-request-signature`  | `motivation` | `satisfies`  | many-to-many | medium   |
+| `api.operation.satisfies.motivation.requirement`            | `api.operation.get-proxied-upstream-request`                   | `motivation.requirement.deduplicate-concurrent-requests`          | `motivation` | `satisfies`  | many-to-many | medium   |
+| `api.operation.satisfies.motivation.requirement`            | `api.operation.get-proxied-upstream-request`                   | `motivation.requirement.distinguish-upstream-errors-from-outages` | `motivation` | `satisfies`  | many-to-many | medium   |
+| `api.operation.satisfies.motivation.requirement`            | `api.operation.get-proxied-upstream-request`                   | `motivation.requirement.per-domain-rate-limiting`                 | `motivation` | `satisfies`  | many-to-many | medium   |
+| `api.operation.satisfies.motivation.requirement`            | `api.operation.post-admin-validate-config`                     | `motivation.requirement.admin-debug-endpoints`                    | `motivation` | `satisfies`  | many-to-many | medium   |
+| `api.operation.satisfies.motivation.requirement`            | `api.operation.post-proxied-upstream-request`                  | `motivation.requirement.cache-get-and-post-by-request-signature`  | `motivation` | `satisfies`  | many-to-many | medium   |
+| `api.operation.satisfies.motivation.requirement`            | `api.operation.post-proxied-upstream-request`                  | `motivation.requirement.deduplicate-concurrent-requests`          | `motivation` | `satisfies`  | many-to-many | medium   |
+| `api.operation.satisfies.motivation.requirement`            | `api.operation.post-proxied-upstream-request`                  | `motivation.requirement.distinguish-upstream-errors-from-outages` | `motivation` | `satisfies`  | many-to-many | medium   |
+| `api.operation.satisfies.motivation.requirement`            | `api.operation.post-proxied-upstream-request`                  | `motivation.requirement.per-domain-rate-limiting`                 | `motivation` | `satisfies`  | many-to-many | medium   |
+| `api.operation.satisfies.motivation.requirement`            | `api.operation.put-proxied-upstream-request`                   | `motivation.requirement.distinguish-upstream-errors-from-outages` | `motivation` | `satisfies`  | many-to-many | medium   |
+| `api.operation.satisfies.motivation.requirement`            | `api.operation.put-proxied-upstream-request`                   | `motivation.requirement.per-domain-rate-limiting`                 | `motivation` | `satisfies`  | many-to-many | medium   |
+| `apm.metricinstrument.satisfies.motivation.requirement`     | `apm.metricinstrument.cache-engine-statistics`                 | `motivation.requirement.programmatic-monitoring-interface`        | `motivation` | `satisfies`  | many-to-many | medium   |
+| `apm.metricinstrument.satisfies.motivation.requirement`     | `apm.metricinstrument.upstream-responses-by-status`            | `motivation.requirement.programmatic-monitoring-interface`        | `motivation` | `satisfies`  | many-to-many | medium   |
+| `application.applicationservice.delivers.motivation.value`  | `application.applicationservice.cached-reference-proxying`     | `motivation.value.cheaper-faster-pipeline-iteration`              | `motivation` | `delivers`   | many-to-many | medium   |
+| `application.applicationservice.realizes.motivation.goal`   | `application.applicationservice.cached-reference-proxying`     | `motivation.goal.reduce-upstream-api-cost-and-load`               | `motivation` | `realizes`   | many-to-many | medium   |
+| `business.businessservice.delivers.motivation.value`        | `business.businessservice.cached-reference-data-access`        | `motivation.value.cheaper-faster-pipeline-iteration`              | `motivation` | `delivers`   | many-to-many | medium   |
+| `business.businessservice.realizes.motivation.goal`         | `business.businessservice.cached-reference-data-access`        | `motivation.goal.reduce-upstream-api-cost-and-load`               | `motivation` | `realizes`   | many-to-many | medium   |
+| `business.businessservice.satisfies.motivation.requirement` | `business.businessservice.cached-reference-data-access`        | `motivation.requirement.per-domain-rate-limiting`                 | `motivation` | `satisfies`  | many-to-many | medium   |
+| `product.feature.satisfies.motivation.requirement`          | `product.feature.admin-debug-endpoints`                        | `motivation.requirement.admin-debug-endpoints`                    | `motivation` | `satisfies`  | many-to-many | medium   |
+| `product.feature.satisfies.motivation.requirement`          | `product.feature.admin-debug-endpoints`                        | `motivation.requirement.redact-secrets-in-admin-output`           | `motivation` | `satisfies`  | many-to-many | medium   |
+| `product.feature.satisfies.motivation.requirement`          | `product.feature.embeddable-caching-proxy-module`              | `motivation.requirement.embeddable-module-lifecycle`              | `motivation` | `satisfies`  | many-to-many | medium   |
+| `product.feature.satisfies.motivation.requirement`          | `product.feature.embeddable-caching-proxy-module`              | `motivation.requirement.parent-application-logging-integration`   | `motivation` | `satisfies`  | many-to-many | medium   |
+| `product.feature.satisfies.motivation.requirement`          | `product.feature.embeddable-caching-proxy-module`              | `motivation.requirement.thread-safe-concurrent-handling`          | `motivation` | `satisfies`  | many-to-many | medium   |
+| `product.feature.satisfies.motivation.requirement`          | `product.feature.fine-grained-rate-limits`                     | `motivation.requirement.per-domain-rate-limiting`                 | `motivation` | `satisfies`  | many-to-many | medium   |
+| `product.feature.satisfies.motivation.requirement`          | `product.feature.monitoring-metrics`                           | `motivation.requirement.programmatic-monitoring-interface`        | `motivation` | `satisfies`  | many-to-many | medium   |
+| `product.feature.satisfies.motivation.requirement`          | `product.feature.path-based-domain-mapping`                    | `motivation.requirement.distinguish-upstream-errors-from-outages` | `motivation` | `satisfies`  | many-to-many | medium   |
+| `product.feature.satisfies.motivation.requirement`          | `product.feature.per-domain-ttl`                               | `motivation.requirement.configurable-cache-ttl`                   | `motivation` | `satisfies`  | many-to-many | medium   |
+| `product.feature.delivers.motivation.value`                 | `product.feature.persistent-sqlite-cache`                      | `motivation.value.cheaper-faster-pipeline-iteration`              | `motivation` | `delivers`   | many-to-many | medium   |
+| `product.feature.satisfies.motivation.requirement`          | `product.feature.persistent-sqlite-cache`                      | `motivation.requirement.bounded-cache-size`                       | `motivation` | `satisfies`  | many-to-many | medium   |
+| `product.feature.satisfies.motivation.requirement`          | `product.feature.persistent-sqlite-cache`                      | `motivation.requirement.cache-get-and-post-by-request-signature`  | `motivation` | `satisfies`  | many-to-many | medium   |
+| `product.feature.satisfies.motivation.requirement`          | `product.feature.persistent-sqlite-cache`                      | `motivation.requirement.cache-only-successful-responses`          | `motivation` | `satisfies`  | many-to-many | medium   |
+| `product.feature.satisfies.motivation.requirement`          | `product.feature.persistent-sqlite-cache`                      | `motivation.requirement.persistent-or-in-memory-cache`            | `motivation` | `satisfies`  | many-to-many | medium   |
+| `product.feature.satisfies.motivation.requirement`          | `product.feature.request-coalescing`                           | `motivation.requirement.deduplicate-concurrent-requests`          | `motivation` | `satisfies`  | many-to-many | medium   |
+| `product.feature.satisfies.motivation.requirement`          | `product.feature.secure-key-authentication`                    | `motivation.requirement.optional-secure-key-access-control`       | `motivation` | `satisfies`  | many-to-many | medium   |
+| `product.persona.references.motivation.stakeholder`         | `product.persona.pipeline-builder`                             | `motivation.stakeholder.pipeline-developer`                       | `motivation` | `references` | many-to-many | medium   |
+| `product.softwarecapability.supports.motivation.goal`       | `product.softwarecapability.configurable-domain-routing`       | `motivation.goal.drop-in-without-custom-api-clients`              | `motivation` | `supports`   | many-to-many | medium   |
+| `product.softwarecapability.supports.motivation.goal`       | `product.softwarecapability.operational-visibility`            | `motivation.goal.drop-in-without-custom-api-clients`              | `motivation` | `supports`   | many-to-many | medium   |
+| `product.softwarecapability.supports.motivation.goal`       | `product.softwarecapability.proxy-access-control`              | `motivation.goal.drop-in-without-custom-api-clients`              | `motivation` | `supports`   | many-to-many | medium   |
+| `product.softwarecapability.supports.motivation.goal`       | `product.softwarecapability.rate-limiting-and-throttling`      | `motivation.goal.stay-within-upstream-rate-limits`                | `motivation` | `supports`   | many-to-many | medium   |
+| `product.softwarecapability.supports.motivation.goal`       | `product.softwarecapability.request-deduplication`             | `motivation.goal.reduce-upstream-api-cost-and-load`               | `motivation` | `supports`   | many-to-many | medium   |
+| `product.softwarecapability.supports.motivation.goal`       | `product.softwarecapability.request-deduplication`             | `motivation.goal.stay-within-upstream-rate-limits`                | `motivation` | `supports`   | many-to-many | medium   |
+| `product.softwarecapability.supports.motivation.goal`       | `product.softwarecapability.response-caching`                  | `motivation.goal.reduce-upstream-api-cost-and-load`               | `motivation` | `supports`   | many-to-many | medium   |
+| `security.countermeasure.satisfies.motivation.requirement`  | `security.countermeasure.admin-endpoints-switch`               | `motivation.requirement.admin-debug-endpoints`                    | `motivation` | `satisfies`  | many-to-many | medium   |
+| `security.countermeasure.satisfies.motivation.requirement`  | `security.countermeasure.admin-rate-limiting`                  | `motivation.requirement.admin-debug-endpoints`                    | `motivation` | `satisfies`  | many-to-many | medium   |
+| `security.countermeasure.satisfies.motivation.requirement`  | `security.countermeasure.config-secret-redaction`              | `motivation.requirement.redact-secrets-in-admin-output`           | `motivation` | `satisfies`  | many-to-many | medium   |
+| `security.countermeasure.satisfies.motivation.requirement`  | `security.countermeasure.constant-time-key-comparison`         | `motivation.requirement.optional-secure-key-access-control`       | `motivation` | `satisfies`  | many-to-many | medium   |
+| `security.countermeasure.satisfies.motivation.requirement`  | `security.countermeasure.proxy-key-stripped-before-forwarding` | `motivation.requirement.optional-secure-key-access-control`       | `motivation` | `satisfies`  | many-to-many | medium   |
+| `security.countermeasure.satisfies.motivation.requirement`  | `security.countermeasure.secure-key-authentication`            | `motivation.requirement.optional-secure-key-access-control`       | `motivation` | `satisfies`  | many-to-many | medium   |
+| `technology.systemsoftware.satisfies.motivation.constraint` | `technology.systemsoftware.cpython-runtime`                    | `motivation.constraint.python-3-10-or-later`                      | `motivation` | `satisfies`  | many-to-many | medium   |
+| `technology.systemsoftware.satisfies.motivation.principle`  | `technology.systemsoftware.cpython-runtime`                    | `motivation.principle.standard-library-only`                      | `motivation` | `satisfies`  | many-to-many | medium   |
+| `technology.systemsoftware.satisfies.motivation.principle`  | `technology.systemsoftware.python-urllib`                      | `motivation.principle.keep-upstream-tls-verification`             | `motivation` | `satisfies`  | many-to-many | medium   |
 
 ## Element Reference
 
@@ -190,13 +191,14 @@ flowchart TB
 
 **Type**: `assessment`
 
-Checked against 0.5.2 with a running proxy: the X-API-Buddy-Key header and Authorization Bearer placements work, but a key in the path prefix gets 404 'Domain not mapped' (domain matching uses the raw path, not the path with the key stripped) and a ?key= query parameter gets 500 (parse_qs yields a list, which validate_request cannot encode). The header key is also forwarded to the upstream with the other request headers.
+Checked against a running proxy after #8 and #10 (unreleased 0.5.3): all four placements (path prefix, key= query parameter, X-API-Buddy-Key header, Authorization Bearer) authenticate, and the proxy key is not forwarded upstream in any of them. Fixed since 0.5.2, where a path-prefix key got 404, a key= parameter got 500 and the header key was forwarded. Remaining gap: a path or query key is written to the stderr access log (see Proxy Key Written To Access Log).
 
 #### Attributes
 
-| Name           | Value |
-| -------------- | ----- |
-| assessmentType | gap   |
+| Name           | Value                                                                                                                                                                  |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| assessmentType | gap                                                                                                                                                                    |
+| documentation  | Assessed 2026-11-25 by probing a running proxy with each placement and a recording upstream; regression tests in tests/integration_tests/test_secure_key_placement.py. |
 
 #### Relationships
 
@@ -636,6 +638,7 @@ When security.require_secure_key is set, every request must carry the proxy's se
 | ----------- | --------------------------------------------------------------- | ------------ | --------- |
 | inter-layer | `product.feature.secure-key-authentication`                     | `satisfies`  | inbound   |
 | inter-layer | `security.countermeasure.constant-time-key-comparison`          | `satisfies`  | inbound   |
+| inter-layer | `security.countermeasure.proxy-key-stripped-before-forwarding`  | `satisfies`  | inbound   |
 | inter-layer | `security.countermeasure.secure-key-authentication`             | `satisfies`  | inbound   |
 | intra-layer | `motivation.constraint.development-use-with-non-sensitive-data` | `constrains` | inbound   |
 | intra-layer | `motivation.principle.keep-upstream-tls-verification`           | `realizes`   | outbound  |
@@ -848,4 +851,4 @@ Reruns are served from the local cache in milliseconds and cost nothing upstream
 
 ---
 
-Generated: 2026-11-24T18:04:53.605Z | Model Version: 0.1.0
+Generated: 2026-11-25T10:54:35.596Z | Model Version: 0.1.0

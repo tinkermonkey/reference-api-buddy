@@ -5,8 +5,7 @@ product.feature.embeddable-caching-proxy-module:
   type: feature
   layer_id: product
   name: Embeddable Caching Proxy Module
-  description: CachingProxy class a Python app imports, starts in a background
-    thread or as a context manager, and stops.
+  description: CachingProxy class a Python app imports, starts in a background thread or as a context manager, and stops.
   attributes:
     priority: critical
     status: delivered
@@ -21,8 +20,7 @@ product.feature.api-buddy-cli:
   type: feature
   layer_id: product
   name: Api Buddy CLI
-  description: api-buddy command that runs the proxy standalone from a JSON
-    config, generates a default config, or prints a new secure key.
+  description: api-buddy command that runs the proxy standalone from a JSON config, generates a default config, or prints a new secure key.
   attributes:
     priority: high
     status: delivered
@@ -37,9 +35,7 @@ product.feature.path-based-domain-mapping:
   type: feature
   layer_id: product
   name: Path Based Domain Mapping
-  description: http://127.0.0.1:<port>/<domain_key>/<path> is forwarded to
-    <upstream><path> with the query string, so a client only changes its base
-    URL.
+  description: http://127.0.0.1:<port>/<domain_key>/<path> is forwarded to <upstream><path> with the query string, so a client only changes its base URL.
   attributes:
     priority: critical
     status: delivered
@@ -54,8 +50,7 @@ product.feature.persistent-sqlite-cache:
   type: feature
   layer_id: product
   name: Persistent SQLite Cache
-  description: On-disk or in-memory SQLite cache with compression, LRU eviction
-    and a size cap.
+  description: On-disk or in-memory SQLite cache with compression, LRU eviction and a size cap.
   attributes:
     priority: critical
     status: delivered
@@ -100,8 +95,7 @@ product.feature.fine-grained-rate-limits:
   type: feature
   layer_id: product
   name: Fine Grained Rate Limits
-  description: Per-second, per-minute and per-hour limits per domain, delays
-    applied only to cache misses, 429 past the maximum delay.
+  description: Per-second, per-minute and per-hour limits per domain, delays applied only to cache misses, 429 past the maximum delay.
   attributes:
     priority: high
     status: delivered
@@ -131,8 +125,7 @@ product.feature.upstream-auth-passthrough:
   type: feature
   layer_id: product
   name: Upstream Auth Passthrough
-  description: Client headers, including an upstream Authorization header, are
-    forwarded to the upstream (except Host, Connection and Content-Length).
+  description: Client headers and query parameters, including an upstream Authorization token or key= parameter, are forwarded to the upstream. Only Host, Connection, Content-Length and the proxy's own key are left out.
   attributes:
     priority: medium
     status: delivered
@@ -147,8 +140,7 @@ product.feature.admin-debug-endpoints:
   type: feature
   layer_id: product
   name: Admin Debug Endpoints
-  description: HTTP endpoints for health, sanitized config, status, domains, cache
-    and config validation.
+  description: HTTP endpoints for health, sanitized config, status, domains, cache and config validation.
   attributes:
     priority: medium
     status: delivered
@@ -163,8 +155,7 @@ product.feature.monitoring-metrics:
   type: feature
   layer_id: product
   name: Monitoring Metrics
-  description: MonitoringManager and get_metrics() report cache, upstream,
-    database, health and throttling statistics.
+  description: MonitoringManager and get_metrics() report cache, upstream, database, health and throttling statistics.
   attributes:
     priority: medium
     status: delivered

@@ -5,10 +5,7 @@ application.applicationcomponent.caching-proxy:
   type: applicationcomponent
   layer_id: application
   name: Caching Proxy
-  description: "Facade and composition root: builds the security, database, cache,
-    throttle, in-flight and metrics components from the config, owns the server
-    lifecycle (start/stop, context manager), and offers clear_cache,
-    update_config, reload_config, get_metrics and get_monitoring_manager."
+  description: "Facade and composition root: builds the security, database, cache, throttle, in-flight and metrics components from the config, owns the server lifecycle (start/stop, context manager), and offers clear_cache, update_config, reload_config, get_metrics and get_monitoring_manager."
   attributes:
     type: internal
   source_reference:
@@ -27,9 +24,7 @@ application.applicationcomponent.proxy-http-request-handler:
   type: applicationcomponent
   layer_id: application
   name: Proxy HTTP Request Handler
-  description: http.server request handler (with RequestProcessingMixin) that runs
-    the request pipeline for GET, POST, PUT and DELETE and serves the admin
-    endpoints.
+  description: http.server request handler (with RequestProcessingMixin) that runs the request pipeline for GET, POST, PUT and DELETE and serves the admin endpoints.
   attributes:
     type: internal
   source_reference:
@@ -48,8 +43,7 @@ application.applicationcomponent.threaded-http-server:
   type: applicationcomponent
   layer_id: application
   name: Threaded HTTP Server
-  description: ThreadingHTTPServer subclass that injects the proxy into each
-    handler and serves blocking or on a daemon thread.
+  description: ThreadingHTTPServer subclass that injects the proxy into each handler and serves blocking or on a daemon thread.
   attributes:
     type: internal
   source_reference:
@@ -68,9 +62,7 @@ application.applicationcomponent.cache-engine:
   type: applicationcomponent
   layer_id: application
   name: Cache Engine
-  description: Generates cache keys, reads and writes cache_entries with TTL
-    expiry, zlib compression over 1 KB, a response size cap and LRU eviction,
-    and keeps hit/miss statistics.
+  description: Generates cache keys, reads and writes cache_entries with TTL expiry, zlib compression over 1 KB, a response size cap and LRU eviction, and keeps hit/miss statistics.
   attributes:
     type: internal
   source_reference:
@@ -89,8 +81,7 @@ application.applicationcomponent.ttl-manager:
   type: applicationcomponent
   layer_id: application
   name: TTL Manager
-  description: "Resolves the TTL for a domain key: domain ttl_seconds or
-    cache.default_ttl_seconds."
+  description: "Resolves the TTL for a domain key: domain ttl_seconds or cache.default_ttl_seconds."
   attributes:
     type: internal
   source_reference:
@@ -109,9 +100,7 @@ application.applicationcomponent.database-manager:
   type: applicationcomponent
   layer_id: application
   name: Database Manager
-  description: SQLite access with a pool of five connections (WAL, busy_timeout 5
-    s), schema creation, locked-database retries with backoff, and upstream
-    metrics storage and aggregation.
+  description: SQLite access with a pool of five connections (WAL, busy_timeout 5 s), schema creation, locked-database retries with backoff, and upstream metrics storage and aggregation.
   attributes:
     type: internal
   source_reference:
@@ -130,9 +119,7 @@ application.applicationcomponent.throttle-manager:
   type: applicationcomponent
   layer_id: application
   name: Throttle Manager
-  description: Per-domain sliding-window request tracking for hour, minute and
-    second windows; computes the delay a request needs, and keeps
-    progressive-throttling state.
+  description: Per-domain sliding-window request tracking for hour, minute and second windows; computes the delay a request needs, and keeps progressive-throttling state.
   attributes:
     type: internal
   source_reference:
@@ -151,8 +138,7 @@ application.applicationcomponent.in-flight-tracker:
   type: applicationcomponent
   layer_id: application
   name: In Flight Tracker
-  description: Coalesces concurrent upstream fetches for the same cache key with a
-    threading.Event per key.
+  description: Coalesces concurrent upstream fetches for the same cache key with a threading.Event per key.
   attributes:
     type: internal
   source_reference:
@@ -171,8 +157,7 @@ application.applicationcomponent.security-manager:
   type: applicationcomponent
   layer_id: application
   name: Security Manager
-  description: Generates the secure key, extracts it from path, query or headers,
-    and validates it with a constant-time comparison.
+  description: Generates the secure key, extracts it from path, query or headers (preferring the candidate that validates), strips it from the path, recognises a Bearer proxy key, and validates with a constant-time comparison.
   attributes:
     type: internal
   source_reference:
@@ -191,9 +176,7 @@ application.applicationcomponent.metrics-collector:
   type: applicationcomponent
   layer_id: application
   name: Metrics Collector
-  description: In-memory counters of requests, cache hits and misses, throttles
-    and errors, with an event list, returned by CachingProxy.get_metrics(). Only
-    throttle events are recorded by the handler today.
+  description: In-memory counters of requests, cache hits and misses, throttles and errors, with an event list, returned by CachingProxy.get_metrics(). Only throttle events are recorded by the handler today.
   attributes:
     type: internal
   source_reference:
@@ -212,11 +195,7 @@ application.applicationcomponent.monitoring-manager:
   type: applicationcomponent
   layer_id: application
   name: Monitoring Manager
-  description: Read-only view over the cache engine, database manager and throttle
-    manager that assembles cache, upstream, database, health and throttling
-    statistics. Created on demand by CachingProxy.get_monitoring_manager(); the
-    admin status and domains endpoints only use it if a caller sets
-    proxy.monitoring_manager.
+  description: Read-only view over the cache engine, database manager and throttle manager that assembles cache, upstream, database, health and throttling statistics. Created on demand by CachingProxy.get_monitoring_manager(); the admin status and domains endpoints only use it if a caller sets proxy.monitoring_manager.
   attributes:
     type: internal
   source_reference:
@@ -254,9 +233,7 @@ application.applicationcomponent.configuration-manager:
   type: applicationcomponent
   layer_id: application
   name: Configuration Manager
-  description: Holds DEFAULT_CONFIG, deep-merges user config into it and validates
-    types. CachingProxy does not use it (it applies its own minimal defaults);
-    the validator backs POST /admin/validate-config.
+  description: Holds DEFAULT_CONFIG, deep-merges user config into it and validates types. CachingProxy does not use it (it applies its own minimal defaults); the validator backs POST /admin/validate-config.
   attributes:
     type: internal
   source_reference:
@@ -275,8 +252,7 @@ application.applicationcomponent.logger-manager:
   type: applicationcomponent
   layer_id: application
   name: Logger Manager
-  description: "Configures the package's loggers: level, format, colour console
-    handler, rotating file handler, optional parent logger."
+  description: "Configures the package's loggers: level, format, colour console handler, rotating file handler, optional parent logger."
   attributes:
     type: internal
   source_reference:
@@ -295,9 +271,7 @@ application.applicationcomponent.api-buddy-cli:
   type: applicationcomponent
   layer_id: application
   name: Api Buddy CLI
-  description: argparse entry point (api-buddy console script) that loads or
-    generates config, applies host, port and log-level overrides and runs the
-    proxy blocking.
+  description: argparse entry point (api-buddy console script) that loads or generates config, applies host, port and log-level overrides and runs the proxy blocking.
   attributes:
     type: internal
   source_reference:
@@ -316,9 +290,7 @@ application.applicationcomponent.upstream-reference-api:
   type: applicationcomponent
   layer_id: application
   name: Upstream Reference API
-  description: Any HTTPS API configured as a domain_mappings upstream (ConceptNet,
-    DBpedia, DBpedia Spotlight, Wikidata, search APIs). Called with
-    urllib.request with a 60 s timeout and gzip/deflate accepted.
+  description: Any HTTPS API configured as a domain_mappings upstream (ConceptNet, DBpedia, DBpedia Spotlight, Wikidata, search APIs). Called with urllib.request with a 60 s timeout and gzip/deflate accepted.
   attributes:
     type: external
   source_reference:

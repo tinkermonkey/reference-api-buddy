@@ -4,10 +4,10 @@
 
 | Metric              | Value                    |
 | ------------------- | ------------------------ |
-| Total Elements      | 770                      |
-| Total Relationships | 1230                     |
+| Total Elements      | 800                      |
+| Total Relationships | 1284                     |
 | Populated Layers    | 11                       |
-| Last Updated        | 2026-11-24T18:04:53.601Z |
+| Last Updated        | 2026-11-25T10:54:35.512Z |
 | CLI Version         | 0.7.1                    |
 | Spec Version        | 0.14.0                   |
 
@@ -58,8 +58,8 @@ Each layer is independently managed but interconnected, allowing elements in hig
 | Motivation  | 28       | [01-motivation-layer-report.md](./reports/01-motivation-layer-report.md)   |
 | Business    | 4        | [02-business-layer-report.md](./reports/02-business-layer-report.md)       |
 | Product     | 25       | [03-product-layer-report.md](./reports/03-product-layer-report.md)         |
-| Security    | 15       | [04-security-layer-report.md](./reports/04-security-layer-report.md)       |
-| Application | 82       | [05-application-layer-report.md](./reports/05-application-layer-report.md) |
+| Security    | 17       | [04-security-layer-report.md](./reports/04-security-layer-report.md)       |
+| Application | 84       | [05-application-layer-report.md](./reports/05-application-layer-report.md) |
 | Technology  | 12       | [06-technology-layer-report.md](./reports/06-technology-layer-report.md)   |
 | API         | 110      | [07-api-layer-report.md](./reports/07-api-layer-report.md)                 |
 | Data Model  | 56       | [08-data-model-layer-report.md](./reports/08-data-model-layer-report.md)   |
@@ -67,8 +67,8 @@ Each layer is independently managed but interconnected, allowing elements in hig
 | UX          | 0        | —                                                                          |
 | Navigation  | 0        | —                                                                          |
 | APM         | 10       | [12-apm-layer-report.md](./reports/12-apm-layer-report.md)                 |
-| Testing     | 391      | [13-testing-layer-report.md](./reports/13-testing-layer-report.md)         |
+| Testing     | 417      | [13-testing-layer-report.md](./reports/13-testing-layer-report.md)         |
 
 ---
 
-Generated: 2026-11-24T18:04:53.605Z | Model Version: 0.1.0
+Generated: 2026-11-25T10:54:35.596Z | Model Version: 0.1.0

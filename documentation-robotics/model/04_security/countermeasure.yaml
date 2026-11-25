@@ -124,3 +124,24 @@ security.countermeasure.admin-endpoints-switch:
     created_at: 2026-11-24T17:55:54.544Z
     updated_at: 2026-11-24T17:55:54.544Z
     version: 1
+security.countermeasure.proxy-key-stripped-before-forwarding:
+  id: f9f4017e-1f98-4e07-b851-80bce04087a6
+  path: security.countermeasure.proxy-key-stripped-before-forwarding
+  spec_node_id: security.countermeasure
+  type: countermeasure
+  layer_id: security
+  name: Proxy Key Stripped Before Forwarding
+  description: "The proxy key never reaches the upstream: a path-prefix or key= placement is removed from the path used for routing, caching and forwarding, and the X-API-Buddy-Key header and an Authorization: Bearer <proxy key> header are not copied upstream. It holds whether or not require_secure_key is on. Since #8 and #10."
+  attributes:
+    type: technical
+    effectiveness: high
+    implemented: true
+  source_reference:
+    provenance: manual
+    locations:
+      - file: reference_api_buddy/core/handler.py
+        symbol: _UPSTREAM_EXCLUDED_HEADERS
+  metadata:
+    created_at: 2026-11-25T10:12:39.315Z
+    updated_at: 2026-11-25T10:12:39.315Z
+    version: 1
