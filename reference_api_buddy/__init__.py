@@ -9,7 +9,7 @@ from reference_api_buddy.core.proxy import CachingProxy, SecurityError
 from reference_api_buddy.security.manager import SecurityManager
 from reference_api_buddy.throttling.manager import ThrottleManager
 
-__version__ = "0.5.2"
+__version__ = "0.5.3"
 __author__ = "Reference API Buddy Team"
 __email__ = "contact@example.com"
 
