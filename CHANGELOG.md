@@ -6,6 +6,34 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [Unreleased]
+
+### Fixed
+- **A path-prefix key (`/<key>/<domain>/<path>`) works.** The proxy stripped the key but then matched the domain
+  against the unstripped path, so every such request returned 404 "Domain not mapped". The key-free path is now used
+  for domain matching, the cache key and the upstream request.
+- **A query key (`?key=<key>`) works.** `parse_qs` returns lists, so the key reached validation as a list and every
+  such request returned 500. The key parameter is also removed before the request is cached and forwarded, so
+  other query parameters reach upstream unchanged and the cache entry is shared with the other placements.
+- **The proxy key is no longer sent to the upstream API.** `X-API-Buddy-Key` is never forwarded, and
+  `Authorization` is dropped only when it carries `Bearer <proxy key>`; an upstream API's own Bearer token still
+  passes through. A path segment or `key=` parameter that is not the proxy key is left for upstream, so APIs that
+  take their own `?key=` keep working when proxy security is off.
+- **A valid key is no longer shadowed by a value that only looks like one.** Key extraction returned the first
+  candidate it found (path prefix, then `?key=`, then headers), so with `require_secure_key` on, a request with a
+  valid `X-API-Buddy-Key` or `Authorization: Bearer` key got a 401 when its path also had a 32-44 character first
+  segment (such as a long domain key) or an upstream API's own `?key=`. Every candidate is now checked and the one
+  that matches the proxy key wins; the others stay in the upstream request. A request with no matching key is still
+  rejected.
+- **Repeated or mixed `key=` parameters are handled.** Every `key` value is checked, so `?key=<upstream>&key=<proxy>`
+  is accepted, and only the parameter holding the proxy key is removed: the upstream API's own `key=` reaches it, and
+  a proxy key sent both as a path prefix or header and as `?key=` is not forwarded upstream.
+
+### Tests
+- Regression tests for all four key placements (header, Bearer, path prefix, query) through a running
+  `CachingProxy` and a recording upstream, checking that the proxy key never appears in the upstream request.
+- Regression tests for header and Bearer keys combined with an upstream `?key=` and with a 40-character domain key.
+
 ## [0.5.2] - 2026-11-24
 
 ### Removed

@@ -13,7 +13,11 @@ from typing import Any, Dict
 from urllib.parse import parse_qs, urlparse
 
 from reference_api_buddy.database.models import CachedResponse
+from reference_api_buddy.security.manager import PROXY_KEY_HEADER
 from reference_api_buddy.utils.logger import get_logger
+
+# Request headers never copied to the upstream request: hop-by-hop framing, and the proxy's own key.
+_UPSTREAM_EXCLUDED_HEADERS = {"host", "connection", "content-length", PROXY_KEY_HEADER.lower()}
 
 
 class RequestProcessingMixin:
@@ -213,11 +217,21 @@ class RequestProcessingMixin:
             # Create request
             req = urllib.request.Request(real_url, method=method)
 
-            # Add headers (filter out problematic ones)
+            # Add headers, minus framing headers and the proxy's own key. An Authorization
+            # header is dropped only when it carries the proxy key; a real upstream token passes.
             if headers:
+                security_manager = getattr(self.proxy, "security_manager", None)
                 for key, value in headers.items():
-                    if key.lower() not in ["host", "connection", "content-length"]:
-                        req.add_header(key, value)
+                    lowered = key.lower()
+                    if lowered in _UPSTREAM_EXCLUDED_HEADERS:
+                        continue
+                    if (
+                        lowered == "authorization"
+                        and security_manager is not None
+                        and security_manager.is_proxy_authorization(value)
+                    ):
+                        continue
+                    req.add_header(key, value)
 
             # Ensure we accept gzip encoding
             req.add_header("Accept-Encoding", "gzip, deflate")
@@ -341,34 +355,39 @@ class RequestProcessingMixin:
         try:
             import time
 
-            self.logger.debug(f"Handling {method} request for path: {self.path}")
             # 1. Extract and validate secure key
-            sanitized_path = self.path
-            if hasattr(self.proxy, "security_manager") and self.proxy.security_manager is not None:
-                key, sanitized_path = self.proxy.security_manager.extract_secure_key(
+            request_path = self.path
+            security_manager = getattr(self.proxy, "security_manager", None)
+            if security_manager is not None:
+                key, sanitized_path = security_manager.extract_secure_key(
                     self.path, self.headers, parse_qs(urlparse(self.path).query)
                 )
                 if self.proxy.config.get("security", {}).get("require_secure_key", False):
-                    if not key or not self.proxy.security_manager.validate_request(key):
+                    if not key or not security_manager.validate_request(key):
                         self.logger.warning("Unauthorized request: Invalid or missing secure key.")
                         self.send_response(401)
                         self.end_headers()
                         self.wfile.write(b"Unauthorized: Invalid or missing secure key\n")
                         return
+                # Route, cache and forward without the proxy key. A path segment or `key=`
+                # parameter that is not the proxy key belongs to the upstream request.
+                if key and security_manager.validate_secure_key(key):
+                    request_path = sanitized_path
+            self.logger.debug(f"Handling {method} request for path: {request_path}")
 
             # 2. Check for admin endpoints
-            if self._is_admin_path(sanitized_path):
+            if self._is_admin_path(request_path):
                 if not self._is_admin_enabled():
                     self.send_response(404)
                     self.end_headers()
                     self.wfile.write(b"Not Found\n")
                     return
 
-                self._handle_admin_request(method, sanitized_path)
+                self._handle_admin_request(method, request_path)
                 return
 
             # 3. Check admin endpoints (stub: /admin/health) - kept for backward compatibility
-            if self.path.startswith("/admin/health"):
+            if request_path.startswith("/admin/health"):
                 self.logger.debug("Health check endpoint hit.")
                 self.send_response(200)
                 self.end_headers()
@@ -380,7 +399,7 @@ class RequestProcessingMixin:
             matched_domain_key = None
 
             # Parse the request URL to handle both path-based and full URL requests
-            parsed_url = urlparse(self.path)
+            parsed_url = urlparse(request_path)
             request_netloc = parsed_url.netloc
 
             for domain_key, mapping in domain_mappings.items():
@@ -390,14 +409,14 @@ class RequestProcessingMixin:
                     matched_domain_key = domain_key
                     break
                 # Match by path prefix (for path-based requests like /example.com/path)
-                elif self.path.startswith(f"/{domain_key}/") or self.path == f"/{domain_key}":
+                elif request_path.startswith(f"/{domain_key}/") or request_path == f"/{domain_key}":
                     matched = True
                     matched_domain_key = domain_key
                     break
             # 5. If matched, apply cache-first architecture: check cache before any throttling
             # This ensures cache hits bypass throttling entirely for maximum performance
             if matched:
-                target_url = self.path  # TODO: domain mapping logic
+                target_url = request_path
 
                 # Read request body for POST requests
                 body = self.rfile.read(int(self.headers.get("Content-Length", 0))) if method == "POST" else None
@@ -526,10 +545,10 @@ class RequestProcessingMixin:
             # 5. If not matched, transparently proxy (no cache/throttle)
             # In a real implementation, this would forward the request to the mapped
             # upstream
-            self.logger.debug(f"Proxying request for path: {self.path}")
+            self.logger.debug(f"Proxying request for path: {request_path}")
             # Read request body for POST requests
             body = self.rfile.read(int(self.headers.get("Content-Length", 0))) if method == "POST" else None
-            response_data, status_code, headers = self._forward_request(method, self.path, body, self.headers)
+            response_data, status_code, headers = self._forward_request(method, request_path, body, self.headers)
             self.send_response(status_code)
             for k, v in headers.items():
                 self.send_header(k, v)
