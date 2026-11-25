@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.3] - 2026-11-25
+
 ### Fixed
 - **A path-prefix key (`/<key>/<domain>/<path>`) works.** The proxy stripped the key but then matched the domain
   against the unstripped path, so every such request returned 404 "Domain not mapped". The key-free path is now used
