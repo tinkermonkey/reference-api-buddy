@@ -5,8 +5,7 @@ product.milestone.release-0-5-2:
   type: milestone
   layer_id: product
   name: Release 0.5.2
-  description: "Current release: drops unused runtime dependencies and Python
-    3.8/3.9, refreshes tooling, deterministic tests."
+  description: Drops unused runtime dependencies and Python 3.8/3.9, refreshes tooling, deterministic tests. Released 2026-11-24.
   attributes:
     status: completed
   source_reference:
@@ -16,4 +15,23 @@ product.milestone.release-0-5-2:
   metadata:
     created_at: 2026-11-24T17:55:54.507Z
     updated_at: 2026-11-24T17:55:54.507Z
+    version: 1
+product.milestone.release-0-5-3:
+  id: e5973b1b-45ae-46e8-b226-9b4f1fc7ebb4
+  path: product.milestone.release-0-5-3
+  spec_node_id: product.milestone
+  type: milestone
+  layer_id: product
+  name: Release 0.5.3
+  description: "Secure-key fixes: every key placement (path prefix, key= query parameter, X-API-Buddy-Key header, Authorization Bearer) authenticates, a valid key wins over values that only look like one, and the proxy key reaches neither the upstream API nor the access log. Released 2026-11-25."
+  attributes:
+    status: completed
+    documentation: "Reached 2026-11-25. Criteria: the proxy key is never written to the access log; version 0.5.3 with a dated changelog; v0.5.3 published to PyPI by the release workflow."
+  source_reference:
+    provenance: manual
+    locations:
+      - file: CHANGELOG.md
+  metadata:
+    created_at: 2026-11-25T23:29:52.586Z
+    updated_at: 2026-11-25T23:29:52.586Z
     version: 1

@@ -1,0 +1,15 @@
+id: changeset-1795649376496-zyro8k0qv
+name: extract-b1b8a1d..ea75712
+description: "Bring the model in step with the code at ea75712, the 0.5.3 release: the API and package version move to 0.5.3, the secure-key assessment no longer calls 0.5.3 unreleased, and a completed Release 0.5.3 milestone records what shipped (the secure-key fixes and the access-log redaction), preceded by Release 0.5.2."
+created: 2026-11-25T23:29:36.502Z
+modified: 2026-11-26T13:42:04.177Z
+status: committed
+baseSnapshot: v2:sha256:a512c3cefdbf64fcf6e35a9f6144c5251c662f6d6d08258348e4017be73dfafb
+origin:
+  kind: plan
+purpose: plan
+stats:
+  additions: 4
+  modifications: 4
+  deletions: 0
+lastSequence: 7

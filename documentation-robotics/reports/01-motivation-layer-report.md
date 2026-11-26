@@ -193,7 +193,7 @@ flowchart TB
 
 **Type**: `assessment`
 
-Checked against a running proxy after #8 and #10 (unreleased 0.5.3): all four placements (path prefix, key= query parameter, X-API-Buddy-Key header, Authorization Bearer) authenticate, and the proxy key is not forwarded upstream in any of them. Fixed since 0.5.2, where a path-prefix key got 404, a key= parameter got 500 and the header key was forwarded. The last gap, a path or query key written to the stderr access log, is closed by Proxy Key Redacted From Access Log.
+Checked against a running proxy after #8 and #10, released in 0.5.3: all four placements (path prefix, key= query parameter, X-API-Buddy-Key header, Authorization Bearer) authenticate, and the proxy key is not forwarded upstream in any of them. Fixed since 0.5.2, where a path-prefix key got 404, a key= parameter got 500 and the header key was forwarded. The last gap, a path or query key written to the stderr access log, is closed by Proxy Key Redacted From Access Log.
 
 #### Attributes
 
@@ -855,4 +855,4 @@ Reruns are served from the local cache in milliseconds and cost nothing upstream
 
 ---
 
-Generated: 2026-11-25T16:28:13.357Z | Model Version: 0.1.0
+Generated: 2026-11-26T13:42:04.180Z | Model Version: 0.1.0

@@ -16,8 +16,8 @@ Product features, capabilities, personas, and milestones.
 
 | Metric                    | Count |
 | ------------------------- | ----- |
-| Elements                  | 25    |
-| Intra-Layer Relationships | 59    |
+| Elements                  | 26    |
+| Intra-Layer Relationships | 62    |
 | Inter-Layer Relationships | 59    |
 | Inbound Relationships     | 33    |
 | Outbound Relationships    | 26    |
@@ -44,6 +44,7 @@ flowchart LR
     product_feature_secure_key_authentication["Secure Key Authentication"]
     product_feature_upstream_auth_passthrough["Upstream Auth Passthrough"]
     product_milestone_release_0_5_2["Release 0.5.2"]
+    product_milestone_release_0_5_3["Release 0.5.3"]
     product_persona_pipeline_builder["Pipeline Builder"]
     product_softwarecapability_configurable_domain_routing["Configurable Domain Routing"]
     product_softwarecapability_operational_visibility["Operational Visibility"]
@@ -86,13 +87,16 @@ flowchart LR
     product_feature_request_coalescing -->|serves| product_persona_pipeline_builder
     product_feature_secure_key_authentication -->|realizes| product_softwarecapability_proxy_access_control
     product_feature_secure_key_authentication -->|scheduled-for| product_milestone_release_0_5_2
+    product_feature_secure_key_authentication -->|scheduled-for| product_milestone_release_0_5_3
     product_feature_secure_key_authentication -->|serves| product_persona_pipeline_builder
     product_feature_upstream_auth_passthrough -->|realizes| product_softwarecapability_configurable_domain_routing
     product_feature_upstream_auth_passthrough -->|scheduled-for| product_milestone_release_0_5_2
     product_feature_upstream_auth_passthrough -->|serves| product_persona_pipeline_builder
+    product_milestone_release_0_5_2 -->|precedes| product_milestone_release_0_5_3
     product_softwarecapability_configurable_domain_routing -->|scheduled-for| product_milestone_release_0_5_2
     product_softwarecapability_operational_visibility -->|scheduled-for| product_milestone_release_0_5_2
     product_softwarecapability_proxy_access_control -->|scheduled-for| product_milestone_release_0_5_2
+    product_softwarecapability_proxy_access_control -->|scheduled-for| product_milestone_release_0_5_3
     product_softwarecapability_rate_limiting_and_throttling -->|scheduled-for| product_milestone_release_0_5_2
     product_softwarecapability_request_deduplication -->|scheduled-for| product_milestone_release_0_5_2
     product_softwarecapability_response_caching -->|scheduled-for| product_milestone_release_0_5_2
@@ -484,6 +488,7 @@ Optional proxy key in header, bearer token, path prefix or query.
 | inter-layer | `motivation.requirement.optional-secure-key-access-control` | `satisfies`     | outbound  |
 | intra-layer | `product.softwarecapability.proxy-access-control`           | `realizes`      | outbound  |
 | intra-layer | `product.milestone.release-0-5-2`                           | `scheduled-for` | outbound  |
+| intra-layer | `product.milestone.release-0-5-3`                           | `scheduled-for` | outbound  |
 | intra-layer | `product.persona.pipeline-builder`                          | `serves`        | outbound  |
 | intra-layer | `product.workflowstep.point-clients-at-the-proxy`           | `uses`          | inbound   |
 
@@ -521,7 +526,7 @@ Client headers and query parameters, including an upstream Authorization token o
 
 **Type**: `milestone`
 
-Current release: drops unused runtime dependencies and Python 3.8/3.9, refreshes tooling, deterministic tests.
+Drops unused runtime dependencies and Python 3.8/3.9, refreshes tooling, deterministic tests. Released 2026-11-24.
 
 #### Attributes
 
@@ -544,12 +549,36 @@ Current release: drops unused runtime dependencies and Python 3.8/3.9, refreshes
 | intra-layer | `product.feature.request-coalescing`                      | `scheduled-for` | inbound   |
 | intra-layer | `product.feature.secure-key-authentication`               | `scheduled-for` | inbound   |
 | intra-layer | `product.feature.upstream-auth-passthrough`               | `scheduled-for` | inbound   |
+| intra-layer | `product.milestone.release-0-5-3`                         | `precedes`      | outbound  |
 | intra-layer | `product.softwarecapability.configurable-domain-routing`  | `scheduled-for` | inbound   |
 | intra-layer | `product.softwarecapability.operational-visibility`       | `scheduled-for` | inbound   |
 | intra-layer | `product.softwarecapability.proxy-access-control`         | `scheduled-for` | inbound   |
 | intra-layer | `product.softwarecapability.rate-limiting-and-throttling` | `scheduled-for` | inbound   |
 | intra-layer | `product.softwarecapability.request-deduplication`        | `scheduled-for` | inbound   |
 | intra-layer | `product.softwarecapability.response-caching`             | `scheduled-for` | inbound   |
+
+### Release 0.5.3 {#release-0-5-3}
+
+**ID**: `product.milestone.release-0-5-3`
+
+**Type**: `milestone`
+
+Secure-key fixes: every key placement (path prefix, key= query parameter, X-API-Buddy-Key header, Authorization Bearer) authenticates, a valid key wins over values that only look like one, and the proxy key reaches neither the upstream API nor the access log. Released 2026-11-25.
+
+#### Attributes
+
+| Name          | Value                                                                                                                                                                   |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| documentation | Reached 2026-11-25. Criteria: the proxy key is never written to the access log; version 0.5.3 with a dated changelog; v0.5.3 published to PyPI by the release workflow. |
+| status        | completed                                                                                                                                                               |
+
+#### Relationships
+
+| Type        | Related Element                                   | Predicate       | Direction |
+| ----------- | ------------------------------------------------- | --------------- | --------- |
+| intra-layer | `product.feature.secure-key-authentication`       | `scheduled-for` | inbound   |
+| intra-layer | `product.milestone.release-0-5-2`                 | `precedes`      | inbound   |
+| intra-layer | `product.softwarecapability.proxy-access-control` | `scheduled-for` | inbound   |
 
 ### Pipeline Builder {#pipeline-builder}
 
@@ -659,6 +688,7 @@ Restrict use of the proxy to callers holding its secure key.
 | inter-layer | `motivation.goal.drop-in-without-custom-api-clients`       | `supports`      | outbound  |
 | intra-layer | `product.feature.secure-key-authentication`                | `realizes`      | inbound   |
 | intra-layer | `product.milestone.release-0-5-2`                          | `scheduled-for` | outbound  |
+| intra-layer | `product.milestone.release-0-5-3`                          | `scheduled-for` | outbound  |
 
 ### Rate Limiting And Throttling {#rate-limiting-and-throttling}
 
@@ -882,4 +912,4 @@ Start it embedded with CachingProxy.start() or standalone with api-buddy --confi
 
 ---
 
-Generated: 2026-11-25T10:54:35.596Z | Model Version: 0.1.0
+Generated: 2026-11-26T13:42:04.180Z | Model Version: 0.1.0
