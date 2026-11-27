@@ -4,10 +4,10 @@
 
 | Metric              | Value                    |
 | ------------------- | ------------------------ |
-| Total Elements      | 806                      |
-| Total Relationships | 1299                     |
+| Total Elements      | 807                      |
+| Total Relationships | 1302                     |
 | Populated Layers    | 11                       |
-| Last Updated        | 2026-11-25T16:28:13.355Z |
+| Last Updated        | 2026-11-26T13:42:04.178Z |
 | CLI Version         | 0.8.0                    |
 | Spec Version        | 0.15.0                   |
 
@@ -57,7 +57,7 @@ Each layer is independently managed but interconnected, allowing elements in hig
 | ----------- | -------- | -------------------------------------------------------------------------- |
 | Motivation  | 28       | [01-motivation-layer-report.md](./reports/01-motivation-layer-report.md)   |
 | Business    | 4        | [02-business-layer-report.md](./reports/02-business-layer-report.md)       |
-| Product     | 25       | [03-product-layer-report.md](./reports/03-product-layer-report.md)         |
+| Product     | 26       | [03-product-layer-report.md](./reports/03-product-layer-report.md)         |
 | Security    | 18       | [04-security-layer-report.md](./reports/04-security-layer-report.md)       |
 | Application | 85       | [05-application-layer-report.md](./reports/05-application-layer-report.md) |
 | Technology  | 12       | [06-technology-layer-report.md](./reports/06-technology-layer-report.md)   |
@@ -71,4 +71,4 @@ Each layer is independently managed but interconnected, allowing elements in hig
 
 ---
 
-Generated: 2026-11-25T16:28:13.357Z | Model Version: 0.1.0
+Generated: 2026-11-26T13:42:04.180Z | Model Version: 0.1.0

@@ -350,7 +350,7 @@ API metadata.
 | Name    | Value               |
 | ------- | ------------------- |
 | title   | Reference API Buddy |
-| version | 0.5.2               |
+| version | 0.5.3               |
 
 #### Relationships
 
@@ -2686,4 +2686,4 @@ Proxied upstream requests.
 
 ---
 
-Generated: 2026-11-25T10:54:35.596Z | Model Version: 0.1.0
+Generated: 2026-11-26T13:42:04.180Z | Model Version: 0.1.0

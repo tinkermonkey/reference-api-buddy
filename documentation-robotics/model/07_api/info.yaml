@@ -8,7 +8,7 @@ api.info.reference-api-buddy-info:
   description: API metadata.
   attributes:
     title: Reference API Buddy
-    version: 0.5.2
+    version: 0.5.3
   source_reference:
     provenance: manual
     locations:

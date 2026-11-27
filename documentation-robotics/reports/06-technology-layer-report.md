@@ -143,7 +143,7 @@ JSON configuration read by api-buddy --config and written by --generate-config.
 
 **Type**: `artifact`
 
-reference-api-buddy 0.5.2 wheel and sdist published to PyPI; console script api-buddy.
+reference-api-buddy 0.5.3 wheel and sdist published to PyPI; console script api-buddy.
 
 #### Attributes
 
@@ -339,4 +339,4 @@ Local file or shared in-memory SQL storage.
 
 ---
 
-Generated: 2026-11-24T18:04:53.605Z | Model Version: 0.1.0
+Generated: 2026-11-26T13:42:04.180Z | Model Version: 0.1.0

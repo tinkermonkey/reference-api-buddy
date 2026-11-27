@@ -5,7 +5,7 @@ motivation.assessment.secure-key-placement-gaps:
   type: assessment
   layer_id: motivation
   name: Secure Key Placement Gaps
-  description: "Checked against a running proxy after #8 and #10 (unreleased 0.5.3): all four placements (path prefix, key= query parameter, X-API-Buddy-Key header, Authorization Bearer) authenticate, and the proxy key is not forwarded upstream in any of them. Fixed since 0.5.2, where a path-prefix key got 404, a key= parameter got 500 and the header key was forwarded. The last gap, a path or query key written to the stderr access log, is closed by Proxy Key Redacted From Access Log."
+  description: "Checked against a running proxy after #8 and #10, released in 0.5.3: all four placements (path prefix, key= query parameter, X-API-Buddy-Key header, Authorization Bearer) authenticate, and the proxy key is not forwarded upstream in any of them. Fixed since 0.5.2, where a path-prefix key got 404, a key= parameter got 500 and the header key was forwarded. The last gap, a path or query key written to the stderr access log, is closed by Proxy Key Redacted From Access Log."
   attributes:
     assessmentType: gap
     documentation: Assessed 2026-11-25 by probing a running proxy with each placement and a recording upstream; regression tests in tests/integration_tests/test_secure_key_placement.py.
